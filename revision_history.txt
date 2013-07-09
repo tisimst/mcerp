@@ -1,0 +1,19 @@
+mcerp-0.8.2
+===========
+
+- Added 'covariance_matrix' and 'correlation_matrix' utility functions.
+
+- Renamed display text from 'UF(...)' and 'UV(...)' to just 'uv(...)'.
+
+- Made the sample statistics permanent properties via the @property decorator.
+
+mcerp-0.8.1
+===========
+
+- Fixed some minor formatting issues to comply with PEP8
+
+mcerp-0.8
+=========
+
+- First public release.
+ 
