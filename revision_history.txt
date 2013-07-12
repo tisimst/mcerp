@@ -1,3 +1,20 @@
+mcerp-0.9
+===========
+
+- Removed dependencies on the 'ad' package since the core functionality didn't
+  really depend on it.
+
+- Updated the umath sub-module to only utilize numpy for its mathematical
+  functions (i.e., sin, exp, abs, etc.).
+
+- Added many constructor functions to make creating UncertainVariables easier,
+  like 'Normal', 'Uniform', 'Gamma', etc. All examples have been updated
+  accordingly to show the use of these constructors. The original constructor,
+  like 'uv(ss.norm(loc=2, scale=0.1))', is still functional.
+
+- Updated the 'describe' method to allow the user to specify a printed 
+  identifier as an input other than the 'tag' member.
+
 mcerp-0.8.2
 ===========
 

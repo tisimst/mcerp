@@ -4,7 +4,7 @@ with open('README.txt') as file:
     long_description = file.read()
 
 setup(name='mcerp',
-    version='0.8.1',
+    version='0.9',
     author='Abraham Lee',
     description='Real-time Monte Carlo, Latin-Hypercube Sampling-based, Error Propagation',
     author_email='tisimst@gmail.com',
@@ -13,10 +13,13 @@ setup(name='mcerp',
     long_description=long_description,
     package_dir={'mcerp':''},
     packages=['mcerp'],
-    requires=['ad','numpy','scipy'],
+    requires=['numpy','scipy'],
+    include_package_data = True,
+    package_data = {
+        '': ['revision_history.txt'],
+        },
     keywords=[
         'monte carlo', 
-        'automatic differentiation', 
         'latin hypercube', 
         'sampling calculator', 
         'error propagation', 

@@ -1,237 +1,296 @@
 """
 Generalizes mathematical operators that work on numeric objects (from the math
-module) compatible with objects with uncertainty distributions
+module or numpy) compatible with objects with uncertainty distributions
 """
-from mcerp import to_uncertain_func,_make_UF_compatible_object
-import ad.admath as admath
+from mcerp import UncertainFunction, to_uncertain_func
 import numpy as np
-#import sys
 
 __author__ = 'Abraham Lee'
 
-__all__ = admath.__all__
+__all__ = [
+    # miscellaneous functions
+    'abs', 'fabs', 
+    'sqrt', 'hypot', 
+    'degrees', 'radians',
+    # trigonometric/hyperbolic functions
+    'acos', 'acosh', 
+    'asin', 'asinh', 
+    'atan', 'atanh',
+    'cos', 'cosh', 
+    'sin', 'sinh', 
+    'tan', 'tanh',
+    # exponential/logarithmic functions
+    'exp', 'expm1', 
+    'ln', 'log', 'log1p', 'log10',
+    # rounding functions
+    'ceil', 'floor', 'trunc']
 
 def abs(x):
-    return fabs(x)
+    """
+    Absolute value
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.abs(x._mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.abs(x)
     
 def acos(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.acos(uf._mcpts))
-    return _make_UF_compatible_object(admath.acos(x),mcpts)
+    """
+    Inverse cosine
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.arccos(x._mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.arccos(x)
 
 def acosh(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.acosh(uf._mcpts))
-    return _make_UF_compatible_object(admath.acosh(x),mcpts)
-
-def acot(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.acot(uf._mcpts))
-    return _make_UF_compatible_object(admath.acot(x),mcpts)
-
-def acoth(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.acoth(uf._mcpts))
-    return _make_UF_compatible_object(admath.acoth(x),mcpts)
-
-def acsc(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.acsc(uf._mcpts))
-    return _make_UF_compatible_object(admath.acsc(x),mcpts)
-
-def acsch(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.acsch(uf._mcpts))
-    return _make_UF_compatible_object(admath.acsch(x),mcpts)
-
-def asec(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.asec(uf._mcpts))
-    return _make_UF_compatible_object(admath.asec(x),mcpts)
-
-def asech(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.asech(uf._mcpts))
-    return _make_UF_compatible_object(admath.asech(x),mcpts)
+    """
+    Inverse hyperbolic cosine
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.arccosh(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.arccosh(x)
 
 def asin(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.asin(uf._mcpts))
-    return _make_UF_compatible_object(admath.asin(x),mcpts)
+    """
+    Inverse sine
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.arcsin(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.arcsin(x)
 
 def asinh(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.asinh(uf._mcpts))
-    return _make_UF_compatible_object(admath.asinh(x),mcpts)
+    """
+    Inverse hyperbolic sine
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.arcsinh(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.arcsinh(x)
 
 def atan(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.atan(uf._mcpts))
-    return _make_UF_compatible_object(admath.atan(x),mcpts)
+    """
+    Inverse tangent
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.arctan(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.arctan(x)
 
 def atanh(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.atanh(uf._mcpts))
-    return _make_UF_compatible_object(admath.atanh(x),mcpts)
+    """
+    Inverse hyperbolic tangent
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.arctanh(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.arctanh(x)
 
 def ceil(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.ceil(uf._mcpts))
-    return _make_UF_compatible_object(admath.ceil(x),mcpts)
+    """
+    Ceiling function (round towards positive infinity)
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.ceil(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.ceil(x)
 
 def cos(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.cos(uf._mcpts))
-    return _make_UF_compatible_object(admath.cos(x),mcpts)
+    """
+    Cosine
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.cos(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.cos(x)
 
 def cosh(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.cosh(uf._mcpts))
-    return _make_UF_compatible_object(admath.cosh(x),mcpts)
-
-def cot(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.cot(uf._mcpts))
-    return _make_UF_compatible_object(admath.cot(x),mcpts)
-
-def coth(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.coth(uf._mcpts))
-    return _make_UF_compatible_object(admath.coth(x),mcpts)
-
-def csc(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.csc(uf._mcpts))
-    return _make_UF_compatible_object(admath.csc(x),mcpts)
-
-def csch(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.csch(uf._mcpts))
-    return _make_UF_compatible_object(admath.csch(x),mcpts)
+    """
+    Hyperbolic cosine
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.cosh(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.cosh(x)
 
 def degrees(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.degrees(uf._mcpts))
-    return _make_UF_compatible_object(admath.degrees(x),mcpts)
-
-def erf(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.erf(uf._mcpts))
-    return _make_UF_compatible_object(admath.erf(x),mcpts)
-
-def erfc(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.erfc(uf._mcpts))
-    return _make_UF_compatible_object(admath.erfc(x),mcpts)
+    """
+    Convert radians to degrees
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.degrees(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.degrees(x)
 
 def exp(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.exp(uf._mcpts))
-    return _make_UF_compatible_object(admath.exp(x),mcpts)
+    """
+    Exponential function
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.exp(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.exp(x)
 
 def expm1(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.expm1(uf._mcpts))
-    return _make_UF_compatible_object(admath.expm1(x),mcpts)
+    """
+    Calculate exp(x) - 1
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.expm1(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.expm1(x)
 
 def fabs(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.fabs(uf._mcpts))
-    return _make_UF_compatible_object(admath.fabs(x),mcpts)
-
-def factorial(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.factorial(uf._mcpts))
-    return _make_UF_compatible_object(admath.factorial(x),mcpts)
+    """
+    Absolute value function
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.fabs(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.fabs(x)
 
 def floor(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.floor(uf._mcpts))
-    return _make_UF_compatible_object(admath.floor(x),mcpts)
+    """
+    Floor function (round towards negative infinity)
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.floor(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.floor(x)
 
-def gamma(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.gamma(uf._mcpts))
-    return _make_UF_compatible_object(admath.gamma(x))
-
-def lgamma(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.lgamma(uf._mcpts))
-    return _make_UF_compatible_object(admath.lgamma(x))
-
-def hypot(x,y):
-    ufx = to_uncertain_func(x)
-    ufy = to_uncertain_func(y)
-    mcpts = np.array(admath.hypot(ufx._mcpts,ufy._mcpts))
-    return _make_UF_compatible_object(admath.hypot(x,y),mcpts)
+def hypot(x, y):
+    """
+    Calculate the hypotenuse given two "legs" of a right triangle
+    """
+    if isinstance(x, UncertainFunction) or isinstance(x, UncertainFunction):
+        ufx = to_uncertain_func(x)
+        ufy = to_uncertain_func(y)
+        mcpts = np.hypot(ufx._mcpts, ufy._mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.hypot(x, y)
 
 def ln(x):
+    """
+    Natural logarithm (same as "log(x)")
+    """
     return log(x)
 
 def log(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.log(uf._mcpts))
-    return _make_UF_compatible_object(admath.log(x),mcpts)
+    """
+    Natural logarithm
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.log(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.log(x)
 
 def log10(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.log10(uf._mcpts))
-    return _make_UF_compatible_object(admath.log10(x),mcpts)
+    """
+    Base-10 logarithm
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.log10(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.log10(x)
 
 def log1p(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.log1p(uf._mcpts))
-    return _make_UF_compatible_object(admath.log1p(x),mcpts)
-
-def pow(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.pow(uf._mcpts))
-    return _make_UF_compatible_object(admath.pow(x),mcpts)
+    """
+    Natural logarithm of (1 + x)
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.log1p(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.log1p(x)
 
 def radians(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.radians(uf._mcpts))
-    return _make_UF_compatible_object(admath.radians(x),mcpts)
-
-def sec(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.sec(uf._mcpts))
-    return _make_UF_compatible_object(admath.sec(x),mcpts)
-
-def sech(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.sech(uf._mcpts))
-    return _make_UF_compatible_object(admath.sech(x),mcpts)
+    """
+    Convert degrees to radians
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.radians(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.radians(x)
 
 def sin(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.sin(uf._mcpts))
-    return _make_UF_compatible_object(admath.sin(x),mcpts)
+    """
+    Sine
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.sin(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.sin(x)
 
 def sinh(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.sinh(uf._mcpts))
-    return _make_UF_compatible_object(admath.sinh(x),mcpts)
+    """
+    Hyperbolic sine
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.sinh(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.sinh(x)
 
 def sqrt(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.sqrt(uf._mcpts))
-    return _make_UF_compatible_object(admath.sqrt(x),mcpts)
+    """
+    Square-root function
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.sqrt(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.sqrt(x)
 
 def tan(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.tan(uf._mcpts))
-    return _make_UF_compatible_object(admath.tan(x),mcpts)
+    """
+    Tangent
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.tan(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.tan(x)
 
 def tanh(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.tanh(uf._mcpts))
-    return _make_UF_compatible_object(admath.tanh(x),mcpts)
+    """
+    Hyperbolic tangent
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.tanh(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.tanh(x)
 
 def trunc(x):
-    uf = to_uncertain_func(x)
-    mcpts = np.array(admath.trunc(uf._mcpts))
-    return _make_UF_compatible_object(admath.trunc(x),mcpts)
-
+    """
+    Truncate the values to the integer value without rounding
+    """
+    if isinstance(x, UncertainFunction):
+        mcpts = np.trunc(x.mcpts)
+        return UncertainFunction(np.mean(mcpts), mcpts)
+    else:
+        return np.trunc(x)
 
     
