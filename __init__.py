@@ -387,28 +387,42 @@ class UncertainVariable(UncertainFunction):
     for creating UncertainVariable objects using some of the most common 
     statistical distributions:
     
-    =========================  ============  ==================  ====  ========
-    Distribution               scipy.stats   args                loc   scale
-                               class name    (shape parameters)
-    =========================  ============  ==================  ====  ========
-    Normal(mu, sigma)          norm                              mu    sigma
-    Uniform(a, b)              uniform                           a     b-a
-    Exponential(lamda)         expon                                   1/lambda
-    Gamma(k, theta)            gamma         k                         theta
-    Beta(alpha, beta, [a, b])  beta          alpha, beta         a     b-a
-    Log-Normal(mu, sigma)      lognorm       sigma               mu
-    Chi-Square(k)              chi2          k
-    F(d1, d2)                  f             d1, d2
-    Triangular(a, b, c)        triang        c                   a     b-a
-    Student-T(v)               t             v
-    Weibull(lamda, k)          exponweib     lamda, k
-    =========================  ============  =================== ====  ========
-    Bernoulli(p)               bernoulli     p
-    Binomial(n, p)             binomial      n, p
-    Geometric(p)               geom          p
-    Hypergeometric(M, n, N)    hypergeom     M, n, N
-    Poisson(lamda)             poisson       lamda
-    =========================  ============  =================== ====  ========
+    +---------------------------+-------------+-------------------+-----+---------+
+    | Distribution              | scipy.stats |  args             | loc | scale   |
+    |                           | class name  | (shape params)    |     |         |
+    +===========================+=============+===================+=====+=========+
+    | Normal(mu, sigma)         | norm        |                   | mu  | sigma   | 
+    +---------------------------+-------------+-------------------+-----+---------+
+    | Uniform(a, b)             | uniform     |                   | a   | b-a     |
+    +---------------------------+-------------+-------------------+-----+---------+
+    | Exponential(lamda)        | expon       |                   |     | 1/lamda |
+    +---------------------------+-------------+-------------------+-----+---------+
+    | Gamma(k, theta)           | gamma       | k                 |     | theta   |
+    +---------------------------+-------------+-------------------+-----+---------+
+    | Beta(alpha, beta, [a, b]) | beta        | alpha, beta       | a   | b-a     |
+    +---------------------------+-------------+-------------------+-----+---------+
+    | Log-Normal(mu, sigma)     | lognorm     | sigma             | mu  |         |
+    +---------------------------+-------------+-------------------+-----+---------+
+    | Chi-Square(k)             | chi2        | k                 |     |         |
+    +---------------------------+-------------+-------------------+-----+---------+
+    | F(d1, d2)                 | f           | d1, d2            |     |         |
+    +---------------------------+-------------+-------------------+-----+---------+
+    | Triangular(a, b, c)       | triang      | c                 | a   | b-a     |
+    +---------------------------+-------------+-------------------+-----+---------+
+    | Student-T(v)              | t           | v                 |     |         |
+    +---------------------------+-------------+-------------------+-----+---------+
+    | Weibull(lamda, k)         | exponweib   | lamda, k          |     |         |
+    +---------------------------+-------------+-------------------+-----+---------+
+    | Bernoulli(p)              | bernoulli   | p                 |     |         |
+    +---------------------------+-------------+-------------------+-----+---------+
+    | Binomial(n, p)            | binomial    | n, p              |     |         |
+    +---------------------------+-------------+-------------------+-----+---------+
+    | Geometric(p)              | geom        | p                 |     |         |
+    +---------------------------+-------------+-------------------+-----+---------+
+    | Hypergeometric(M, n, N)   | hypergeom   | M, n, N           |     |         |
+    +---------------------------+-------------+-------------------+-----+---------+
+    | Poisson(lamda)            | poisson     | lamda             |     |         |
+    +---------------------------+-------------+-------------------+-----+---------+
     
     Thus, each distribution above would have the same call signature::
         
@@ -422,27 +436,46 @@ class UncertainVariable(UncertainFunction):
     distributions easier. They follow the parameter notation found in the
     respective Wikipedia articles:
     
-    ===========================  ===========================================
-    MCERP Distibution            Wikipedia page
-    ===========================  ===========================================
-    N(mu, sigma)                 http://en.wikipedia.org/wiki/Normal_distribution
-    U(a, b)                      http://en.wikipedia.org/wiki/Uniform_distribution_(continuous)
-    Exp(lamda, [mu])             http://en.wikipedia.org/wiki/Exponential_distribution
-    Gamma(k, theta)              http://en.wikipedia.org/wiki/Gamma_distribution
-    Beta(alpha, beta, [a, b])    http://en.wikipedia.org/wiki/Beta_distribution
-    LogN(mu, sigma)              http://en.wikipedia.org/wiki/Log-normal_distribution
-    X2(df)                       http://en.wikipedia.org/wiki/Chi-squared_distribution
-    F(dfn, dfd)                  http://en.wikipedia.org/wiki/F-distribution
-    Tri(a, b, c)                 http://en.wikipedia.org/wiki/Triangular_distribution
-    T(df)                        http://en.wikipedia.org/wiki/Student's_t-distribution
-    Weib(lamda, k)               http://en.wikipedia.org/wiki/Weibull_distribution
-    ===========================  ===========================================
-    Bern(p)                      http://en.wikipedia.org/wiki/Bernoulli_distribution
-    B(n, p)                      http://en.wikipedia.org/wiki/Binomial_distribution
-    G(p)                         http://en.wikipedia.org/wiki/Geometric_distribution
-    H(M, n, N)                   http://en.wikipedia.org/wiki/Hypergeometric_distribution
-    Pois(lamda)                  http://en.wikipedia.org/wiki/Poisson_distribution
-    ===========================  ===========================================
+    +---------------------------+---------------------------------------------------------------+
+    | MCERP Distibution         | Wikipedia page                                                |
+    +===========================+===============================================================+
+    | N(mu, sigma)              | http://en.wikipedia.org/wiki/Normal_distribution              |
+    +---------------------------+---------------------------------------------------------------+
+    | U(a, b)                   | http://en.wikipedia.org/wiki/Uniform_distribution_(continuous)|
+    +---------------------------+---------------------------------------------------------------+
+    | Exp(lamda, [mu])          | http://en.wikipedia.org/wiki/Exponential_distribution         |
+    +---------------------------+---------------------------------------------------------------+
+    | Gamma(k, theta)           | http://en.wikipedia.org/wiki/Gamma_distribution               |
+    +---------------------------+---------------------------------------------------------------+
+    | Beta(alpha, beta, [a, b]) | http://en.wikipedia.org/wiki/Beta_distribution                |
+    +---------------------------+---------------------------------------------------------------+
+    | LogN(mu, sigma)           | http://en.wikipedia.org/wiki/Log-normal_distribution          |
+    +---------------------------+---------------------------------------------------------------+
+    | X2(df)                    | http://en.wikipedia.org/wiki/Chi-squared_distribution         |
+    +---------------------------+---------------------------------------------------------------+
+    | F(dfn, dfd)               | http://en.wikipedia.org/wiki/F-distribution                   |
+    +---------------------------+---------------------------------------------------------------+
+    | Tri(a, b, c)              | http://en.wikipedia.org/wiki/Triangular_distribution          |
+    +---------------------------+---------------------------------------------------------------+
+    | T(df)                     | http://en.wikipedia.org/wiki/Student's_t-distribution         |
+    +---------------------------+---------------------------------------------------------------+
+    | Weib(lamda, k)            | http://en.wikipedia.org/wiki/Weibull_distribution             |
+    +---------------------------+---------------------------------------------------------------+
+    | Bern(p)                   | http://en.wikipedia.org/wiki/Bernoulli_distribution           |
+    +---------------------------+---------------------------------------------------------------+
+    | B(n, p)                   | http://en.wikipedia.org/wiki/Binomial_distribution            |
+    +---------------------------+---------------------------------------------------------------+
+    | G(p)                      | http://en.wikipedia.org/wiki/Geometric_distribution           |
+    +---------------------------+---------------------------------------------------------------+
+    | H(M, n, N)                | http://en.wikipedia.org/wiki/Hypergeometric_distribution      |
+    +---------------------------+---------------------------------------------------------------+
+    | Pois(lamda)               | http://en.wikipedia.org/wiki/Poisson_distribution             |
+    +---------------------------+---------------------------------------------------------------+
+
+    Thus, the following are equivalent::
+
+        >>> x = N(10, 1)
+        >>> x = uv(ss.norm(loc=10, scale=1))
 
     Examples
     --------

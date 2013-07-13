@@ -1,5 +1,5 @@
 Overview
-=========
+========
 
 ``mcerp`` is an on-the-fly calculator for `Monte Carlo methods`_ that uses 
 `latin-hypercube sampling`_ (see `soerp`_ for the Python implementation of the
@@ -10,8 +10,8 @@ N. D. Cox) to perform non-order specific `error propagation`_ (or uncertainty
  calculations. Advanced mathematical functions, similar to those in the 
  standard `math`_ module can also be evaluated directly. 
 
-Due to the nature of sampling techniques, calculation results will vary from 
-session to session (but be consistent within the session) since new 
+Due to the nature of random sampling techniques, calculation results will vary 
+from session to session (but be consistent within the session) since new 
 latin-hypercube samples are only generated when variables are newly defined or 
 re-defined. By default, each variable uses 10,000 latin-hypercube samples that 
 are sufficiently random. This can be changed by assigning an integer value to 
@@ -37,9 +37,13 @@ Required Packages
 Suggested Packages
 ==================
 
+- `Matplotlib`_ : Python plotting library (required for ``mcerp.plot``)
+
+Other Recommendations
+=====================
+
 - `uncertainties`_ : First-order uncertainty propagation
 - `soerp`_ : Second Order ERror Propagation
-- `Matplotlib`_ : Python plotting library (required for ``mcerp.plot``)
 
 Basic examples
 ==============
@@ -138,10 +142,10 @@ Thus, each distribution above would have the same call signature::
     >>> import scipy.stats as ss
     >>> ss.your_dist_here(args_here, loc=loc_here, scale=scale_here)
 
-Though not entirely discouraged to use the ``scipy.stats`` distributions
-directly, here are the equivalent constructors that I've found to be easier to
-use (the location, scale, and shape parameters are described in the respective
-Wikipedia pages):
+Though its not entirely discouraged to use the ``scipy.stats`` distributions
+directly, here are the equivalent constructors that I've found to be 
+**easier to use** (the location, scale, and shape parameters are described in 
+the respective Wikipedia pages):
 
 +---------------------------+---------------------------------------------------------------+
 | MCERP Distibution         | Wikipedia page                                                |
@@ -203,13 +207,28 @@ You have several easy, convenient options to install the ``mcerp`` package
 (administrative privileges may be required)
 
 1. Download the package files below, unzip to any directory, and run 
-   ``python setup.py install`` from the command-line
-2. Simply copy the unzipped ``mcerp-XYZ`` directory to any other location that
-   python can find it and rename it ``mcerp``
-3. If ``setuptools`` is installed, run ``easy_install --upgrade mcerp`` from 
-   the command-line
-4. If ``pip`` is installed, run ``pip --upgrade mcerp`` from the command-line
+   ``python setup.py install`` from the command-line.
 
+2. Simply copy the unzipped ``mcerp-XYZ`` directory to any other location that
+   python can find it and rename it ``mcerp``.
+   
+3. If ``setuptools`` is installed, run ``easy_install --upgrade mcerp`` from 
+   the command-line.
+   
+4. If ``pip`` is installed, run ``pip --upgrade mcerp`` from the command-line.
+
+Python 3
+========
+
+To use this package with Python 3.x, you will need to run the ``2to3`` tool at
+the command-line using the following syntax while in the unzipped ``ad`` 
+directory::
+
+    $ 2to3 -w -f all *.py
+    
+This should take care of the main changes required. If bugs continue to pop up,
+please email the author.
+    
 Contact
 =======
 
