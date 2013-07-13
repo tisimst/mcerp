@@ -98,105 +98,53 @@ created using the ``scipy.stats`` distributions. There are also some
 convenience constructors that should make defining a distribution easier, 
 though it's not necessary to use them. Here is a table that describes how to 
 construct many of the most common statistical continuous and discrete 
-distributions using the ``scipy.stats`` distributions:
-
-+---------------------------+-------------+-------------------+-----+---------+
-| Distribution              | scipy.stats |  args             | loc | scale   |
-|                           | class name  | (shape params)    |     |         |
-+===========================+=============+===================+=====+=========+
-| Normal(mu, sigma)         | norm        |                   | mu  | sigma   | 
-+---------------------------+-------------+-------------------+-----+---------+
-| Uniform(a, b)             | uniform     |                   | a   | b-a     |
-+---------------------------+-------------+-------------------+-----+---------+
-| Exponential(lamda)        | expon       |                   |     | 1/lamda |
-+---------------------------+-------------+-------------------+-----+---------+
-| Gamma(k, theta)           | gamma       | k                 |     | theta   |
-+---------------------------+-------------+-------------------+-----+---------+
-| Beta(alpha, beta, [a, b]) | beta        | alpha, beta       | a   | b-a     |
-+---------------------------+-------------+-------------------+-----+---------+
-| Log-Normal(mu, sigma)     | lognorm     | sigma             | mu  |         |
-+---------------------------+-------------+-------------------+-----+---------+
-| Chi-Square(k)             | chi2        | k                 |     |         |
-+---------------------------+-------------+-------------------+-----+---------+
-| F(d1, d2)                 | f           | d1, d2            |     |         |
-+---------------------------+-------------+-------------------+-----+---------+
-| Triangular(a, b, c)       | triang      | c                 | a   | b-a     |
-+---------------------------+-------------+-------------------+-----+---------+
-| Student-T(v)              | t           | v                 |     |         |
-+---------------------------+-------------+-------------------+-----+---------+
-| Weibull(lamda, k)         | exponweib   | lamda, k          |     |         |
-+---------------------------+-------------+-------------------+-----+---------+
-| Bernoulli(p)              | bernoulli   | p                 |     |         |
-+---------------------------+-------------+-------------------+-----+---------+
-| Binomial(n, p)            | binomial    | n, p              |     |         |
-+---------------------------+-------------+-------------------+-----+---------+
-| Geometric(p)              | geom        | p                 |     |         |
-+---------------------------+-------------+-------------------+-----+---------+
-| Hypergeometric(M, n, N)   | hypergeom   | M, n, N           |     |         |
-+---------------------------+-------------+-------------------+-----+---------+
-| Poisson(lamda)            | poisson     | lamda             |     |         |
-+---------------------------+-------------+-------------------+-----+---------+
-
-Thus, each distribution above would have the same call signature::
-    
-    >>> import scipy.stats as ss
-    >>> ss.your_dist_here(args_here, loc=loc_here, scale=scale_here)
+distributions using the ``scipy.stats`` distributions. See the source code for
+help using these distributions.
 
 Though its not entirely discouraged to use the ``scipy.stats`` distributions
-directly, here are the equivalent constructors that I've found to be 
+directly, here are the **equivalent constructors** that I've found to be 
 **easier to use** (the location, scale, and shape parameters are described in 
 the respective Wikipedia pages):
 
-+---------------------------+---------------------------------------------------------------+
-| MCERP Distibution         | Wikipedia page                                                |
-+===========================+===============================================================+
-| N(mu, sigma)              | http://en.wikipedia.org/wiki/Normal_distribution              |
-+---------------------------+---------------------------------------------------------------+
-| U(a, b)                   | http://en.wikipedia.org/wiki/Uniform_distribution_(continuous)|
-+---------------------------+---------------------------------------------------------------+
-| Exp(lamda, [mu])          | http://en.wikipedia.org/wiki/Exponential_distribution         |
-+---------------------------+---------------------------------------------------------------+
-| Gamma(k, theta)           | http://en.wikipedia.org/wiki/Gamma_distribution               |
-+---------------------------+---------------------------------------------------------------+
-| Beta(alpha, beta, [a, b]) | http://en.wikipedia.org/wiki/Beta_distribution                |
-+---------------------------+---------------------------------------------------------------+
-| LogN(mu, sigma)           | http://en.wikipedia.org/wiki/Log-normal_distribution          |
-+---------------------------+---------------------------------------------------------------+
-| X2(df)                    | http://en.wikipedia.org/wiki/Chi-squared_distribution         |
-+---------------------------+---------------------------------------------------------------+
-| F(dfn, dfd)               | http://en.wikipedia.org/wiki/F-distribution                   |
-+---------------------------+---------------------------------------------------------------+
-| Tri(a, b, c)              | http://en.wikipedia.org/wiki/Triangular_distribution          |
-+---------------------------+---------------------------------------------------------------+
-| T(df)                     | http://en.wikipedia.org/wiki/Student's_t-distribution         |
-+---------------------------+---------------------------------------------------------------+
-| Weib(lamda, k)            | http://en.wikipedia.org/wiki/Weibull_distribution             |
-+---------------------------+---------------------------------------------------------------+
-| Bern(p)                   | http://en.wikipedia.org/wiki/Bernoulli_distribution           |
-+---------------------------+---------------------------------------------------------------+
-| B(n, p)                   | http://en.wikipedia.org/wiki/Binomial_distribution            |
-+---------------------------+---------------------------------------------------------------+
-| G(p)                      | http://en.wikipedia.org/wiki/Geometric_distribution           |
-+---------------------------+---------------------------------------------------------------+
-| H(M, n, N)                | http://en.wikipedia.org/wiki/Hypergeometric_distribution      |
-+---------------------------+---------------------------------------------------------------+
-| Pois(lamda)               | http://en.wikipedia.org/wiki/Poisson_distribution             |
-+---------------------------+---------------------------------------------------------------+
+- Continuous Distributions
+    - `N(mu, sigma)`_ : Normal distribution
+    - `U(a, b)`_ : Uniform distribution (continuous)
+    - `Exp(lamda, [mu])`_ : Exponential distribution
+    - `Gamma(k, theta)`_ : Gamma distribution
+    - `Beta(alpha, beta, [a, b])`_ : Beta distribution
+    - `LogN(mu, sigma)`_ : Log-normal distribution
+    - `X2(df)`_ : Chi-squared distribution
+    - `F(dfn, dfd)`_ : F (or, Fisher) distribution
+    - `Tri(a, b, c)`_ : Triangular distribution
+    - `T(df)`_ : Student's t-distribution
+    - `Weib(lamda, k)`_ : Weibull distribution
+- Discrete Distributions
+    - `Bern(p)`_ : Bernoulli distribution
+    - `B(n, p)`_ : Binomial distribution
+    - `G(p)`_ : Geometric distribution
+    - `H(M, n, N)`_ : Hypergeometric distribution
+    - `Pois(lamda)`_ : Poisson distribution
 
 Thus, the following are equivalent::
 
-    >>> x = N(10, 1)
-    >>> x = uv(ss.norm(loc=10, scale=1))
+    >>> x = uv(ss.norm(loc=10, scale=1))  # scipy.stats distribution
+    >>> x = N(10, 1)  # nice constructor :)
 
 Main Features
 =============
 
 1. **Transparent calculations**. **No or little modification** to existing 
    code required.
+   
 2. Basic `NumPy` support without modification.
+
 3. Nearly all standard `math`_ module functions supported through the 
    ``mcerp.umath`` sub-module. If you think a function is in there, it 
-   probably is.
+   probably is. If it isn't, please request it!
+
+4. **Easy continuous distribution constructors**. The location, scale, 
+   and shape parameters follow the notation in the respective Wikipedia 
+   articles.
 
 Installation
 ============
@@ -248,3 +196,19 @@ Please send **feature requests, bug reports, or feedback** to
 .. _uncertainties: http://pypi.python.org/pypi/uncertainties
 .. _Abraham Lee: mailto: tisimst@gmail.com
 .. _PEP8: http://www.python.org/dev/peps/pep-0008
+.. _N(mu, sigma): http://en.wikipedia.org/wiki/Normal_distribution
+.. _U(a, b): http://en.wikipedia.org/wiki/Uniform_distribution_(continuous)
+.. _Exp(lamda, [mu]): http://en.wikipedia.org/wiki/Exponential_distribution
+.. _Gamma(k, theta): http://en.wikipedia.org/wiki/Gamma_distribution
+.. _Beta(alpha, beta, [a, b]): http://en.wikipedia.org/wiki/Beta_distribution
+.. _LogN(mu, sigma): http://en.wikipedia.org/wiki/Log-normal_distribution
+.. _X2(df): http://en.wikipedia.org/wiki/Chi-squared_distribution
+.. _F(dfn, dfd): http://en.wikipedia.org/wiki/F-distribution
+.. _Tri(a, b, c): http://en.wikipedia.org/wiki/Triangular_distribution
+.. _T(df): http://en.wikipedia.org/wiki/Student's_t-distribution
+.. _Weib(lamda, k): http://en.wikipedia.org/wiki/Weibull_distribution
+.. _Bern(p): http://en.wikipedia.org/wiki/Bernoulli_distribution
+.. _B(n, p): http://en.wikipedia.org/wiki/Binomial_distribution
+.. _G(p): http://en.wikipedia.org/wiki/Geometric_distribution
+.. _H(M, n, N): http://en.wikipedia.org/wiki/Hypergeometric_distribution
+.. _Pois(lamda): http://en.wikipedia.org/wiki/Poisson_distribution
