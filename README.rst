@@ -95,9 +95,10 @@ Using Distributions
 Since all of the variables in ``mcerp`` are statistical distributions, they 
 are created using the ``scipy.stats`` distributions. There are also some 
 convenience constructors that should make defining a distribution easier, 
-though it's not necessary to use them. See the `source code`_ for info that 
-describes how to construct many of the most common statistical continuous 
-and discrete distributions using the ``scipy.stats`` distributions.
+though it's not necessary to use them. See the `source code`_ of the
+``UncertainVariable`` class for info that describes how to construct many 
+of the most common statistical continuous and discrete distributions using 
+the ``scipy.stats`` distributions.
 
 Though its not entirely discouraged to use the ``scipy.stats`` distributions
 directly, here are the **equivalent constructors** that I've found to be 
