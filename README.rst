@@ -95,7 +95,7 @@ Using Distributions
 Since all of the variables in ``mcerp`` are statistical distributions, they 
 are created using the ``scipy.stats`` distributions. There are also some 
 convenience constructors that should make defining a distribution easier, 
-though it's not necessary to use them. See the source code for info that 
+though it's not necessary to use them. See the `source code`_ for info that 
 describes how to construct many of the most common statistical continuous 
 and discrete distributions using the ``scipy.stats`` distributions.
 
@@ -221,8 +221,8 @@ Please send **feature requests, bug reports, or feedback** to
 .. _SciPy: http://scipy.org
 .. _Matplotlib: http://matplotlib.org/
 .. _uncertainties: http://pypi.python.org/pypi/uncertainties
+.. _source code: https://github.com/tisimst/mcerp
 .. _Abraham Lee: mailto: tisimst@gmail.com
-.. _PEP8: http://www.python.org/dev/peps/pep-0008
 .. _Normal distribution: http://en.wikipedia.org/wiki/Normal_distribution
 .. _Uniform distribution: http://en.wikipedia.org/wiki/Uniform_distribution_(continuous)
 .. _Exponential distribution: http://en.wikipedia.org/wiki/Exponential_distribution
