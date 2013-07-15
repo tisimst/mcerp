@@ -92,8 +92,8 @@ Basic examples
 Using Distributions
 -------------------
 
-Since all of the variables in MCERP are statistical distributions, they are 
-created using the ``scipy.stats`` distributions. There are also some 
+Since all of the variables in ``mcerp`` are statistical distributions, they 
+are created using the ``scipy.stats`` distributions. There are also some 
 convenience constructors that should make defining a distribution easier, 
 though it's not necessary to use them. See the source code for info that 
 describes how to construct many of the most common statistical continuous 
@@ -104,41 +104,43 @@ directly, here are the **equivalent constructors** that I've found to be
 **easier to use** (the location, scale, and shape parameters are described in 
 the respective Wikipedia pages):
 
-Continuous Distributions
-
-- ``N(mu, sigma)`` : `Normal distribution`_
-
-- ``U(a, b)`` : `Uniform distribution`_
-
-- ``Exp(lamda, [mu])`` : `Exponential distribution`_
-
-- ``Gamma(k, theta)`` : `Gamma distribution`_
-
-- ``Beta(alpha, beta, [a, b])`` : `Beta distribution`_
-
-- ``LogN(mu, sigma)`` : `Log-normal distribution`_
-
-- ``X2(k)`` : `Chi-squared distribution`_
-
-- ``F(d1, d2)`` : `F-distribution`_
-
-- ``Tri(a, b, c)`` : `Triangular distribution`_
-
-- ``T(v)`` : `T-distribution`_
-
-- ``Weib(lamda, k)`` : `Weibull distribution`_
-
-Discrete Distributions
-
-- ``Bern(p)`` : `Bernoulli distribution`_
-
-- ``B(n, p)`` : `Binomial distribution`_
-
-- ``G(p)`` : `Geometric distribution`_
-
-- ``H(M, n, N)`` : `Hypergeometric distribution`_
-
-- ``Pois(lamda)`` : `Poisson distribution`_
++----------------------------------------------------------------+
+| **Continuous Distributions**                                   |
++-------------------------------+--------------------------------+
+| ``N(mu, sigma)``              | `Normal distribution`_         |
++-------------------------------+--------------------------------+
+| ``U(a, b)``                   | `Uniform distribution`_        |
++-------------------------------+--------------------------------+
+| ``Exp(lamda, [mu])``          | `Exponential distribution`_    |
++-------------------------------+--------------------------------+
+| ``Gamma(k, theta)``           | `Gamma distribution`_          |
++-------------------------------+--------------------------------+
+| ``Beta(alpha, beta, [a, b])`` | `Beta distribution`_           |
++-------------------------------+--------------------------------+
+| ``LogN(mu, sigma)``           | `Log-normal distribution`_     |
++-------------------------------+--------------------------------+
+| ``X2(k)``                     | `Chi-squared distribution`_    |
++-------------------------------+--------------------------------+
+| ``F(d1, d2)``                 | `F-distribution`_              |
++-------------------------------+--------------------------------+
+| ``Tri(a, b, c)``              | `Triangular distribution`_     |
++-------------------------------+--------------------------------+
+| ``T(v)``                      | `T-distribution`_              |
++-------------------------------+--------------------------------+
+| ``Weib(lamda, k)``            | `Weibull distribution`_        |
++-------------------------------+--------------------------------+
+| **Discrete Distributions**                                     |
++-------------------------------+--------------------------------+
+| ``Bern(p)``                   | `Bernoulli distribution`_      |
++-------------------------------+--------------------------------+
+| ``B(n, p)``                   | `Binomial distribution`_       |
++-------------------------------+--------------------------------+
+| ``G(p)``                      | `Geometric distribution`_      |
++-------------------------------+--------------------------------+
+| ``H(M, n, N)``                | `Hypergeometric distribution`_ |
++-------------------------------+--------------------------------+
+| ``Pois(lamda)``               | `Poisson distribution`_        |
++-------------------------------+--------------------------------+
 
 For example, the following constructions are equivalent::
 
