@@ -1,6 +1,8 @@
 ``mcerp`` Package Documentation
 ===============================
 
+.. contents::
+
 Overview
 --------
 
