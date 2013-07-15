@@ -145,10 +145,10 @@ Discrete Distributions
 
 - ``Pois(lamda)`` : `Poisson distribution`_
 
-For example, the following are equivalent::
+For example, the following constructions are equivalent::
 
     >>> x = uv(ss.norm(loc=10, scale=1))  # scipy.stats distribution
-    >>> x = N(10, 1)  # nice constructor :)
+    >>> x = N(10, 1)  # nicer constructor IMHO :)
 
 Main Features
 -------------
@@ -156,7 +156,8 @@ Main Features
 1. **Transparent calculations**. **No or little modification** to existing 
    code required.
     
-2. Basic NumPy_ support without modification.
+2. Basic NumPy_ support without modification. (I haven't done extensive 
+   testing, so please let me know if you encounter bugs.)
 
 3. Advanced mathematical functions supported through the ``mcerp.umath`` 
    sub-module. If you think a function is in there, it probably is. If it 
@@ -175,7 +176,7 @@ This package won't work without them.
 You have several easy, convenient options to install the ``mcerp`` package 
 (administrative privileges may be required)
 
-1. Download the package files below, unzip to any directory, and run 
+1. Manually download the package files below, unzip to any directory, and run 
    ``python setup.py install`` from the command-line.
 
 2. Simply copy the unzipped ``mcerp-XYZ`` directory to any other location that
@@ -190,7 +191,7 @@ Python 3
 --------
 
 To use this package with Python 3.x, you will need to run the ``2to3`` tool at
-the command-line using the following syntax while in the unzipped ``ad`` 
+the command-line using the following syntax while in the unzipped ``mcerp`` 
 directory::
 
     $ 2to3 -w -f all *.py
