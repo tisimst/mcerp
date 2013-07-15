@@ -1,6 +1,3 @@
-``ad`` Package Documentation
-============================
-
 Overview
 --------
 
