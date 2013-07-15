@@ -42,13 +42,6 @@ Suggested Packages
 
 - Matplotlib_ : Python plotting library (required for ``mcerp.plot``)
 
-Other Recommendations
----------------------
-
-- uncertainties_ : First-order uncertainty propagation
-
-- soerp_ : Second Order ERror Propagation
-
 Basic examples
 --------------
 ::
@@ -199,6 +192,13 @@ unzipped ``mcerp`` directory::
 This should take care of the main changes required. If bugs continue to pop up,
 please email the author.
     
+See also
+--------
+
+- uncertainties_ : First-order uncertainty propagation
+
+- soerp_ : Second Order ERror Propagation
+
 Contact
 -------
 
