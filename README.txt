@@ -1,3 +1,6 @@
+``mcerp`` Package Documentation
+===============================
+
 Overview
 --------
 
@@ -142,7 +145,7 @@ Discrete Distributions
 
 - ``Pois(lamda)`` : `Poisson distribution`_
 
-Thus, the following are equivalent::
+For example, the following are equivalent::
 
     >>> x = uv(ss.norm(loc=10, scale=1))  # scipy.stats distribution
     >>> x = N(10, 1)  # nice constructor :)
