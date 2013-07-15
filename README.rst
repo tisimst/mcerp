@@ -191,7 +191,8 @@ unzipped ``mcerp`` directory::
 
     $ 2to3 -w -f all *.py
     
-This should take care of the main changes required. If bugs continue to pop up,
+This should take care of the main changes required. Then, run
+``python3 setup.py install``. If bugs continue to pop up,
 please email the author.
     
 See also
