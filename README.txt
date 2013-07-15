@@ -190,9 +190,9 @@ You have several easy, convenient options to install the ``mcerp`` package
 Python 3
 --------
 
-To use this package with Python 3.x, you will need to run the ``2to3`` tool at
-the command-line using the following syntax while in the unzipped ``mcerp`` 
-directory::
+To use this package with Python 3.x, you will need to run the ``2to3`` 
+conversion tool at the command-line using the following syntax while in the 
+unzipped ``mcerp`` directory::
 
     $ 2to3 -w -f all *.py
     
