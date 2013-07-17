@@ -1,6 +1,6 @@
 from distutils.core import setup
 
-with open('README.txt') as file:
+with open('README.rst') as file:
     long_description = file.read()
 
 setup(name='mcerp',
@@ -16,7 +16,7 @@ setup(name='mcerp',
     requires=['numpy','scipy'],
     include_package_data = True,
     package_data = {
-        '': ['revision_history.txt'],
+        '': ['revision_history.txt', 'README.rst'],
         },
     keywords=[
         'monte carlo', 

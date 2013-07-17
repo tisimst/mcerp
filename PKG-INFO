@@ -2,59 +2,58 @@ Metadata-Version: 1.1
 Name: mcerp
 Version: 0.9
 Summary: Real-time Monte Carlo, Latin-Hypercube Sampling-based, Error Propagation
-Home-page: http://pypi.python.org/pypi/mcerp
+Home-page: https://github.com/tisimst/mcerp
 Author: Abraham Lee
 Author-email: tisimst@gmail.com
 License: BSD License
-Description: Overview
-        ========
+Description: ``mcerp`` Package Documentation
+        ===============================
+        
+        .. contents::
+        
+        Overview
+        --------
         
         ``mcerp`` is an on-the-fly calculator for `Monte Carlo methods`_ that uses 
-        `latin-hypercube sampling`_ (see `soerp`_ for the Python implementation of the
+        `latin-hypercube sampling`_ (see soerp_ for the Python implementation of the
         analytical second-order error propagation original Fortran code `SOERP` by 
         N. D. Cox) to perform non-order specific `error propagation`_ (or uncertainty
         analysis). The ``mcerp`` package allows you to **easily** and 
         **transparently** track the effects of uncertainty through mathematical 
         calculations. Advanced mathematical functions, similar to those in the 
-        standard `math`_ module can also be evaluated directly. 
+        standard math_ module can also be evaluated directly. 
         
         Due to the nature of random sampling techniques, calculation results will vary 
         from session to session (but be consistent within the session) since new 
         latin-hypercube samples are only generated when variables are newly defined or 
         re-defined. By default, each variable uses 10,000 latin-hypercube samples that 
-        are sufficiently random. This can be changed by assigning an integer value to 
-        the ``mcerp.npts`` object (typically, values between 1,000 and 1,000,000 are 
-        sufficiently large to insure small errors in the resulting statistics). This 
-        should only be changed prior to performing calculations since all subsequent 
-        calculations assume that each input has the same number of sampled points 
-        (this could be changed through resampling, I suppose...).
+        are sufficiently random. The number of samples can be changed by assigning an 
+        integer value to the ``mcerp.npts`` object (typically, values between 1,000 and 
+        1,000,000 are sufficiently large to insure small errors in the resulting 
+        statistics). This should only be changed prior to performing calculations since 
+        all subsequent calculations assume that each input has the same number of 
+        sampled points (this could be changed through resampling, I suppose...).
         
         In order to correctly use ``mcerp``, knowledge of the distributions from the 
         ``scipy.stats`` sub-module is required. The result of all calculations 
         generates a *mean*, *variance*, and *standardized skewness and kurtosis* 
-        coefficients. Running the source code by itself in a terminal with 
-        ``python mcerp.py`` will demonstrate some more advanced examples.
+        coefficients. 
         
         
         Required Packages
-        =================
+        -----------------
         
-        - `NumPy`_ : Numeric Python
-        - `SciPy`_ : Scientific Python
+        - NumPy_ : Numeric Python
+        
+        - SciPy_ : Scientific Python
         
         Suggested Packages
-        ==================
+        ------------------
         
-        - `Matplotlib`_ : Python plotting library (required for ``mcerp.plot``)
-        
-        Other Recommendations
-        =====================
-        
-        - `uncertainties`_ : First-order uncertainty propagation
-        - `soerp`_ : Second Order ERror Propagation
+        - Matplotlib_ : Python plotting library (required for ``mcerp.plot``)
         
         Basic examples
-        ==============
+        --------------
         ::
         
             >>> from mcerp import *  # N, U, Gamma, Beta, etc.
@@ -68,10 +67,10 @@ Description: Overview
         
             >>> Z.describe()  # explains what the moments are
             MCERP Uncertain Value:
-                > Mean...................  1161.14296871
-                > Variance...............  116093.134064
-                > Skewness Coefficient...  0.361152281239
-                > Kurtosis Coefficient...  3.05247793644
+             > Mean...................  1161.14296871
+             > Variance...............  116093.134064
+             > Skewness Coefficient...  0.361152281239
+             > Kurtosis Coefficient...  3.05247793644
         
             >>> x1.stats  # the eight moments can be accessed at any time
             [24.0, 1.0, 0.0, 3.0]
@@ -91,104 +90,131 @@ Description: Overview
             >>> Q = C*umath.sqrt((520*H*P)/(M*(t + 460)))
             >>> Q.describe()
             MCERP Uncertain Value:
-                > Mean...................  1330.9997362
-                > Variance...............  57.5497899824
-                > Skewness Coefficient...  0.0229295468388
-                > Kurtosis Coefficient...  2.99662898689
+             > Mean...................  1330.9997362
+             > Variance...............  57.5497899824
+             > Skewness Coefficient...  0.0229295468388
+             > Kurtosis Coefficient...  2.99662898689
             
             >>> Q.plot()  # shows a kde of the resultant calculations
         
-        Distribution Creation
-        =====================
+        Using Distributions
+        -------------------
         
-        Since all of the variables in MCERP are statistical distributions, they are 
-        created using the ``scipy.stats`` distributions. There are also some 
+        Since all of the variables in ``mcerp`` are statistical distributions, they 
+        are created using the ``scipy.stats`` distributions. There are also some 
         convenience constructors that should make defining a distribution easier, 
-        though it's not necessary to use them. See the source code for info that 
-        describes how to construct many of the most common statistical continuous 
-        and discrete distributions using the ``scipy.stats`` distributions.
+        though it's not necessary to use them. See the `source code`_ of the
+        ``UncertainVariable`` class for info that describes how to construct many 
+        of the most common statistical continuous and discrete distributions using 
+        the ``scipy.stats`` distributions.
         
         Though its not entirely discouraged to use the ``scipy.stats`` distributions
         directly, here are the **equivalent constructors** that I've found to be 
         **easier to use** (the location, scale, and shape parameters are described in 
-        the respective Wikipedia pages).
+        the respective Wikipedia pages):
         
-        Continuous Distributions:
+        +----------------------------------------------------------------+
+        | **Continuous Distributions**                                   |
+        +-------------------------------+--------------------------------+
+        | ``N(mu, sigma)``              | `Normal distribution`_         |
+        +-------------------------------+--------------------------------+
+        | ``U(a, b)``                   | `Uniform distribution`_        |
+        +-------------------------------+--------------------------------+
+        | ``Exp(lamda, [mu])``          | `Exponential distribution`_    |
+        +-------------------------------+--------------------------------+
+        | ``Gamma(k, theta)``           | `Gamma distribution`_          |
+        +-------------------------------+--------------------------------+
+        | ``Beta(alpha, beta, [a, b])`` | `Beta distribution`_           |
+        +-------------------------------+--------------------------------+
+        | ``LogN(mu, sigma)``           | `Log-normal distribution`_     |
+        +-------------------------------+--------------------------------+
+        | ``X2(k)``                     | `Chi-squared distribution`_    |
+        +-------------------------------+--------------------------------+
+        | ``F(d1, d2)``                 | `F-distribution`_              |
+        +-------------------------------+--------------------------------+
+        | ``Tri(a, b, c)``              | `Triangular distribution`_     |
+        +-------------------------------+--------------------------------+
+        | ``T(v)``                      | `T-distribution`_              |
+        +-------------------------------+--------------------------------+
+        | ``Weib(lamda, k)``            | `Weibull distribution`_        |
+        +-------------------------------+--------------------------------+
+        | **Discrete Distributions**                                     |
+        +-------------------------------+--------------------------------+
+        | ``Bern(p)``                   | `Bernoulli distribution`_      |
+        +-------------------------------+--------------------------------+
+        | ``B(n, p)``                   | `Binomial distribution`_       |
+        +-------------------------------+--------------------------------+
+        | ``G(p)``                      | `Geometric distribution`_      |
+        +-------------------------------+--------------------------------+
+        | ``H(M, n, N)``                | `Hypergeometric distribution`_ |
+        +-------------------------------+--------------------------------+
+        | ``Pois(lamda)``               | `Poisson distribution`_        |
+        +-------------------------------+--------------------------------+
         
-        - N(mu, sigma) : `Normal distribution`_
-        - U(a, b) : `Uniform distribution`_
-        - Exp(lamda, [mu]) : `Exponential distribution`_
-        - Gamma(k, theta) : `Gamma distribution`_
-        - Beta(alpha, beta, [a, b]) : `Beta distribution`_
-        - LogN(mu, sigma) : `Log-normal distribution`_
-        - X2(k) : `Chi-squared distribution`_
-        - F(d1, d2) : `F-distribution`_
-        - Tri(a, b, c) : `Triangular distribution`_
-        - T(v) : `T-distribution`_
-        - Weib(lamda, k) : `Weibull distribution`_
-        
-        Discrete Distributions:
-        
-        - Bern(p) : `Bernoulli distribution`_
-        - B(n, p) : `Binomial distribution`_
-        - G(p) : `Geometric distribution`_
-        - H(M, n, N) : `Hypergeometric distribution`_
-        - Pois(lamda) : `Poisson distribution`_
-        
-        Thus, the following are equivalent::
+        For example, the following constructions are equivalent::
         
             >>> x = uv(ss.norm(loc=10, scale=1))  # scipy.stats distribution
-            >>> x = N(10, 1)  # nice constructor :)
+            >>> x = N(10, 1)  # nicer constructor IMHO :)
         
         Main Features
-        =============
+        -------------
         
         1. **Transparent calculations**. **No or little modification** to existing 
-            code required.
+           code required.
             
-        2. Basic `NumPy`_ support without modification.
+        2. Basic NumPy_ support without modification. (I haven't done extensive 
+           testing, so please let me know if you encounter bugs.)
         
-        3. Nearly all standard `math`_ module functions supported through the 
-            ``mcerp.umath`` sub-module. If you think a function is in there, it 
-            probably is. If it isn't, please request it!
+        3. Advanced mathematical functions supported through the ``mcerp.umath`` 
+           sub-module. If you think a function is in there, it probably is. If it 
+           isn't, please request it!
         
         4. **Easy continuous distribution constructors**. The location, scale, 
-            and shape parameters follow the notation in the respective Wikipedia 
-            articles.
+           and shape parameters follow the notation in the respective Wikipedia 
+           articles.
         
         Installation
-        ============
+        ------------
         
-        **Make sure you have the**  `SciPy`_ **,** `NumPy`_ **packages installed!**
+        **Make sure you have the**  SciPy_ **and** NumPy_ **packages installed!**
+        This package won't work without them.
         
         You have several easy, convenient options to install the ``mcerp`` package 
         (administrative privileges may be required)
         
-        1. Download the package files below, unzip to any directory, and run 
-            ``python setup.py install`` from the command-line.
+        1. Manually download the package files below, unzip to any directory, and run 
+           ``python setup.py install`` from the command-line.
         
         2. Simply copy the unzipped ``mcerp-XYZ`` directory to any other location that
-            python can find it and rename it ``mcerp``.
+           python can find it and rename it ``mcerp``.
             
         3. If ``setuptools`` is installed, run ``easy_install --upgrade mcerp`` from 
-            the command-line.
+           the command-line.
             
         4. If ``pip`` is installed, run ``pip --upgrade mcerp`` from the command-line.
         
         Python 3
-        ========
+        --------
         
-        To use this package with Python 3.x, you will need to run the ``2to3`` tool at
-        the command-line using the following syntax while in the unzipped ``ad`` 
-        directory::
+        To use this package with Python 3.x, you will need to run the ``2to3`` 
+        conversion tool at the command-line using the following syntax while in the 
+        unzipped ``mcerp`` directory::
         
             $ 2to3 -w -f all *.py
             
-        This should take care of the main changes required. If bugs continue to pop up,
+        This should take care of the main changes required. Then, run
+        ``python3 setup.py install``. If bugs continue to pop up,
         please email the author.
             
+        See also
+        --------
+        
+        - uncertainties_ : First-order uncertainty propagation
+        
+        - soerp_ : Second Order ERror Propagation
+        
         Contact
-        =======
+        -------
         
         Please send **feature requests, bug reports, or feedback** to 
         `Abraham Lee`_.
@@ -204,8 +230,8 @@ Description: Overview
         .. _SciPy: http://scipy.org
         .. _Matplotlib: http://matplotlib.org/
         .. _uncertainties: http://pypi.python.org/pypi/uncertainties
+        .. _source code: https://github.com/tisimst/mcerp
         .. _Abraham Lee: mailto: tisimst@gmail.com
-        .. _PEP8: http://www.python.org/dev/peps/pep-0008
         .. _Normal distribution: http://en.wikipedia.org/wiki/Normal_distribution
         .. _Uniform distribution: http://en.wikipedia.org/wiki/Uniform_distribution_(continuous)
         .. _Exponential distribution: http://en.wikipedia.org/wiki/Exponential_distribution
@@ -222,7 +248,7 @@ Description: Overview
         .. _Geometric distribution: http://en.wikipedia.org/wiki/Geometric_distribution
         .. _Hypergeometric distribution: http://en.wikipedia.org/wiki/Hypergeometric_distribution
         .. _Poisson distribution: http://en.wikipedia.org/wiki/Poisson_distribution
-                
+        
 Keywords: monte carlo,latin hypercube,sampling calculator,error propagation,uncertainty,error,real-time
 Platform: UNKNOWN
 Classifier: Development Status :: 5 - Production/Stable
