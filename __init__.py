@@ -226,8 +226,8 @@ class UncertainFunction(object):
         Optional
         --------
         hist : bool
-            If true, a histogram is displayed
-        kwargs : any valid matplotlib.pyplot.plot kwarg
+            If true, a density histogram is displayed (histtype='stepfilled')
+        kwargs : any valid matplotlib.pyplot.plot or .hist kwarg
         
         """
         vals = self._mcpts
@@ -237,23 +237,29 @@ class UncertainFunction(object):
         p = ss.kde.gaussian_kde(vals)
         xp = np.linspace(low,high,100)
 
-        plt.figure()
+#        plt.figure()
         if hist:
-            plt.hist(vals, bins=np.round(np.sqrt(vals)), histtype='stepfilled',
-                **kwargs)
+            h = plt.hist(vals, bins=np.round(np.sqrt(len(vals))), 
+                     histtype='stepfilled', normed=True, **kwargs)
             if self.tag is not None:
-                plt.title('Histogram of ('+self.tag+') - '+str(self))
+                plt.suptitle('Histogram of ('+self.tag+')')
+                plt.title(str(self), fontsize=12)
             else:
-                plt.title('Histogram of '+str(self))
+                plt.suptitle('Histogram of')
+                plt.title(str(self), fontsize=12)
+            plt.ylim(0, 1.1*h[0].max())
         else:
             plt.plot(xp,p.evaluate(xp))
             if self.tag is not None:
-                plt.title('KDE of ('+self.tag+') - '+str(self))
+                plt.suptitle('KDE of ('+self.tag+')')
+                plt.title(str(self), fontsize=12)
             else:
-                plt.title('KDE of '+str(self))
+                plt.suptitle('KDE of')
+                plt.title(str(self), fontsize=12)
 
         plt.xlim(low - (high - low)*0.1, high + (high - low)*0.1)
-        plt.ylim(ymin=0)
+
+    def show(self):
         plt.show()
 
     def __add__(self, val):
@@ -595,37 +601,49 @@ xt, this parameter should be changed before any
         
         if hist:
             vals = self._mcpts
-            plt.hist(vals, bins=np.round(np.sqrt(vals)), histtype='stepfilled',
-                **kwargs)
+            low = vals.min()
+            high = vals.max()
+            h = plt.hist(vals, bins=np.round(np.sqrt(len(vals))), 
+                     histtype='stepfilled', normed=True, **kwargs)
 
             if self.tag is not None:
-                plt.title('Histogram of ('+self.tag+') - '+str(self))
+                plt.suptitle('Histogram of (' + self.tag + ')')
+                plt.title(str(self), fontsize=12)
             else:
-                plt.title('Histogram of '+str(self))
+                plt.suptitle('Histogram of')
+                plt.title(str(self), fontsize=12)
 
+            plt.ylim(0, 1.1*h[0].max())
         else:
-            low = int(self.rv.ppf(1e-6))
-            high = int(self.rv.ppf(1 - 1e-6))
+            bound = 1e-6
+            low = self.rv.ppf(bound)
+            high = self.rv.ppf(1 - bound)
             if hasattr(self.rv.dist, 'pmf'):
+                low = int(low)
+                high = int(high)
                 vals = range(low, high + 1)
                 plt.plot(vals, self.rv.pmf(vals), 'o', **kwargs)
 
                 if self.tag is not None:
-                    plt.title('PMF of ('+self.tag+') - '+str(self))
+                    plt.suptitle('PMF of (' + self.tag + ')')
+                    plt.title(str(self), fontsize=12)
                 else:
-                    plt.title('PMF of '+str(self))
+                    plt.suptitle('PMF of')
+                    plt.title(str(self), fontsize=12)
 
             else:
                 vals = np.linspace(low, high, 500)
                 plt.plot(vals, self.rv.pdf(vals), **kwargs)
 
                 if self.tag is not None:
-                    plt.title('PDF of ('+self.tag+') - '+str(self))
+                    plt.suptitle('PDF of ('+self.tag+')')
+                    plt.title(str(self), fontsize=12)
                 else:
-                    plt.title('PDF of '+str(self))
+                    plt.suptitle('PDF of')
+                    plt.title(str(self), fontsize=12)
 
         plt.xlim(low - (high - low)*0.1, high + (high - low)*0.1)
-        plt.show()
+
                 
         
 uv = UncertainVariable # a nicer form for the user
