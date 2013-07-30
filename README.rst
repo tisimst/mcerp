@@ -1,10 +1,9 @@
+===============================
 ``mcerp`` Package Documentation
 ===============================
 
-.. contents::
-
 Overview
---------
+========
 
 ``mcerp`` is an on-the-fly calculator for `Monte Carlo methods`_ that uses 
 `latin-hypercube sampling`_ (see soerp_ for the Python implementation of the
@@ -33,46 +32,76 @@ coefficients.
 
 
 Required Packages
------------------
+=================
 
 - NumPy_ : Numeric Python
 
 - SciPy_ : Scientific Python
 
 Suggested Packages
-------------------
+==================
 
 - Matplotlib_ : Python plotting library (required for ``mcerp.plot``)
 
 Basic examples
---------------
-::
+==============
+
+Let's start with the main import::
 
     >>> from mcerp import *  # N, U, Gamma, Beta, etc.
+
+Now, we can construct many kinds of statistical distributions (both continuous and discrete). Here's a basic example that involves a three-part assembly::
+
     >>> x1 = N(24, 1) # normally distributed
     >>> x2 = N(37, 4) # normally distributed
     >>> x3 = Exp(2)  # exponentially distributed
+    >>> x1.stats  # the first four moments can be accessed at any time
+    [24.0, 1.0, 0.0, 3.0]
+    
+Now we'll compute the actual stack-up using normal mathematics and see what happens::
 
     >>> Z = (x1*x2**2)/(15*(1.5 + x3))
-    >>> Z
+
+We can see how the statistics of each of these distributions propagated through the calculations in two basic ways:
+
+#. Telling python to print the object::
+
+    >>> Z  # Explicit "print" command necessary at the command-line
     uv(1161.14296871, 116093.134064, 0.361152281239, 3.05247793644)
 
-    >>> Z.describe()  # explains what the moments are
+#. Using the ``describe`` class method (provides a more detailed explanation)::
+
+    >>> Z.describe()
     MCERP Uncertain Value:
      > Mean...................  1161.14296871
      > Variance...............  116093.134064
      > Skewness Coefficient...  0.361152281239
      > Kurtosis Coefficient...  3.05247793644
 
-    >>> x1.stats  # the eight moments can be accessed at any time
-    [24.0, 1.0, 0.0, 3.0]
-    
-    >>> x1.plot()  # if matplotlib is installed it shows the distribution
+Viewing the distribution
+------------------------
 
-    >>> x1-x1  # correlations are correctly handled
+We can also plot the calculated distribution using the ``plot`` class method::
+
+    >>> x1.plot()  # No inputs shows the distribution's PDF
+    >>> Z.plot(hist=True)  # shows a histogram instead of a PDF
+
+Correlations
+------------
+
+Even correlations are correctly handled::
+
+    >>> x1 - x1
+    0.0
+
+    >>> Z*Z - Z**2
     0.0
     
-    # Example of volumetric gas flow through orifice meter
+Advanced Example
+================
+
+Here's a *slightly* more advanced engineering example, showing how the random effects of input parameters propagates through the calculation of the volumetric gas flow through an orifice meter::
+
     >>> import mcerp.umath as umath  # sin, exp, sqrt, etc.
     >>> H = N(64, 0.5)
     >>> M = N(16, 0.1)
@@ -86,11 +115,11 @@ Basic examples
      > Variance...............  57.5497899824
      > Skewness Coefficient...  0.0229295468388
      > Kurtosis Coefficient...  2.99662898689
-    
-    >>> Q.plot()  # shows a kde of the resultant calculations
+
+Interestingly enough, even though the calculations involve multiplication, division, and a square-root, the result appears to be very close to a Normal (Gaussian) distribution (Q ~ N(1331, 7.6) where 7.6 = sqrt(58.2))
 
 Using Distributions
--------------------
+===================
 
 Since all of the variables in ``mcerp`` are statistical distributions, they 
 are created using the ``scipy.stats`` distributions. There are also some 
@@ -100,56 +129,62 @@ though it's not necessary to use them. See the `source code`_ of the
 of the most common statistical continuous and discrete distributions using 
 the ``scipy.stats`` distributions.
 
-Though its not entirely discouraged to use the ``scipy.stats`` distributions
-directly, here are the **equivalent constructors** that I've found to be 
+Here are the **equivalent constructors** that I've found to be 
 **easier to use** (the location, scale, and shape parameters are described in 
 the respective Wikipedia pages):
 
-+----------------------------------------------------------------+
-| **Continuous Distributions**                                   |
-+-------------------------------+--------------------------------+
-| ``N(mu, sigma)``              | `Normal distribution`_         |
-+-------------------------------+--------------------------------+
-| ``U(a, b)``                   | `Uniform distribution`_        |
-+-------------------------------+--------------------------------+
-| ``Exp(lamda, [mu])``          | `Exponential distribution`_    |
-+-------------------------------+--------------------------------+
-| ``Gamma(k, theta)``           | `Gamma distribution`_          |
-+-------------------------------+--------------------------------+
-| ``Beta(alpha, beta, [a, b])`` | `Beta distribution`_           |
-+-------------------------------+--------------------------------+
-| ``LogN(mu, sigma)``           | `Log-normal distribution`_     |
-+-------------------------------+--------------------------------+
-| ``X2(k)``                     | `Chi-squared distribution`_    |
-+-------------------------------+--------------------------------+
-| ``F(d1, d2)``                 | `F-distribution`_              |
-+-------------------------------+--------------------------------+
-| ``Tri(a, b, c)``              | `Triangular distribution`_     |
-+-------------------------------+--------------------------------+
-| ``T(v)``                      | `T-distribution`_              |
-+-------------------------------+--------------------------------+
-| ``Weib(lamda, k)``            | `Weibull distribution`_        |
-+-------------------------------+--------------------------------+
-| **Discrete Distributions**                                     |
-+-------------------------------+--------------------------------+
-| ``Bern(p)``                   | `Bernoulli distribution`_      |
-+-------------------------------+--------------------------------+
-| ``B(n, p)``                   | `Binomial distribution`_       |
-+-------------------------------+--------------------------------+
-| ``G(p)``                      | `Geometric distribution`_      |
-+-------------------------------+--------------------------------+
-| ``H(M, n, N)``                | `Hypergeometric distribution`_ |
-+-------------------------------+--------------------------------+
-| ``Pois(lamda)``               | `Poisson distribution`_        |
-+-------------------------------+--------------------------------+
++----------------------------------------------------------------------------------+
+| **Continuous Distributions**                                                     |
++-----------------------------------------+----------------------------------------+
+| ``N(mu, sigma)``                        | `Normal distribution`_                 |
++-----------------------------------------+----------------------------------------+
+| ``U(a, b)``                             | `Uniform distribution`_                |
++-----------------------------------------+----------------------------------------+
+| ``Exp(lamda, [mu])``                    | `Exponential distribution`_            |
++-----------------------------------------+----------------------------------------+
+| ``Gamma(k, theta)``                     | `Gamma distribution`_                  |
++-----------------------------------------+----------------------------------------+
+| ``Beta(alpha, beta, [a, b])``           | `Beta distribution`_                   |
++-----------------------------------------+----------------------------------------+
+| ``LogN(mu, sigma)``                     | `Log-normal distribution`_             |
++-----------------------------------------+----------------------------------------+
+| ``X2(k)``                               | `Chi-squared distribution`_            |
++-----------------------------------------+----------------------------------------+
+| ``F(d1, d2)``                           | `F-distribution`_                      |
++-----------------------------------------+----------------------------------------+
+| ``Tri(a, b, c)``                        | `Triangular distribution`_             |
++-----------------------------------------+----------------------------------------+
+| ``T(v)``                                | `T-distribution`_                      |
++-----------------------------------------+----------------------------------------+
+| ``Weib(lamda, k)``                      | `Weibull distribution`_                |
++-----------------------------------------+----------------------------------------+
+| **Discrete Distributions**                                                       |
++-----------------------------------------+----------------------------------------+
+| ``Bern(p)``                             | `Bernoulli distribution`_              |
++-----------------------------------------+----------------------------------------+
+| ``B(n, p)``                             | `Binomial distribution`_               |
++-----------------------------------------+----------------------------------------+
+| ``G(p)``                                | `Geometric distribution`_              |
++-----------------------------------------+----------------------------------------+
+| ``H(M, n, N)``                          | `Hypergeometric distribution`_         |
++-----------------------------------------+----------------------------------------+
+| ``Pois(lamda)``                         | `Poisson distribution`_                |
++-----------------------------------------+----------------------------------------+
 
 For example, the following constructions are equivalent::
 
-    >>> x = uv(ss.norm(loc=10, scale=1))  # scipy.stats distribution
-    >>> x = N(10, 1)  # nicer constructor IMHO :)
+    # explicitly calling out the scipy.stats distribution
+    >>> import scipy.stats as ss
+    >>> x = uv(ss.norm(loc=10, scale=1))
+
+    # using a built-in constructor
+    >>> x = N(10, 1)
+
+From my experience, the first option can be tedious and difficult to work 
+with, but you make the choice. That's why there are options!
 
 Main Features
--------------
+=============
 
 1. **Transparent calculations**. **No or little modification** to existing 
    code required.
@@ -161,29 +196,35 @@ Main Features
    sub-module. If you think a function is in there, it probably is. If it 
    isn't, please request it!
 
-4. **Easy continuous distribution constructors**. The location, scale, 
+4. **Easy statistical distribution constructors**. The location, scale, 
    and shape parameters follow the notation in the respective Wikipedia 
    articles.
 
 Installation
-------------
+============
 
 **Make sure you have the**  SciPy_ **and** NumPy_ **packages installed!**
 This package won't work without them.
 
-You have several easy, convenient options to install the ``mcerp`` package 
+You have **several easy, convenient options** to install the ``mcerp`` package 
 (administrative privileges may be required)
 
-1. Manually download the package files below, unzip to any directory, and run 
-   ``python setup.py install`` from the command-line.
-
-2. Simply copy the unzipped ``mcerp-XYZ`` directory to any other location that
+#. Simply copy the unzipped ``mcerp-XYZ`` directory to any other location that
    python can find it and rename it ``mcerp``.
     
-3. If ``setuptools`` is installed, run ``easy_install --upgrade mcerp`` from 
-   the command-line.
+#. From the command-line, do one of the following:
+   
+   a. Manually download the package files below, unzip to any directory, and run::
+   
+       $ [sudo] python setup.py install
+
+   b. If ``setuptools`` is installed, run::
+
+       $ [sudo] easy_install --upgrade mcerp
     
-4. If ``pip`` is installed, run ``pip --upgrade mcerp`` from the command-line.
+   c. If ``pip`` is installed, run::
+
+       $ [sudo] pip install --upgrade mcerp
 
 Python 3
 --------
@@ -194,19 +235,21 @@ unzipped ``mcerp`` directory::
 
     $ 2to3 -w -f all *.py
     
-This should take care of the main changes required. Then, run
-``python3 setup.py install``. If bugs continue to pop up,
-please email the author.
+This should take care of the main changes required. Then, run::
+
+    $ python3 setup.py install
+
+If bugs continue to pop up, please email the author.
     
 See also
---------
+========
 
-- uncertainties_ : First-order uncertainty propagation
+- uncertainties_ : First-order error propagation
 
-- soerp_ : Second Order ERror Propagation
+- soerp_ : Second-order error propagation
 
 Contact
--------
+=======
 
 Please send **feature requests, bug reports, or feedback** to 
 `Abraham Lee`_.
