@@ -66,7 +66,7 @@ We can see how the statistics of each of these distributions propagated through 
 
 #. Telling python to print the object::
 
-    >>> Z  # Explicit "print" command necessary at the command-line
+    >>> Z  # Explicit "print" command not necessary at the command-line
     uv(1161.14296871, 116093.134064, 0.361152281239, 3.05247793644)
 
 #. Using the ``describe`` class method (provides a more detailed explanation)::
