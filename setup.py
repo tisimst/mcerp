@@ -4,7 +4,7 @@ with open('README.rst') as file:
     long_description = file.read()
 
 setup(name='mcerp',
-    version='0.9',
+    version='0.9.1',
     author='Abraham Lee',
     description='Real-time Monte Carlo, Latin-Hypercube Sampling-based, Error Propagation',
     author_email='tisimst@gmail.com',
@@ -13,7 +13,7 @@ setup(name='mcerp',
     long_description=long_description,
     package_dir={'mcerp':''},
     packages=['mcerp'],
-    requires=['numpy','scipy'],
+    install_requires=['numpy','scipy'],
     include_package_data = True,
     package_data = {
         '': ['revision_history.txt', 'README.rst'],
