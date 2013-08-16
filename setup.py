@@ -1,7 +1,11 @@
 from distutils.core import setup
+import os
 
-with open('README.rst') as file:
-    long_description = file.read()
+if os.path.isfile('README.rst'):
+    with open('README.rst') as file:
+        long_description = file.read()
+else:
+    long_description = 'Real-time latin-hypercube-sampling-based Monte Carlo Error Propagation'
 
 setup(name='mcerp',
     version='0.9.1',
@@ -14,10 +18,10 @@ setup(name='mcerp',
     package_dir={'mcerp':''},
     packages=['mcerp'],
     install_requires=['numpy','scipy'],
-    #include_package_data = True,
-    #package_data = {
-        #'': ['revision_history.txt', 'README.rst'],
-        #},
+    include_package_data = True,
+    package_data = {
+        '': ['README.rst'], # 'revision_history.txt'
+        },
     keywords=[
         'monte carlo', 
         'latin hypercube', 
