@@ -6,7 +6,7 @@ with open('README.rst') as file:
 setup(name='mcerp',
     version='0.9.1',
     author='Abraham Lee',
-    description='Real-time Monte Carlo, Latin-Hypercube Sampling-based, Error Propagation',
+    description='Real-time latin-hypercube-sampling-based Monte Carlo Error Propagation',
     author_email='tisimst@gmail.com',
     url='https://github.com/tisimst/mcerp',
     license='BSD License',
