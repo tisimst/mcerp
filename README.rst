@@ -6,13 +6,13 @@ Overview
 ========
 
 ``mcerp`` is an on-the-fly calculator for `Monte Carlo methods`_ that uses 
-`latin-hypercube sampling`_ (see soerp_ for the Python implementation of the
-analytical second-order error propagation original Fortran code `SOERP` by 
+`latin-hypercube sampling`_ (see `soerp`_ for the Python implementation of the
+analytical second-order error propagation original Fortran code 'SOERP' by 
 N. D. Cox) to perform non-order specific `error propagation`_ (or uncertainty
 analysis). The ``mcerp`` package allows you to **easily** and 
 **transparently** track the effects of uncertainty through mathematical 
 calculations. Advanced mathematical functions, similar to those in the 
-standard math_ module can also be evaluated directly. 
+standard `math`_ module can also be evaluated directly. 
 
 Due to the nature of random sampling techniques, calculation results will vary 
 from session to session (but be consistent within the session) since new 
@@ -34,14 +34,14 @@ coefficients.
 Required Packages
 =================
 
-- NumPy_ : Numeric Python
+- `NumPy`_ : Numeric Python
 
-- SciPy_ : Scientific Python
+- `SciPy`_ : Scientific Python
 
 Suggested Packages
 ==================
 
-- Matplotlib_ : Python plotting library (required for ``mcerp.plot``)
+- `Matplotlib`_ : Python plotting library (required for ``mcerp.plot``)
 
 Basic examples
 ==============
@@ -50,7 +50,9 @@ Let's start with the main import::
 
     >>> from mcerp import *  # N, U, Gamma, Beta, etc.
 
-Now, we can construct many kinds of statistical distributions (both continuous and discrete). Here's a basic example that involves a three-part assembly::
+Now, we can construct many kinds of statistical distributions (both 
+continuous and discrete). Here's a basic example that involves a 
+three-part assembly::
 
     >>> x1 = N(24, 1) # normally distributed
     >>> x2 = N(37, 4) # normally distributed
@@ -58,11 +60,13 @@ Now, we can construct many kinds of statistical distributions (both continuous a
     >>> x1.stats  # the first four moments can be accessed at any time
     [24.0, 1.0, 0.0, 3.0]
     
-Now we'll compute the actual stack-up using normal mathematics and see what happens::
+Now we'll compute the actual stack-up using normal mathematics and see what 
+happens::
 
     >>> Z = (x1*x2**2)/(15*(1.5 + x3))
 
-We can see how the statistics of each of these distributions propagated through the calculations in two basic ways:
+We can see how the statistics of each of these distributions propagated 
+through the calculations in two basic ways:
 
 #. Telling python to print the object::
 
@@ -100,7 +104,9 @@ Even correlations are correctly handled::
 Advanced Example
 ================
 
-Here's a *slightly* more advanced engineering example, showing how the random effects of input parameters propagates through the calculation of the volumetric gas flow through an orifice meter::
+Here's a *slightly* more advanced engineering example, showing how the 
+random effects of input parameters propagates through the calculation of 
+the volumetric gas flow through an orifice meter::
 
     >>> import mcerp.umath as umath  # sin, exp, sqrt, etc.
     >>> H = N(64, 0.5)
@@ -116,7 +122,9 @@ Here's a *slightly* more advanced engineering example, showing how the random ef
      > Skewness Coefficient...  0.0229295468388
      > Kurtosis Coefficient...  2.99662898689
 
-Interestingly enough, even though the calculations involve multiplication, division, and a square-root, the result appears to be very close to a Normal (Gaussian) distribution (Q ~ N(1331, 7.6) where 7.6 = sqrt(58.2))
+Interestingly enough, even though the calculations involve multiplication, 
+division, and a square-root, the result appears to be very close to a Normal 
+(Gaussian) distribution (Q ~ N(1331, 7.6) where 7.6 = sqrt(58.2)).
 
 Using Distributions
 ===================
@@ -189,7 +197,7 @@ Main Features
 1. **Transparent calculations**. **No or little modification** to existing 
    code required.
     
-2. Basic NumPy_ support without modification. (I haven't done extensive 
+2. Basic `NumPy`_ support without modification. (I haven't done extensive 
    testing, so please let me know if you encounter bugs.)
 
 3. Advanced mathematical functions supported through the ``mcerp.umath`` 
@@ -203,11 +211,11 @@ Main Features
 Installation
 ============
 
-**Make sure you have the**  SciPy_ **and** NumPy_ **packages installed!**
+**Make sure you have the**  `SciPy`_ **and** `NumPy`_ **packages installed!**
 This package won't work without them.
 
-You have **several easy, convenient options** to install the ``mcerp`` package 
-(administrative privileges may be required)
+You have **several easy, convenient options** to install the ``mcerp`` 
+package (administrative privileges may be required)
 
 #. Simply copy the unzipped ``mcerp-XYZ`` directory to any other location that
    python can find it and rename it ``mcerp``.
@@ -244,9 +252,9 @@ If bugs continue to pop up, please email the author.
 See also
 ========
 
-- uncertainties_ : First-order error propagation
+- `uncertainties`_ : First-order error propagation
 
-- soerp_ : Second-order error propagation
+- `soerp`_ : Second-order error propagation
 
 Contact
 =======
@@ -266,7 +274,7 @@ Please send **feature requests, bug reports, or feedback** to
 .. _Matplotlib: http://matplotlib.org/
 .. _uncertainties: http://pypi.python.org/pypi/uncertainties
 .. _source code: https://github.com/tisimst/mcerp
-.. _Abraham Lee: mailto: tisimst@gmail.com
+.. _Abraham Lee: mailto:tisimst@gmail.com
 .. _Normal distribution: http://en.wikipedia.org/wiki/Normal_distribution
 .. _Uniform distribution: http://en.wikipedia.org/wiki/Uniform_distribution_(continuous)
 .. _Exponential distribution: http://en.wikipedia.org/wiki/Exponential_distribution
