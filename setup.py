@@ -14,10 +14,10 @@ setup(name='mcerp',
     package_dir={'mcerp':''},
     packages=['mcerp'],
     install_requires=['numpy','scipy'],
-    include_package_data = True,
-    package_data = {
-        '': ['revision_history.txt', 'README.rst'],
-        },
+    #include_package_data = True,
+    #package_data = {
+        #'': ['revision_history.txt', 'README.rst'],
+        #},
     keywords=[
         'monte carlo', 
         'latin hypercube', 
