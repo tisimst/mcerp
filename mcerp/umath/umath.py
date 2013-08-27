@@ -1,6 +1,13 @@
 """
+================================================================================
+mcerp: Real-time latin-hypercube-sampling-based Monte Carlo Error Propagation
+================================================================================
+
 Generalizes mathematical operators that work on numeric objects (from the math
 module or numpy) compatible with objects with uncertainty distributions
+
+Author: Abraham Lee
+Copyright: 2013
 """
 from mcerp import UncertainFunction, to_uncertain_func
 import numpy as np

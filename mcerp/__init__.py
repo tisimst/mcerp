@@ -1,14 +1,18 @@
-# -*- coding: utf-8 -*-
 """
-Created on Tue Apr  9 15:48:17 2013
+================================================================================
+mcerp: Real-time latin-hypercube-sampling-based Monte Carlo Error Propagation
+================================================================================
 
+Author: Abraham Lee
+Copyright: 2013
 """
+
 import numpy as np
 import scipy.stats as ss
 import matplotlib.pyplot as plt
 from lhd import lhd
 
-__version_info__ = (0, 9)
+__version_info__ = (0, 9, 3)
 __version__ = '.'.join(map(str, __version_info__))
 
 __author__ = 'Abraham Lee'

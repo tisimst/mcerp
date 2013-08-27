@@ -1,3 +1,14 @@
+mcerp-0.9.2
+===========
+
+- Fixed bug in 'umath.py' where the 'mcpts' member references should have been
+  '_mcpts'.
+
+mcerp-0.9.1
+===========
+
+- Updated documentation
+
 mcerp-0.9
 ===========
 
