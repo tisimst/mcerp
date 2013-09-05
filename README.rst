@@ -112,7 +112,7 @@ or both::
     >>> Z.plot(hist=True)
     >>> Z.show()
 
-.. image:: https://raw.github.com/tisimst/mcerp/master/Z_both.png
+.. image:: https://raw.github.com/tisimst/mcerp/master/Z_kde_hist.png
 
 Correlations
 ------------
