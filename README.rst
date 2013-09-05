@@ -265,7 +265,7 @@ To use this package with Python 3.x, you will need to run the ``2to3``
 conversion tool at the command-line using the following syntax while in the 
 unzipped ``mcerp`` directory::
 
-    $ 2to3 -w -f all *.py
+    $ 2to3 -w .
     
 This should take care of the main changes required. Then, run::
 
