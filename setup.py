@@ -15,7 +15,7 @@ import mcerp
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-setup(
+distutils.core.setup(
     name='mcerp',
     version=mcerp.__version__,
     author='Abraham Lee',
