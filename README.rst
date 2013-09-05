@@ -71,24 +71,48 @@ through the calculations in two basic ways:
 #. Telling python to print the object::
 
     >>> Z  # Explicit "print" command not necessary at the command-line
-    uv(1161.14296871, 116093.134064, 0.361152281239, 3.05247793644)
+    uv(1160.88699676, 115937.252336, 0.380725871818, 3.10604764643)
 
 #. Using the ``describe`` class method (provides a more detailed explanation)::
 
     >>> Z.describe()
     MCERP Uncertain Value:
-     > Mean...................  1161.14296871
-     > Variance...............  116093.134064
-     > Skewness Coefficient...  0.361152281239
-     > Kurtosis Coefficient...  3.05247793644
+     > Mean...................  1160.88699676
+     > Variance...............  115937.252336
+     > Skewness Coefficient...  0.380725871818
+     > Kurtosis Coefficient...  3.10604764643
 
 Viewing the distribution
 ------------------------
 
-We can also plot the calculated distribution using the ``plot`` class method::
+We can also plot the distributions using the ``plot`` class method::
 
     >>> x1.plot()  # No inputs shows the distribution's PDF
-    >>> Z.plot(hist=True)  # shows a histogram instead of a PDF
+    >>> x1.show()  # explicit 'show()' required to display to screen
+
+.. image:: https://raw.github.com/tisimst/mcerp/master/x1.png
+
+and for the outputs::
+
+    >>> Z.plot()  # shows the Kernel Density Estimate (KDE) of the data
+    >>> Z.show()
+
+.. image:: https://raw.github.com/tisimst/mcerp/master/Z_kde.png
+
+::
+
+    >>> Z.plot(hist=True)  # shows a histogram instead of a KDE
+    >>> Z.show()
+
+.. image:: https://raw.github.com/tisimst/mcerp/master/Z_hist.png
+
+or both::
+
+    >>> Z.plot()
+    >>> Z.plot(hist=True)
+    >>> Z.show()
+
+.. image:: https://raw.github.com/tisimst/mcerp/master/Z_both.png
 
 Correlations
 ------------
