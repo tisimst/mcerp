@@ -91,13 +91,15 @@ We can also plot the distributions using the ``plot`` class method::
     >>> x1.show()  # explicit 'show()' required to display to screen
 
 .. image:: https://raw.github.com/tisimst/mcerp/master/x1.png
-
+   :scale: 60%
+   
 and for the outputs::
 
     >>> Z.plot()  # shows the Kernel Density Estimate (KDE) of the data
     >>> Z.show()
 
 .. image:: https://raw.github.com/tisimst/mcerp/master/Z_kde.png
+   :scale: 60%
 
 ::
 
@@ -105,6 +107,7 @@ and for the outputs::
     >>> Z.show()
 
 .. image:: https://raw.github.com/tisimst/mcerp/master/Z_hist.png
+   :scale: 60%
 
 or both::
 
@@ -113,6 +116,7 @@ or both::
     >>> Z.show()
 
 .. image:: https://raw.github.com/tisimst/mcerp/master/Z_kde_hist.png
+   :scale: 60%
 
 Correlations
 ------------
