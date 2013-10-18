@@ -12,33 +12,33 @@ import scipy.stats as ss
 import matplotlib.pyplot as plt
 from lhd import lhd
 
-__version_info__ = (0, 9, 4)
+__version_info__ = (0, 9, 5)
 __version__ = '.'.join(map(str, __version_info__))
 
 __author__ = 'Abraham Lee'
 
-__all__ = [
-    # core functions
-    'uv', 'covariance_matrix', 'correlation_matrix',
-    # continuous distribution constructors
-    'N',
-    'U',
-    'Exp',
-    'Gamma',
-    'Beta',
-    'LogN',
-    'X2',
-    'F',
-    'Tri',
-    'T',
-    'Weib',
-    # discrete distribution constructors
-    'Bern',
-    'B',
-    'G',
-    'H',
-    'Pois'
-    ]
+#__all__ = [
+    ## core functions
+    #'uv', 'covariance_matrix', 'correlation_matrix',
+    ## continuous distribution constructors
+    #'N',
+    #'U',
+    #'Exp',
+    #'Gamma',
+    #'Beta',
+    #'LogN',
+    #'X2',
+    #'F',
+    #'Tri',
+    #'T',
+    #'Weib',
+    ## discrete distribution constructors
+    #'Bern',
+    #'B',
+    #'G',
+    #'H',
+    #'Pois'
+    #]
 
 npts = 10000
 
@@ -63,7 +63,7 @@ def to_uncertain_func(x):
     #! In Python 2.6+, numbers.Number could be used instead, here:
     elif isinstance(x, CONSTANT_TYPES):
         # No variable => no derivative to define:
-        return UncertainFunction(x, [x]*npts)
+        return UncertainFunction([x]*npts)
     
     raise NotUpcast("%s cannot be converted to a number with"
                     " uncertainty" % type(x))
@@ -80,7 +80,7 @@ class UncertainFunction(object):
     
     
     """
-    def __init__(self, x, mcpts):
+    def __init__(self, mcpts):
         self._mcpts = np.atleast_1d(mcpts).flatten()
         self.tag = None
 
@@ -246,19 +246,19 @@ class UncertainFunction(object):
             h = plt.hist(vals, bins=np.round(np.sqrt(len(vals))), 
                      histtype='stepfilled', normed=True, **kwargs)
             if self.tag is not None:
-                plt.suptitle('Histogram of ('+self.tag+')')
+                # plt.suptitle('Histogram of ('+self.tag+')')
                 plt.title(str(self), fontsize=12)
             else:
-                plt.suptitle('Histogram of')
+                # plt.suptitle('Histogram of')
                 plt.title(str(self), fontsize=12)
             plt.ylim(0, 1.1*h[0].max())
         else:
             plt.plot(xp,p.evaluate(xp))
             if self.tag is not None:
-                plt.suptitle('KDE of ('+self.tag+')')
+                # plt.suptitle('KDE of ('+self.tag+')')
                 plt.title(str(self), fontsize=12)
             else:
-                plt.suptitle('KDE of')
+                # plt.suptitle('KDE of')
                 plt.title(str(self), fontsize=12)
 
         plt.xlim(low - (high - low)*0.1, high + (high - low)*0.1)
@@ -269,74 +269,74 @@ class UncertainFunction(object):
     def __add__(self, val):
         uf = map(to_uncertain_func, [self, val])
         mcpts = uf[0]._mcpts + uf[1]._mcpts
-        return UncertainFunction(np.mean(mcpts), mcpts)
+        return UncertainFunction(mcpts)
 
     def __radd__(self, val):
         uf = map(to_uncertain_func, [self, val])
         mcpts = uf[0]._mcpts + uf[1]._mcpts
-        return UncertainFunction(np.mean(mcpts), mcpts)
+        return UncertainFunction(mcpts)
         
     def __mul__(self, val):
         uf = map(to_uncertain_func, [self, val])
         mcpts = uf[0]._mcpts * uf[1]._mcpts
-        return UncertainFunction(np.mean(mcpts), mcpts)
+        return UncertainFunction(mcpts)
 
     def __rmul__(self, val):
         uf = map(to_uncertain_func, [self, val])
         mcpts = uf[0]._mcpts * uf[1]._mcpts
-        return UncertainFunction(np.mean(mcpts), mcpts)
+        return UncertainFunction(mcpts)
         
     def __sub__(self, val):
         uf = map(to_uncertain_func, [self, val])
         mcpts = uf[0]._mcpts - uf[1]._mcpts
-        return UncertainFunction(np.mean(mcpts), mcpts)
+        return UncertainFunction(mcpts)
 
     def __rsub__(self, val):
         uf = map(to_uncertain_func, [self, val])
         mcpts = uf[1]._mcpts - uf[0]._mcpts
-        return UncertainFunction(np.mean(mcpts), mcpts)
+        return UncertainFunction(mcpts)
         
     def __div__(self, val):
         uf = map(to_uncertain_func, [self, val])
         mcpts = uf[0]._mcpts/uf[1]._mcpts
-        return UncertainFunction(np.mean(mcpts), mcpts)
+        return UncertainFunction(mcpts)
 
     def __rdiv__(self, val):
         uf = map(to_uncertain_func, [self, val])
         mcpts = uf[1]._mcpts/uf[0]._mcpts
-        return UncertainFunction(np.mean(mcpts), mcpts)
+        return UncertainFunction(mcpts)
         
     def __truediv__(self, val):
         uf = map(to_uncertain_func, [self, val])
         mcpts = uf[0]._mcpts/uf[1]._mcpts
-        return UncertainFunction(np.mean(mcpts), mcpts)
+        return UncertainFunction(mcpts)
 
     def __rtruediv__(self, val):
         uf = map(to_uncertain_func, [self, val])
         mcpts = uf[1]._mcpts/uf[0]._mcpts
-        return UncertainFunction(np.mean(mcpts), mcpts)
+        return UncertainFunction(mcpts)
         
     def __pow__(self, val):
         uf = map(to_uncertain_func, [self, val])
         mcpts = uf[0]._mcpts**uf[1]._mcpts
-        return UncertainFunction(np.mean(mcpts), mcpts)
+        return UncertainFunction(mcpts)
 
     def __rpow__(self, val):
         uf = map(to_uncertain_func, [self, val])
         mcpts = uf[1]._mcpts**uf[0]._mcpts
-        return UncertainFunction(np.mean(mcpts), mcpts)
+        return UncertainFunction(mcpts)
     
     def __neg__(self):
         mcpts = -self._mcpts
-        return UncertainFunction(np.mean(mcpts), mcpts)
+        return UncertainFunction(mcpts)
         
     def __pos__(self):
         mcpts = self._mcpts
-        return UncertainFunction(np.mean(mcpts), mcpts)
+        return UncertainFunction(mcpts)
     
     def __abs__(self):
         mcpts = np.abs(self._mcpts)
-        return UncertainFunction(np.mean(mcpts), mcpts)
+        return UncertainFunction(mcpts)
     
     def __eq__(self,val):
         diff = self - val
@@ -565,29 +565,29 @@ xt, this parameter should be changed before any
         self._mcpts = lhd(dist=self.rv, size=npts).flatten()
         self.tag = tag
         
-    @property
-    def mean(self):
-        return float(self.rv.stats('m'))
+    #@property
+    #def mean(self):
+        #return float(self.rv.stats('m'))
     
-    @property
-    def var(self):
-        return float(self.rv.stats('v'))
-		
-    @property
-    def std(self):
-        return self.var**0.5
+    #@property
+    #def var(self):
+        #return float(self.rv.stats('v'))
         
-    @property
-    def skew(self):
-        return float(self.rv.stats('s'))
+    #@property
+    #def std(self):
+        #return self.var**0.5
+        
+    #@property
+    #def skew(self):
+        #return float(self.rv.stats('s'))
     
-    @property
-    def kurt(self):
-        return float(self.rv.stats('k')) + 3  # remove the 3 for standardization
+    #@property
+    #def kurt(self):
+        #return float(self.rv.stats('k')) + 3  # remove the 3 for standardization
     
-    @property
-    def stats(self):
-        return [self.mean, self.var, self.skew, self.kurt]
+    #@property
+    #def stats(self):
+        #return [self.mean, self.var, self.skew, self.kurt]
     
     def plot(self, hist=False, **kwargs):
         """
@@ -611,10 +611,10 @@ xt, this parameter should be changed before any
                      histtype='stepfilled', normed=True, **kwargs)
 
             if self.tag is not None:
-                plt.suptitle('Histogram of (' + self.tag + ')')
+                # plt.suptitle('Histogram of (' + self.tag + ')')
                 plt.title(str(self), fontsize=12)
             else:
-                plt.suptitle('Histogram of')
+                # plt.suptitle('Histogram of')
                 plt.title(str(self), fontsize=12)
 
             plt.ylim(0, 1.1*h[0].max())
@@ -629,10 +629,10 @@ xt, this parameter should be changed before any
                 plt.plot(vals, self.rv.pmf(vals), 'o', **kwargs)
 
                 if self.tag is not None:
-                    plt.suptitle('PMF of (' + self.tag + ')')
+                    # plt.suptitle('PMF of (' + self.tag + ')')
                     plt.title(str(self), fontsize=12)
                 else:
-                    plt.suptitle('PMF of')
+                    # plt.suptitle('PMF of')
                     plt.title(str(self), fontsize=12)
 
             else:
@@ -640,10 +640,10 @@ xt, this parameter should be changed before any
                 plt.plot(vals, self.rv.pdf(vals), **kwargs)
 
                 if self.tag is not None:
-                    plt.suptitle('PDF of ('+self.tag+')')
+                    # plt.suptitle('PDF of ('+self.tag+')')
                     plt.title(str(self), fontsize=12)
                 else:
-                    plt.suptitle('PDF of')
+                    # plt.suptitle('PDF of')
                     plt.title(str(self), fontsize=12)
 
         plt.xlim(low - (high - low)*0.1, high + (high - low)*0.1)
@@ -651,6 +651,8 @@ xt, this parameter should be changed before any
                 
         
 uv = UncertainVariable # a nicer form for the user
+
+from correlate import *
 
 ###############################################################################
 # Define some convenience constructors for common statistical distributions.
@@ -998,15 +1000,17 @@ def correlation_matrix(nums_with_uncert):
          [ 0.4489385   0.89458702  1.        ]]
 
     """
-    ufuncs = map(to_uncertain_func,nums_with_uncert)
-    cov_matrix = covariance_matrix(ufuncs)
-    corr_matrix = []
-    for (i1, expr1) in enumerate(ufuncs):
-        row_data = []
-        for (i2, expr2) in enumerate(ufuncs):
-            row_data.append(cov_matrix[i1][i2]/expr1.std/expr2.std)
-        corr_matrix.append(row_data)
-    return corr_matrix
+    ufuncs = map(to_uncertain_func, nums_with_uncert)
+    data = np.vstack([ufunc._mcpts for ufunc in ufuncs])
+    return np.corrcoef(data.T, rowvar=0)
+    #cov_matrix = covariance_matrix(ufuncs)
+    #corr_matrix = []
+    #for (i1, expr1) in enumerate(ufuncs):
+        #row_data = []
+        #for (i2, expr2) in enumerate(ufuncs):
+            #row_data.append(cov_matrix[i1][i2]/expr1.std/expr2.std)
+        #corr_matrix.append(row_data)
+    #return corr_matrix
     
 if __name__=='__main__':
     
