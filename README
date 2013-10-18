@@ -174,7 +174,7 @@ Now we'll apply the desired correlations::
      [ -7.50010477e-01   1.00000000e+00   8.53061774e-04]
      [  1.87057576e-03   8.53061774e-04   1.00000000e+00]]
  
-This is what the new data looks like::
+This is what the new data looks like:
 
 .. image:: https://raw.github.com/tisimst/mcerp/master/after_correlation_matrixplot.png
     :scale: 60%
