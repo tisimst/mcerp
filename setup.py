@@ -23,7 +23,7 @@ distutils.core.setup(
     author_email='tisimst@gmail.com',
     url='https://github.com/tisimst/mcerp',
     license='BSD License',
-    long_description=read('README'),
+    long_description=read('README.md'),
     packages=[
         'mcerp', 
         'mcerp.umath'

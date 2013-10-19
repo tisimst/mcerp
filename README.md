@@ -20,7 +20,7 @@ latin-hypercube samples are only generated when variables are newly defined or
 re-defined. By default, each variable uses 10,000 latin-hypercube samples that 
 are sufficiently random. The number of samples can be changed by assigning an 
 integer value to the ``mcerp.npts`` object (typically, values between 1,000 and 
-1,000,000 are sufficiently large to insure small errors in the resulting 
+1,000,000 are sufficiently large to ensure small errors in the resulting 
 statistics). This should only be changed prior to performing calculations since 
 all subsequent calculations assume that each input has the same number of 
 sampled points (this could be changed through resampling, I suppose...).
@@ -30,12 +30,19 @@ In order to correctly use ``mcerp``, knowledge of the distributions from the
 generates a *mean*, *variance*, and *standardized skewness and kurtosis* 
 coefficients. 
 
+What's New In This Release
+==========================
+
+- New correlation features (see examples below):
+
+  * ``correlate``: Impose a set of correlation coefficients on variables
+    (if needed, this should be used before performing any calculations).
+  * ``plotcorr``: Show a scatterplot matrix of variables
 
 Required Packages
 =================
 
 - `NumPy`_ : Numeric Python
-
 - `SciPy`_ : Scientific Python
 
 Suggested Packages
@@ -166,7 +173,7 @@ Now we'll apply the desired correlations::
 
     
     # Induce the correlations (works in-place)
-    >>> correlate([x1, x2], c)
+    >>> correlate([x1, x2, x3], c)
     
     # Show the new correlation coefficients
     >>> print correlation_matrix([x1, x2, x3])
@@ -305,6 +312,8 @@ Main Features
    and shape parameters follow the notation in the respective Wikipedia 
    articles.
 
+5. **Correlation enforcement** and variable sample visualization capabilities.
+
 Installation
 ============
 
@@ -350,7 +359,6 @@ See also
 ========
 
 - `uncertainties`_ : First-order error propagation
-
 - `soerp`_ : Second-order error propagation
 
 Contact
