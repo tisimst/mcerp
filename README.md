@@ -153,7 +153,7 @@ calculations have taken place in order to work properly).
 For example, say we desire to impose a -0.75 correlation between ``x1``
 and ``x2`` from the above example::
 
-    # Show the current correlation coefficients
+    # The correlation coefficients before adjusting
     >>> print correlation_matrix([x1, x2, x3])
     [[ 1.          0.00558381  0.01268168]
      [ 0.00558381  1.          0.00250815]
@@ -164,15 +164,16 @@ And here is what the actual data looks like in a matrix plot form:
 .. image:: https://raw.github.com/tisimst/mcerp/master/before_correlation_matrixplot.png
     :scale: 60%
 
-Now we'll apply the desired correlations::
+Now we'll apply the desired correlations (note that all diagonal 
+elements should be 1.0)::
 
-    # Set up the desired correlation coefficients
+    # The desired correlation coefficient matrix
     >>> c = np.array([[  1.0, -0.75, 0.0],
     ...               [-0.75,   1.0, 0.0],
     ...               [  0.0,   0.0, 1.0]])
 
     
-    # Induce the correlations (works in-place)
+    # Apply the correlations into the samples (works in-place)
     >>> correlate([x1, x2, x3], c)
     
     # Show the new correlation coefficients
@@ -181,12 +182,14 @@ Now we'll apply the desired correlations::
      [ -7.50010477e-01   1.00000000e+00   8.53061774e-04]
      [  1.87057576e-03   8.53061774e-04   1.00000000e+00]]
  
-This is what the new data looks like:
+The correlation matrix is roughly what we expected within a few percent.
+This is what the newly correlated samples looks like:
 
 .. image:: https://raw.github.com/tisimst/mcerp/master/after_correlation_matrixplot.png
     :scale: 60%
 
-Now let's check how the output of our stack-up has changed::
+Now that the inputs' relations have been modified, let's check how 
+the output of our stack-up has changed::
 
     # Z should now be a little different
     >>> Z = (x1*x2**2)/(15*(1.5 + x3))
@@ -197,13 +200,12 @@ Now let's check how the output of our stack-up has changed::
      > Skewness Coefficient...  0.211835225063
      > Kurtosis Coefficient...  2.87618465139
  
-The correlation matrix is roughly what we expected within a few percent.
-We can also see what adding that correlation did (reduced the mean,
-reduced the variance, increased the skewness, increased the kurtosis).
+We can also see what adding that correlation did: reduced the mean,
+reduced the variance, increased the skewness, increased the kurtosis.
 
 If any exceptions appear during this operation, it is likely because the
-correlation matrix is either not symmetric, not positive-definite, or
-both.
+correlation matrix is either not **symmetric**, not **positive-definite**, 
+or both.
     
 Advanced Example
 ================
