@@ -15,6 +15,8 @@ import mcerp
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+readme = 'README.md'
+
 distutils.core.setup(
     name='mcerp',
     version=mcerp.__version__,
@@ -23,7 +25,8 @@ distutils.core.setup(
     author_email='tisimst@gmail.com',
     url='https://github.com/tisimst/mcerp',
     license='BSD License',
-    long_description=read('README.md'),
+    long_description=read(readme),
+    package_data={'': [readme]},
     packages=[
         'mcerp', 
         'mcerp.umath'
