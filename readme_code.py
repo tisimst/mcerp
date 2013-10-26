@@ -31,3 +31,5 @@ Z = (x1*x2**2)/(15*(1.5 + x3))
 print Z
 Z.describe()
 
+print x1<15
+print Z>=1000
