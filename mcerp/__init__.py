@@ -12,7 +12,7 @@ import scipy.stats as ss
 import matplotlib.pyplot as plt
 from lhd import lhd
 
-__version_info__ = (0, 9, 5)
+__version_info__ = (0, 9, 6)
 __version__ = '.'.join(map(str, __version_info__))
 
 __author__ = 'Abraham Lee'
@@ -27,7 +27,7 @@ __author__ = 'Abraham Lee'
     #'Gamma',
     #'Beta',
     #'LogN',
-    #'X2',
+    #'Chi2',
     #'F',
     #'Tri',
     #'T',
@@ -338,28 +338,57 @@ class UncertainFunction(object):
         mcpts = np.abs(self._mcpts)
         return UncertainFunction(mcpts)
     
-    def __eq__(self,val):
+    def __eq__(self, val):
         diff = self - val
         return not (diff.mean or diff.var or diff.skew or diff.kurt)
     
-    def __ne__(self,val):
+    def __ne__(self, val):
         return not self==val
     
-    def __lt__(self,val):
-        self,val = map(to_uncertain_func, [self,val])
-        return True if float(self.mean - val.mean) < 0 else False
+    def __lt__(self, val):
+        # If we are comparing two distributions, perform statistical tests,
+        # otherwise, calculate the probability that the distribution is
+        # less than val
+        if isinstance(val, UncertainFunction):
+            tstat, pval = ss.ttest_rel(self._mcpts, val._mcpts)
+            sgn = tstat/abs(tstat)
+            if pval>0.05:  # Since, statistically, we can't really tell
+                return False
+            else:
+                return True if sgn==-1 else False
+        else:
+            val = to_uncertain_func(val)
+            return len(self._mcpts[self._mcpts<val._mcpts])/float(npts)
     
-    def __le__(self,val):
-        return (self==val) or self < val
+    def __le__(self, val):
+        if isinstance(val, UncertainFunction):
+            return self<val  # since it doesn't matter to the test
+        else:
+            val = to_uncertain_func(val)
+            return len(self._mcpts[self._mcpts<=val._mcpts])/float(npts)
     
-    def __gt__(self,val):
-        return not self < val
+    def __gt__(self, val):
+        # If we are comparing two distributions, perform statistical tests,
+        # otherwise, calculate the probability that the distribution is
+        # greater than val
+        if isinstance(val, UncertainFunction):
+            tstat, pval = ss.ttest_rel(self._mcpts, val._mcpts)
+            sgn = tstat/abs(tstat)
+            if pval>0.05:  # Since, statistically, we can't really tell
+                return False
+            else:
+                return True if sgn==1 else False
+        else:
+            return 1 - (self<val)
     
-    def __ge__(self,val):
-        return (self==val) or self > val
+    def __ge__(self, val):
+        if isinstance(val, UncertainFunction):
+            return self>val
+        else:
+            return 1 - (self<=val)
 
     def __nonzero__(self):
-        return self!=0
+        return not (1 - ((self>0) + (self<0)))
 
 ################################################################################
 
@@ -429,7 +458,7 @@ class UncertainVariable(UncertainFunction):
     +---------------------------+-------------+-------------------+-----+---------+
     | Geometric(p)              | geom        | p                 |     |         |
     +---------------------------+-------------+-------------------+-----+---------+
-    | Hypergeometric(M, n, N)   | hypergeom   | M, n, N           |     |         |
+    | Hypergeometric(N, n, K)   | hypergeom   | N, n, K           |     |         |
     +---------------------------+-------------+-------------------+-----+---------+
     | Poisson(lamda)            | poisson     | lamda             |     |         |
     +---------------------------+-------------+-------------------+-----+---------+
@@ -534,11 +563,7 @@ class UncertainVariable(UncertainFunction):
     Any value from 1,000 to 1,000,000 is recommended (more samples means more
     accurate, but also means more time required to perform the calculations). 
     Although it can be changed, since variables retain their samples from one
-    calculation to the ne        if hist:
-            plt.hist(vals, bins=np.round(np.sqrt(vals)), histtype='stepfilled',
-                **kwargs)
-        else:
-xt, this parameter should be changed before any 
+    calculation to the next, this parameter should be changed before any 
     calculations are performed to ensure parameter compatibility (this may 
     change to be more dynamic in the future, but for now this is how it is).
     
@@ -565,30 +590,6 @@ xt, this parameter should be changed before any
         self._mcpts = lhd(dist=self.rv, size=npts).flatten()
         self.tag = tag
         
-    #@property
-    #def mean(self):
-        #return float(self.rv.stats('m'))
-    
-    #@property
-    #def var(self):
-        #return float(self.rv.stats('v'))
-        
-    #@property
-    #def std(self):
-        #return self.var**0.5
-        
-    #@property
-    #def skew(self):
-        #return float(self.rv.stats('s'))
-    
-    #@property
-    #def kurt(self):
-        #return float(self.rv.stats('k')) + 3  # remove the 3 for standardization
-    
-    #@property
-    #def stats(self):
-        #return [self.mean, self.var, self.skew, self.kurt]
-    
     def plot(self, hist=False, **kwargs):
         """
         Plot the distribution of the UncertainVariable. Continuous 
@@ -619,7 +620,7 @@ xt, this parameter should be changed before any
 
             plt.ylim(0, 1.1*h[0].max())
         else:
-            bound = 1e-6
+            bound = 0.0001
             low = self.rv.ppf(bound)
             high = self.rv.ppf(1 - bound)
             if hasattr(self.rv.dist, 'pmf'):
@@ -652,6 +653,8 @@ xt, this parameter should be changed before any
         
 uv = UncertainVariable # a nicer form for the user
 
+# DON'T MOVE THIS IMPORT!!! The prior definitions must be in place before
+# importing the correlation-related functions
 from correlate import *
 
 ###############################################################################
@@ -671,7 +674,7 @@ def N(mu, sigma, tag=None):
     sigma : scalar
         The standard deviation (must be positive and non-zero)
     """
-    assert sigma>0, 'Sigma must be positive'
+    assert sigma>0, 'Normal "sigma" must be greater than zero'
     return uv(ss.norm(loc=mu, scale=sigma), tag=tag)
 
 ###############################################################################
@@ -682,36 +685,27 @@ def U(a, b, tag=None):
     
     Parameters
     ----------
-    low : scalar
+    a : scalar
         Lower bound of the distribution support.
-    high : scalar
+    b : scalar
         Upper bound of the distribution support.
     """
-    assert a<b, 'Lower bound must be less than the upper bound'
+    assert a<b, 'Uniform "a" must be less than "b"'
     return uv(ss.uniform(loc=a, scale=b-a), tag=tag)
 
 ###############################################################################
 
-def Exp(lamda, mu=None, tag=None):
+def Exp(lamda, tag=None):
     """
     An Exponential random variate
     
     Parameters
     ----------
     lamda : scalar
-        The inverse scale (as shown on Wikipedia). 
-    
-    Optional
-    --------
-    mu : scalar
-        The mean value of the distribution (must be positive and non-zero). If 
-        this is given, ``lamda`` is ignored. (FYI: mu = 1/lamda.)
+        The inverse scale (as shown on Wikipedia). (FYI: mu = 1/lamda.)
     """
-    if mu is not None:
-        assert mu>0, 'Mean must be positive and not zero'
-        return uv(ss.expon(scale=mu), tag=tag)
-    else:
-        return uv(ss.expon(scale=1./lamda), tag=tag)
+    assert lamda>0, 'Exponential "lamda" must be greater than zero'
+    return uv(ss.expon(scale=1./lamda), tag=tag)
 
 ###############################################################################
 
@@ -726,7 +720,7 @@ def Gamma(k, theta, tag=None):
     theta : scalar
         The scale parameter (must be positive and non-zero)
     """
-    assert k>0 and theta>0, 'Gamma parameters must be greater than zero'
+    assert k>0 and theta>0, 'Gamma "k" and "theta" parameters must be greater than zero'
     return uv(ss.gamma(k, scale=theta), tag=tag)
 
 ###############################################################################
@@ -749,7 +743,7 @@ def Beta(alpha, beta, a=0, b=1, tag=None):
     b : scalar
         Upper bound of the distribution support (default=1)
     """
-    assert alpha>0 and beta>0, 'Shape parameters must be greater than zero'
+    assert alpha>0 and beta>0, 'Beta "alpha" and "beta" parameters must be greater than zero'
     return uv(ss.beta(alpha, beta, loc=a, scale=b-a), tag=tag)
 
 ###############################################################################
@@ -765,12 +759,12 @@ def LogN(mu, sigma, tag=None):
     sigma : scalar
         The scale parameter (must be positive and non-zero)
     """
-    assert sigma>0, 'Sigma must be positive'
+    assert sigma>0, 'Log-Normal "sigma" must be positive'
     return uv(ss.lognorm(sigma, loc=mu), tag=tag)
 
 ###############################################################################
 
-def X2(k, tag=None):
+def Chi2(k, tag=None):
     """
     A Chi-Squared random variate
     
@@ -779,8 +773,8 @@ def X2(k, tag=None):
     k : int
         The degrees of freedom of the distribution (must be greater than one)
     """
-    assert isinstance(df, int) and df>1, 'DF must be an int greater than 1'
-    return uv(ss.chi2(df), tag=tag)
+    assert isinstance(k, int) and k>=1, 'Chi-Squared "k" must be an integer greater than 0'
+    return uv(ss.chi2(k), tag=tag)
 
 ###############################################################################
 
@@ -795,8 +789,8 @@ def F(d1, d2, tag=None):
     d2 : int
         Denominator degrees of freedom
     """
-    assert isinstance(d1, int) and d1>1, 'DFN must be an int greater than 1'
-    assert isinstance(d2, int) and d2>1, 'DFD must be an int greater than 1'
+    assert isinstance(d1, int) and d1>=1, 'Fisher (F) "d1" must be an integer greater than 0'
+    assert isinstance(d2, int) and d2>=1, 'Fisher (F) "d2" must be an integer greater than 0'
     return uv(ss.f(d1, d2), tag=tag)
 
 ###############################################################################
@@ -808,14 +802,14 @@ def Tri(a, b, c, tag=None):
     Parameters
     ----------
     a : scalar
-        Lower bound of the distribution support (default=0)
+        Lower bound of the distribution support
     b : scalar
-        Upper bound of the distribution support (default=1)
+        Upper bound of the distribution support
     c : scalar
         The location of the triangle's peak (a <= c <= b)
     """
-    assert a<=c<=b, 'peak must lie in between low and high'
-    return uv(ss.triang(c, loc=a, scale=b-a), tag=tag)
+    assert a<=c<=b, 'Triangular "c" must lie between "a" and "b"'
+    return uv(ss.triang((1.0*c-a)/(b-a), loc=a, scale=b-a), tag=tag)
 
 ###############################################################################
 
@@ -828,7 +822,7 @@ def T(v, tag=None):
     v : int
         The degrees of freedom of the distribution (must be greater than one)
     """
-    assert isinstance(v, int) and v>1, 'DF must be an int greater than 1'
+    assert isinstance(v, int) and v>=1, 'Student-T "v" must be an integer greater than 0'
     return uv(ss.t(v), tag=tag)
 
 ###############################################################################
@@ -844,7 +838,7 @@ def Weib(lamda, k, tag=None):
     k : scalar
         The shape parameter
     """
-    assert lamda>0 and k>0, 'Weibull scale and shape parameters must be greater than zero'
+    assert lamda>0 and k>0, 'Weibull "lamda" and "k" parameters must be greater than zero'
     return uv(ss.exponweib(lamda, k), tag=tag)
 
 ###############################################################################
@@ -858,7 +852,7 @@ def Bern(p, tag=None):
     p : scalar
         The probability of success
     """
-    assert 0<p<1, 'Bernoulli probability must be between zero and one'
+    assert 0<p<1, 'Bernoulli probability "p" must be between zero and one, non-inclusive'
     return uv(ss.bernoulli(p), tag=tag)
 
 ###############################################################################
@@ -874,8 +868,8 @@ def B(n, p, tag=None):
     p : scalar
         The probability of success
     """
-    assert int(n)==n and n>0, 'Binomial number of trials must be an integer greater than zero'
-    assert 0<p<1, 'Binomial probability must be between zero and one'
+    assert int(n)==n and n>0, 'Binomial number of trials "n" must be an integer greater than zero'
+    assert 0<p<1, 'Binomial probability "p" must be between zero and one, non-inclusive'
     return uv(ss.binom(n, p), tag=tag)
 
 ###############################################################################
@@ -889,28 +883,49 @@ def G(p, tag=None):
     p : scalar
         The probability of success
     """
-    assert 0<p<1, 'Geometric probability must be between zero and one'
+    assert 0<p<1, 'Geometric probability "p" must be between zero and one, non-inclusive'
     return uv(ss.geom(p), tag=tag)
 
 ###############################################################################
 
-def H(p, tag=None):
+def H(N, n, K, tag=None):
     """
     A Hypergeometric random variate
     
     Parameters
     ----------
-    M : int
+    N : int
         The total population size
     n : int
         The number of individuals of interest in the population
-    N : int
+    K : int
         The number of individuals that will be chosen from the population
+        
+    Example
+    -------
+    (Taken from the wikipedia page) Assume we have an urn with two types of
+    marbles, 45 black ones and 5 white ones. Standing next to the urn, you
+    close your eyes and draw 10 marbles without replacement. What is the
+    probability that exactly 4 of the 10 are white?
+    ::
+    
+        >>> black = 45
+        >>> white = 5
+        >>> draw = 10
+        
+        # Now we create the distribution
+        >>> h = H(black + white, white, draw)
+        
+        # To check the probability, in this case, we can use the underlying
+        #  scipy.stats object
+        >>> h.rv.pmf(4)  # What is the probability that white count = 4?
+        0.0039645830580151975
+        
     """
-    assert int(M)==M and M>0, 'Hypergeometric total population size must be an integer greater than zero.'
-    assert int(n)==n and 0<n<=M, 'Hypergeometric interest population size must be an integer greater than zero and no more than the total population size.'
-    assert int(N)==N and 0<N<=M, 'Hypergeometric chosen population size must be an integer greater than zero and no more than the total population size.'
-    return uv(ss.hypergeom(M, n, N), tag=tag)
+    assert int(N)==N and N>0, 'Hypergeometric total population size "N" must be an integer greater than zero.'
+    assert int(n)==n and 0<n<=N, 'Hypergeometric interest population size "n" must be an integer greater than zero and no more than the total population size.'
+    assert int(K)==K and 0<K<=N, 'Hypergeometric chosen population size "K" must be an integer greater than zero and no more than the total population size.'
+    return uv(ss.hypergeom(N, n, K), tag=tag)
 
 ###############################################################################
 
@@ -923,7 +938,7 @@ def Pois(lamda, tag=None):
     lamda : scalar
         The rate of an occurance within a specified interval of time or space.
     """
-    assert lamda>0, 'Poisson rate must be greater than zero.'
+    assert lamda>0, 'Poisson "lamda" must be greater than zero.'
     return uv(ss.poisson(lamda), tag=tag)
 
 ###############################################################################
