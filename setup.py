@@ -1,14 +1,14 @@
 import os
-#from setuptools import setup
-import distutils.core
+from setuptools import setup
+#import distutils.core
 
-# Building through 2to3, for Python 3 (see also setup(...,
-# cmdclass=...), below:
-try:
-    from distutils.command.build_py import build_py_2to3 as build_py
-except ImportError:
-    # 2.x
-    from distutils.command.build_py import build_py
+## Building through 2to3, for Python 3 (see also setup(...,
+## cmdclass=...), below:
+#try:
+    #from distutils.command.build_py import build_py_2to3 as build_py
+#except ImportError:
+    ## 2.x
+    #from distutils.command.build_py import build_py
 
 import mcerp
 
@@ -17,7 +17,8 @@ def read(fname):
 
 readme = 'README'
 
-distutils.core.setup(
+#distutils.core.setup(
+setup(
     name='mcerp',
     version=mcerp.__version__,
     author='Abraham Lee',
@@ -69,11 +70,11 @@ distutils.core.setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.0',
-        'Programming Language :: Python :: 3.1',
-        'Programming Language :: Python :: 3.2',
-        'Programming Language :: Python :: 3.3',
+        #'Programming Language :: Python :: 3',
+        #'Programming Language :: Python :: 3.0',
+        #'Programming Language :: Python :: 3.1',
+        #'Programming Language :: Python :: 3.2',
+        #'Programming Language :: Python :: 3.3',
         'Topic :: Education',
         'Topic :: Scientific/Engineering',
         'Topic :: Scientific/Engineering :: Chemistry',
@@ -86,5 +87,5 @@ distutils.core.setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Utilities'
         ],
-    cmdclass={'build_py': build_py}
+    #cmdclass={'build_py': build_py}
     )
