@@ -1,0 +1,287 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Advanced Examples &mdash; mcerp Python package 0.9.7 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.9.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="mcerp Python package 0.9.7 documentation" href="index.html" />
+    <link rel="prev" title="Correlations" href="correlations.html" /> 
+  </head>
+  <body>
+
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="index.html"><img src="_static/logo.png" border="0" alt="ad"/></a>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="correlations.html" title="Correlations"
+             accesskey="P">previous</a> |</li>
+        <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_examples.html">A Simple Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="distribution_constructors.html">Using Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="view_distribution.html">Viewing the distribution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="probabilities.html">Probabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="correlations.html">Correlations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Advanced Examples</a></li>
+</ul>
+
+ 
+      </ul>
+    </div>
+
+
+
+<div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3>Table of contents</h3>
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_examples.html">A Simple Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="distribution_constructors.html">Using Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="view_distribution.html">Viewing the distribution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="probabilities.html">Probabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="correlations.html">Correlations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Advanced Examples</a></li>
+</ul>
+
+            <h3>Section contents</h3>
+            <ul>
+<li><a class="reference internal" href="#">Advanced Examples</a><ul>
+<li><a class="reference internal" href="#volumetric-gas-flow-through-an-orifice-meter">Volumetric Gas Flow Through an Orifice Meter</a></li>
+<li><a class="reference internal" href="#manufacturing-tolerance-stackup">Manufacturing Tolerance Stackup</a></li>
+<li><a class="reference internal" href="#scheduling-facilities">Scheduling Facilities</a></li>
+</ul>
+</li>
+</ul>
+
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Search the documentation.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+          <h3>Documentation license</h3>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png" /></a>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="advanced-examples">
+<span id="advanced-example"></span><span id="index-0"></span><h1>Advanced Examples<a class="headerlink" href="#advanced-examples" title="Permalink to this headline">¶</a></h1>
+<p>In this section, some more advanced/complex usages will be presented.</p>
+<div class="section" id="volumetric-gas-flow-through-an-orifice-meter">
+<h2>Volumetric Gas Flow Through an Orifice Meter<a class="headerlink" href="#volumetric-gas-flow-through-an-orifice-meter" title="Permalink to this headline">¶</a></h2>
+<p>Here&#8217;s an interesting engineering example, showing how the
+random effects of input parameters propagates through the calculation of
+the volumetric gas flow through an orifice meter:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">mcerp.umath</span> <span class="kn">as</span> <span class="nn">umath</span>  <span class="c"># sin, exp, sqrt, etc.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">N</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">M</span> <span class="o">=</span> <span class="n">N</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">P</span> <span class="o">=</span> <span class="n">N</span><span class="p">(</span><span class="mi">361</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">N</span><span class="p">(</span><span class="mi">165</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C</span> <span class="o">=</span> <span class="mf">38.4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Q</span> <span class="o">=</span> <span class="n">C</span><span class="o">*</span><span class="n">umath</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="mi">520</span><span class="o">*</span><span class="n">H</span><span class="o">*</span><span class="n">P</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">M</span><span class="o">*</span><span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="mi">460</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Q</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<span class="go">MCERP Uncertain Value:</span>
+<span class="go"> &gt; Mean...................  1330.9997362</span>
+<span class="go"> &gt; Variance...............  57.5497899824</span>
+<span class="go"> &gt; Skewness Coefficient...  0.0229295468388</span>
+<span class="go"> &gt; Kurtosis Coefficient...  2.99662898689</span>
+</pre></div>
+</div>
+<p>Interestingly enough, even though the calculations involve multiplication,
+division, and a square-root, the result appears to be very close to a Normal
+distribution (Q ~ N(1331, 7.6)).</p>
+</div>
+<div class="section" id="manufacturing-tolerance-stackup">
+<h2>Manufacturing Tolerance Stackup<a class="headerlink" href="#manufacturing-tolerance-stackup" title="Permalink to this headline">¶</a></h2>
+<p>In a certain manufacturing plant, a record of process data is taken and
+just happens to fit a Gamma distribution with a mean of 1.5 and a
+variance of 0.25. With an assembly of three of these parts, our analysis
+for tolerance stackup would proceed as follows. We first need to convert
+the distribution statistics to the shape parameters k and theta, which
+are found by the relations:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">k</span> <span class="pre">=</span> <span class="pre">mean**2/variance</span> <span class="pre">=</span> <span class="pre">(1.5)**2/(0.25)</span> <span class="pre">=</span> <span class="pre">9</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">theta</span> <span class="pre">=</span> <span class="pre">variance/mean</span> <span class="pre">=</span> <span class="pre">(0.25)/(1.5)</span> <span class="pre">=</span> <span class="pre">1/6</span></tt></li>
+</ul>
+</div></blockquote>
+<p>We can now proceed with the analysis:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">k</span> <span class="o">=</span> <span class="mf">9.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">theta</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mf">6.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">Gamma</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">Gamma</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span> <span class="o">=</span> <span class="n">Gamma</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">w</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="n">z</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">w</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<span class="go">MCERP Uncertain Value:</span>
+<span class="go"> &gt; Mean...................  4.50000470462</span>
+<span class="go"> &gt; Variance...............  0.76376726781</span>
+<span class="go"> &gt; Skewness Coefficient...  0.368543723948</span>
+<span class="go"> &gt; Kurtosis Coefficient...  3.18692837067</span>
+</pre></div>
+</div>
+<p>Due to the skewed nature of the inputs, the output is also slightly skewed.</p>
+</div>
+<div class="section" id="scheduling-facilities">
+<h2>Scheduling Facilities<a class="headerlink" href="#scheduling-facilities" title="Permalink to this headline">¶</a></h2>
+<p>At a manufacturing plant, that has six test-and-repair stations, data
+is collected about the amount of time that product is present at each
+station:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Station 1: Normally distributed, mean of 10 hours, variance of
+1 hour.</li>
+<li>Station 2: Normally distributed, mean of 20 hours, variance of
+2 hours.</li>
+<li>Station 3: Gamma distributed, mean of 1.5 hours, variance of
+0.25 hours.</li>
+<li>Station 4: Gamma distributed, mean of 10 hours, variance of 10
+hours.</li>
+<li>Station 5: Exponentially distributed, mean of 0.2 hours, variance
+of 0.04 hours (decay constant lamda=5).</li>
+<li>Station 6: Chi-squared distributed, mean of 10 hours, variance of
+20 hours (degree of freedom v=10).</li>
+</ol>
+</div></blockquote>
+<p>Management wants to understand the uncertainty associated with the whole
+process:</p>
+<div class="highlight-python"><pre># Station 1
+&gt;&gt;&gt; s1 = N(10, 1)
+
+# Station 2
+&gt;&gt;&gt; s2 = N(20, 2**0.5)
+
+# Station 3
+&gt;&gt;&gt; mn1 = 1.5
+&gt;&gt;&gt; vr1 = 0.25
+&gt;&gt;&gt; k1 = mn1**2/vr1
+&gt;&gt;&gt; theta1 = vr1/mn1
+&gt;&gt;&gt; s3 = Gamma(k1, theta1)
+
+# Station 4
+&gt;&gt;&gt; mn2 = 10
+&gt;&gt;&gt; vr2 = 10
+&gt;&gt;&gt; k2 = mn2**2/vr2
+&gt;&gt;&gt; theta2 = vr2/mn2
+&gt;&gt;&gt; s4 = Gamma(k2, theta2)
+
+# Station 5
+&gt;&gt;&gt; s5 = Exp(5)
+
+# Station 6
+&gt;&gt;&gt; s6 = Chi2(10)
+
+&gt;&gt;&gt; T = s1 + s2 + s3 + s4 + s5 + s6
+&gt;&gt;&gt; T.describe()
+MCERP Uncertain Value:
+ &gt; Mean...................  51.6999259156
+ &gt; Variance...............  33.6983675299
+ &gt; Skewness Coefficient...  0.520212339449
+ &gt; Kurtosis Coefficient...  3.52754453865</pre>
+</div>
+<p>From this analysis, we see that the average process time is about 51.7 hours,
+but the variance is quite large (standard deviation = 5.8 hours). This
+gives management the desire to understand which is the greatest contributors,
+so we can analyze the standard deviations of each process step:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">si</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">s3</span><span class="p">,</span> <span class="n">s4</span><span class="p">,</span> <span class="n">s5</span><span class="p">,</span> <span class="n">s6</span><span class="p">]):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s">&#39;Station&#39;</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;:&#39;</span><span class="p">,</span> <span class="n">si</span><span class="o">.</span><span class="n">std</span>
+<span class="gp">...</span>
+<span class="go">Station 1 : 0.9998880644</span>
+<span class="go">Station 2 : 1.41409415266</span>
+<span class="go">Station 3 : 0.499878358909</span>
+<span class="go">Station 4 : 3.16243741632</span>
+<span class="go">Station 5 : 0.199970343107</span>
+<span class="go">Station 6 : 4.47143708522</span>
+</pre></div>
+</div>
+<p>This would seem to indicate that management could focus their efforts on
+making the cycle times of stations 4 and 6 more consistent.</p>
+<p>It may also be useful to understand the probability that a complete cycle
+will exceed a certain amount, say at 59, 62 and 68 hours:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">prob</span> <span class="o">=</span> <span class="p">[</span><span class="n">T</span><span class="o">&gt;</span><span class="n">hr</span> <span class="k">for</span> <span class="n">hr</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">59</span><span class="p">,</span> <span class="mi">62</span><span class="p">,</span> <span class="mi">68</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">prob</span>
+<span class="go">[0.1091, 0.0497, 0.0083]</span>
+</pre></div>
+</div>
+<p>That is to say that it is expected that the entire process will take 59
+hours approximately 11% of the time, 62 hours 5% of the time, and 68 hours
+about 1% of the time.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="correlations.html" title="Correlations"
+             >previous</a> |</li>
+        <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_examples.html">A Simple Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="distribution_constructors.html">Using Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="view_distribution.html">Viewing the distribution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="probabilities.html">Probabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="correlations.html">Correlations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Advanced Examples</a></li>
+</ul>
+
+ 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Abraham Lee.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

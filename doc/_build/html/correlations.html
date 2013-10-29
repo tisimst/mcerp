@@ -1,0 +1,206 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Correlations &mdash; mcerp Python package 0.9.7 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.9.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="mcerp Python package 0.9.7 documentation" href="index.html" />
+    <link rel="next" title="Advanced Examples" href="advanced_example.html" />
+    <link rel="prev" title="Probabilities" href="probabilities.html" /> 
+  </head>
+  <body>
+
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="index.html"><img src="_static/logo.png" border="0" alt="ad"/></a>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="advanced_example.html" title="Advanced Examples"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="probabilities.html" title="Probabilities"
+             accesskey="P">previous</a> |</li>
+        <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_examples.html">A Simple Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="distribution_constructors.html">Using Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="view_distribution.html">Viewing the distribution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="probabilities.html">Probabilities</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Correlations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_example.html">Advanced Examples</a></li>
+</ul>
+
+ 
+      </ul>
+    </div>
+
+
+
+<div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3>Table of contents</h3>
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_examples.html">A Simple Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="distribution_constructors.html">Using Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="view_distribution.html">Viewing the distribution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="probabilities.html">Probabilities</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Correlations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_example.html">Advanced Examples</a></li>
+</ul>
+
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Search the documentation.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+          <h3>Documentation license</h3>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png" /></a>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="correlations">
+<span id="index-0"></span><span id="id1"></span><h1>Correlations<a class="headerlink" href="#correlations" title="Permalink to this headline">¶</a></h1>
+<p id="index-1">By default, the samples try to be as uncorrelated and independent as
+possible from any other inputs. However, sometimes inputs to have some
+degree of correlation between them. If it is desired to force a set of
+variables to have certain correlations, which is not uncommon in
+real-life situations, this can be done with the <tt class="docutils literal"><span class="pre">correlate</span></tt> function
+(NOTE: this should be done BEFORE any calculations have taken place in
+order to work properly).</p>
+<p>For example, let&#8217;s look at our <a class="reference internal" href="basic_examples.html#simple-example"><em>A Simple Example</em></a> with inputs
+<tt class="docutils literal"><span class="pre">x1</span></tt>, <tt class="docutils literal"><span class="pre">x2</span></tt>, and <tt class="docutils literal"><span class="pre">x3</span></tt>:</p>
+<div class="highlight-python"><pre># The correlation coefficients before adjusting
+&gt;&gt;&gt; print correlation_matrix([x1, x2, x3])
+[[ 1.          0.00558381  0.01268168]
+ [ 0.00558381  1.          0.00250815]
+ [ 0.01268168  0.00250815  1.        ]]</pre>
+</div>
+<p>You&#8217;ll notice a few things about the correlation matrix. First, the
+diagonals are all 1.0 (they always are). Second, the matrix is symmetric.
+Third, the correlation coefficients in the upper and lower triangular
+parts are relatively small. This is how <tt class="docutils literal"><span class="pre">mcerp</span></tt> is designed.</p>
+<p id="index-2">Here is what the actual samples looks like in a matrix plot form (created
+using <tt class="docutils literal"><span class="pre">plotcorr([x1,</span> <span class="pre">x2,</span> <span class="pre">x3],</span> <span class="pre">labels=['x1',</span> <span class="pre">'x2',</span> <span class="pre">'x3'])</span></tt>):</p>
+<a class="reference internal image-reference" href="_images/before_correlation_matrixplot.png"><img alt="_images/before_correlation_matrixplot.png" src="_images/before_correlation_matrixplot.png" style="width: 487.2px; height: 487.2px;" /></a>
+<p>Now, let&#8217;s say we desire to impose a -0.75 correlation between <tt class="docutils literal"><span class="pre">x1</span></tt>
+and <tt class="docutils literal"><span class="pre">x2</span></tt>. Let&#8217;s create the desired correlation matrix (note that all
+diagonal elements should be 1.0):</p>
+<div class="highlight-python"><pre># The desired correlation coefficient matrix
+&gt;&gt;&gt; c = np.array([[  1.0, -0.75, 0.0],
+...               [-0.75,   1.0, 0.0],
+...               [  0.0,   0.0, 1.0]])</pre>
+</div>
+<p>Using the <tt class="docutils literal"><span class="pre">mcerp.correlate</span></tt> function, we can now apply the desired
+correlation coefficients to our samples to try and force the inputs
+to be correlated:</p>
+<div class="highlight-python"><pre># Apply the correlations into the samples (works in-place)
+&gt;&gt;&gt; correlate([x1, x2, x3], c)
+
+# Show the new correlation coefficients
+&gt;&gt;&gt; print correlation_matrix([x1, x2, x3])
+[[  1.00000000e+00  -7.50010477e-01   1.87057576e-03]
+ [ -7.50010477e-01   1.00000000e+00   8.53061774e-04]
+ [  1.87057576e-03   8.53061774e-04   1.00000000e+00]]</pre>
+</div>
+<p>The correlation matrix is roughly what we expected within a few percent.
+Even the other correlation coefficients are closer to zero than before. If
+any exceptions appear during this operation, it is likely because the
+correlation matrix is either not <strong>symmetric</strong>, not <strong>positive-definite</strong>,
+or both.</p>
+<p>The newly correlated samples will now look something like:</p>
+<a class="reference internal image-reference" href="_images/after_correlation_matrixplot.png"><img alt="_images/after_correlation_matrixplot.png" src="_images/after_correlation_matrixplot.png" style="width: 487.2px; height: 487.2px;" /></a>
+<p>Now that the inputs&#8217; relations have been modified, let&#8217;s check how
+the output of our stack-up has changed (sometimes the correlations
+won&#8217;t change the output much, but others can change a lot!):</p>
+<div class="highlight-python"><pre># Z should now be a little different
+&gt;&gt;&gt; Z = (x1*x2**2)/(15*(1.5 + x3))
+&gt;&gt;&gt; Z.describe
+MCERP Uncertain Value:
+ &gt; Mean...................  1153.710442
+ &gt; Variance...............  97123.3417748
+ &gt; Skewness Coefficient...  0.211835225063
+ &gt; Kurtosis Coefficient...  2.87618465139</pre>
+</div>
+<p>We can also see what adding that correlation did: reduced the mean,
+reduced the variance, increased the skewness, increased the kurtosis.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="advanced_example.html" title="Advanced Examples"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="probabilities.html" title="Probabilities"
+             >previous</a> |</li>
+        <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_examples.html">A Simple Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="distribution_constructors.html">Using Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="view_distribution.html">Viewing the distribution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="probabilities.html">Probabilities</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Correlations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_example.html">Advanced Examples</a></li>
+</ul>
+
+ 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Abraham Lee.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

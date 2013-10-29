@@ -1,0 +1,266 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mcerp Package Documentation &mdash; mcerp Python package 0.9.7 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.9.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="mcerp Python package 0.9.7 documentation" href="#" />
+    <link rel="next" title="A Simple Example" href="basic_examples.html" />
+    <link rel="prev" title="Table of Contents" href="index_TOC.html" /> 
+  </head>
+  <body>
+
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="#"><img src="_static/logo.png" border="0" alt="ad"/></a>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="basic_examples.html" title="A Simple Example"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index_TOC.html" title="Table of Contents"
+             accesskey="P">previous</a> |</li>
+        <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_examples.html">A Simple Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="distribution_constructors.html">Using Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="view_distribution.html">Viewing the distribution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="probabilities.html">Probabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="correlations.html">Correlations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_example.html">Advanced Examples</a></li>
+</ul>
+
+ 
+      </ul>
+    </div>
+
+
+
+<div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3>Table of contents</h3>
+            <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_examples.html">A Simple Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="distribution_constructors.html">Using Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="view_distribution.html">Viewing the distribution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="probabilities.html">Probabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="correlations.html">Correlations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_example.html">Advanced Examples</a></li>
+</ul>
+
+            <h3>Section contents</h3>
+            <ul>
+<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">mcerp</span></tt> Package Documentation</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#required-packages">Required Packages</a></li>
+<li><a class="reference internal" href="#main-features">Main Features</a></li>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#python-3">Python 3</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#see-also">See also</a></li>
+<li><a class="reference internal" href="#contact">Contact</a></li>
+</ul>
+</li>
+</ul>
+
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Search the documentation.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+          <h3>Documentation license</h3>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png" /></a>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="mcerp-package-documentation">
+<h1><tt class="docutils literal"><span class="pre">mcerp</span></tt> Package Documentation<a class="headerlink" href="#mcerp-package-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">mcerp</span></tt> is a stochastic calculator for <a class="reference external" href="http://en.wikipedia.org/wiki/Monte_Carlo_method">Monte Carlo methods</a> that uses
+<a class="reference external" href="http://en.wikipedia.org/wiki/Latin_hypercube_sampling">latin-hypercube sampling</a> to perform non-order specific
+<a class="reference external" href="http://en.wikipedia.org/wiki/Propagation_of_uncertainty">error propagation</a> (or uncertainty analysis). With this package you can
+<strong>easily</strong> and <strong>transparently</strong> track the effects of uncertainty
+through mathematical calculations. Advanced mathematical functions, similar
+to those in the standard <a class="reference external" href="http://docs.python.org/library/math.html">math</a> module can also be evaluated directly.</p>
+<p>Due to the nature of random sampling techniques, calculation results will vary
+from session to session (but be consistent within the session) since new
+samples are only generated when variables are newly defined or re-defined.
+By default, each variable uses 10,000 samples that are sufficiently random.
+The number of samples can be changed by assigning an integer value to the
+<tt class="docutils literal"><span class="pre">mcerp.npts</span></tt> object (typically, values between 1,000 and 1,000,000 are
+sufficiently large to ensure small errors in the resulting statistics).
+This should only be changed prior to performing calculations since
+all subsequent calculations assume that each input has the same number of
+sampled points (this could be changed through resampling, I suppose...).</p>
+<p>In order to correctly use <tt class="docutils literal"><span class="pre">mcerp</span></tt>, knowledge of the distributions from
+the <tt class="docutils literal"><span class="pre">scipy.stats</span></tt> sub-module is helpful, but not required since many
+of the most common distributions can be created with convenient functions
+(see table below).
+The result of all calculations generates a <em>mean</em>, <em>variance</em>, and
+<em>standardized skewness and kurtosis</em> coefficients (this means that a
+<em>Normal</em> distribution has a kurtosis of 3, <strong>NOT</strong> 0).</p>
+</div>
+<div class="section" id="required-packages">
+<h2>Required Packages<a class="headerlink" href="#required-packages" title="Permalink to this headline">¶</a></h2>
+<p>The following packages should be installed automatically (if using <tt class="docutils literal"><span class="pre">pip</span></tt>
+or <tt class="docutils literal"><span class="pre">easy_install</span></tt>), otherwise they will need to be installed manually:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.numpy.org/">NumPy</a> : Numeric Python</li>
+<li><a class="reference external" href="http://scipy.org">SciPy</a> : Scientific Python</li>
+<li><a class="reference external" href="http://matplotlib.org/">Matplotlib</a> : Python plotting library</li>
+</ul>
+<p>These packages come standard in <em>Python(x,y)</em>, <em>Spyder</em>, and other
+scientific computing python bundles.</p>
+</div>
+<div class="section" id="main-features">
+<h2>Main Features<a class="headerlink" href="#main-features" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><strong>Transparent calculations</strong>. <strong>No or little modification</strong> to existing
+code required.</li>
+<li>Basic <a class="reference external" href="http://www.numpy.org/">NumPy</a> support without modification. (I haven&#8217;t done extensive
+testing, so please let me know if you encounter bugs.)</li>
+<li>Advanced mathematical functions supported through the <tt class="docutils literal"><span class="pre">mcerp.umath</span></tt>
+sub-module. If you think a function is in there, it probably is. If it
+isn&#8217;t, please request it!</li>
+<li><strong>Easy statistical distribution constructors</strong>. The location, scale,
+and shape parameters follow the notation in the respective Wikipedia
+articles.</li>
+<li><strong>Correlation enforcement</strong> and variable sample visualization capabilities.</li>
+<li><strong>Probability calculations</strong> using conventional comparison operators.</li>
+</ol>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p><strong>Make sure you have the</strong>  <a class="reference external" href="http://scipy.org">SciPy</a> <strong>and</strong> <a class="reference external" href="http://www.numpy.org/">NumPy</a> <strong>and</strong> <a class="reference external" href="http://matplotlib.org/">Matplotlib</a> <strong>packages installed!</strong>
+This package won&#8217;t work without them.</p>
+<p>You have <strong>several easy, convenient options</strong> to install the <tt class="docutils literal"><span class="pre">mcerp</span></tt>
+package (administrative privileges may be required)</p>
+<ol class="arabic">
+<li><p class="first">Simply copy the unzipped <tt class="docutils literal"><span class="pre">mcerp-XYZ</span></tt> directory to any other location that
+python can find it and rename it <tt class="docutils literal"><span class="pre">mcerp</span></tt>.</p>
+</li>
+<li><p class="first">From the command-line, do one of the following:</p>
+<ol class="loweralpha">
+<li><p class="first">Manually download the package files below, unzip to any directory, and run:</p>
+<div class="highlight-python"><pre>$ [sudo] python setup.py install</pre>
+</div>
+</li>
+<li><p class="first">If <tt class="docutils literal"><span class="pre">setuptools</span></tt> is installed, run:</p>
+<div class="highlight-python"><pre>$ [sudo] easy_install --upgrade mcerp</pre>
+</div>
+</li>
+<li><p class="first">If <tt class="docutils literal"><span class="pre">pip</span></tt> is installed, run:</p>
+<div class="highlight-python"><pre>$ [sudo] pip install --upgrade mcerp</pre>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+<div class="section" id="python-3">
+<h3>Python 3<a class="headerlink" href="#python-3" title="Permalink to this headline">¶</a></h3>
+<p>To use this package with Python 3.x, you will need to run the <tt class="docutils literal"><span class="pre">2to3</span></tt>
+conversion tool at the command-line using the following syntax while in the
+unzipped <tt class="docutils literal"><span class="pre">mcerp</span></tt> directory:</p>
+<div class="highlight-python"><pre>$ 2to3 -w .</pre>
+</div>
+<p>This should take care of the main changes required. Then, run:</p>
+<div class="highlight-python"><pre>$ python3 setup.py install</pre>
+</div>
+<p>If bugs continue to pop up, please email the author.</p>
+</div>
+</div>
+<div class="section" id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://pypi.python.org/pypi/uncertainties">uncertainties</a> : First-order error propagation</li>
+<li><a class="reference external" href="http://pypi.python.org/pypi/soerp">soerp</a> : Second-order error propagation</li>
+</ul>
+</div>
+<div class="section" id="contact">
+<h2>Contact<a class="headerlink" href="#contact" title="Permalink to this headline">¶</a></h2>
+<p>Please send <strong>feature requests, bug reports, or feedback</strong> to
+<a class="reference external" href="mailto:tisimst&#37;&#52;&#48;gmail&#46;com">Abraham Lee</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="basic_examples.html" title="A Simple Example"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index_TOC.html" title="Table of Contents"
+             >previous</a> |</li>
+        <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_examples.html">A Simple Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="distribution_constructors.html">Using Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="view_distribution.html">Viewing the distribution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="probabilities.html">Probabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="correlations.html">Correlations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_example.html">Advanced Examples</a></li>
+</ul>
+
+ 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Abraham Lee.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

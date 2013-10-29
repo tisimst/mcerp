@@ -1,0 +1,230 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Probabilities &mdash; mcerp Python package 0.9.7 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.9.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="mcerp Python package 0.9.7 documentation" href="index.html" />
+    <link rel="next" title="Correlations" href="correlations.html" />
+    <link rel="prev" title="Viewing the distribution" href="view_distribution.html" /> 
+  </head>
+  <body>
+
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="index.html"><img src="_static/logo.png" border="0" alt="ad"/></a>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="correlations.html" title="Correlations"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="view_distribution.html" title="Viewing the distribution"
+             accesskey="P">previous</a> |</li>
+        <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_examples.html">A Simple Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="distribution_constructors.html">Using Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="view_distribution.html">Viewing the distribution</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Probabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="correlations.html">Correlations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_example.html">Advanced Examples</a></li>
+</ul>
+
+ 
+      </ul>
+    </div>
+
+
+
+<div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3>Table of contents</h3>
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_examples.html">A Simple Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="distribution_constructors.html">Using Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="view_distribution.html">Viewing the distribution</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Probabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="correlations.html">Correlations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_example.html">Advanced Examples</a></li>
+</ul>
+
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Search the documentation.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+          <h3>Documentation license</h3>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png" /></a>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="probabilities">
+<span id="index-0"></span><span id="id1"></span><h1>Probabilities<a class="headerlink" href="#probabilities" title="Permalink to this headline">¶</a></h1>
+<p>To estimate the fraction of the distribution that lies above or
+below some point in a distribution, we can use the standard inequality
+comparison operators (&lt;, &lt;=, &gt;, &gt;=):</p>
+<div class="highlight-python"><pre># What is the percentage of samples below 21?
+&gt;&gt;&gt; x1&lt;21
+0.0014  (i.e., about 0.1%)
+
+# What percentage of samples are 1000 and above?
+&gt;&gt;&gt; Z&gt;=1000
+0.6622  (i.e., about 66%)</pre>
+</div>
+<p>On the otherhand, if we are comparing distributions to see if one is
+&#8220;less&#8221; or &#8220;more&#8221; than the other, we actually perform a T-test of the two
+objects to compare the two sample means. If the p-value is greater than
+0.05 AND the t-statistic has the correct sign, then the comparison will
+return <tt class="docutils literal"><span class="pre">True</span></tt>. Let&#8217;s first create some new samples (the actual values
+are contained in the <tt class="docutils literal"><span class="pre">_mcpts</span></tt> member of the <tt class="docutils literal"><span class="pre">UncertainFunction</span></tt> class:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">rvs1</span> <span class="o">=</span> <span class="n">N</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rvs2</span> <span class="o">=</span> <span class="n">N</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">+</span> <span class="n">N</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rvs3</span> <span class="o">=</span> <span class="n">N</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">+</span> <span class="n">N</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now, let&#8217;s compare <tt class="docutils literal"><span class="pre">rvs1</span></tt> and <tt class="docutils literal"><span class="pre">rvs2</span></tt>. They are similar, but with slightly
+different variances, so we would expect the p-value to be large:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">ttest_rel</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tstat</span><span class="p">,</span> <span class="n">pval</span> <span class="o">=</span> <span class="n">ttest_rel</span><span class="p">(</span><span class="n">rvs1</span><span class="o">.</span><span class="n">_mcpts</span><span class="p">,</span> <span class="n">rvs2</span><span class="o">.</span><span class="n">_mcpts</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pval</span>
+<span class="go">0.99888340212679583</span>
+</pre></div>
+</div>
+<p>As expected, because the p-value is essentially, 1.0, the test couldn&#8217;t tell
+them apart, so our comparison returns:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">rvs1</span><span class="o">&lt;</span><span class="n">rvs2</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p>However, let&#8217;s try distributions that are a more different, <tt class="docutils literal"><span class="pre">rvs1</span></tt> and
+<tt class="docutils literal"><span class="pre">rvs3</span></tt>. This test should return a smaller p-value and a t-statistic that
+we will get the sign from to check the orientation of the comparison:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tstat</span><span class="p">,</span> <span class="n">pval</span> <span class="o">=</span> <span class="n">ttest_rel</span><span class="p">(</span><span class="n">rvs1</span><span class="o">.</span><span class="n">_mcpts</span><span class="p">,</span> <span class="n">rvs3</span><span class="o">.</span><span class="n">_mcpts</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pval</span>
+<span class="go">3.0480674044727307e-97</span>
+</pre></div>
+</div>
+<p>That&#8217;s a very small p-value, indicating that the distributions are
+separated from each other distinctly enough that the test could tell them
+apart. Now we need to check the sign of the t-statistic to see if
+<tt class="docutils literal"><span class="pre">rvs1</span></tt> is on the &#8220;left&#8221; of <tt class="docutils literal"><span class="pre">rvs3</span></tt> for the comparison:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">float</span><span class="p">(</span><span class="n">tstat</span><span class="p">)</span>
+<span class="go">-21.158661004433682</span>
+</pre></div>
+</div>
+<p>Because we are using the <em>less than</em> comparison and the sign of the
+t-statistic is negative, then we say that this is &#8220;oriented&#8221; correctly
+and, no surprise, we get:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">rvs1</span><span class="o">&lt;</span><span class="n">rvs3</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>If we had tried <em>greater than</em>, then we would have gotten the wrong sign
+on the t-statistic and the comparison evaluates to <tt class="docutils literal"><span class="pre">False</span></tt>.</p>
+<p>One interesting thing about this way of testing two distributions is that
+it&#8217;s possible to get the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">N</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">N</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">&lt;</span><span class="n">y</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">&gt;</span><span class="n">y</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">==</span><span class="n">y</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p>The equality comparison operators (== and !=) actually test to see if
+the distributions are identical, thus:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span><span class="o">==</span><span class="n">x1</span>
+<span class="go">True</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n1</span> <span class="o">=</span> <span class="n">N</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n2</span> <span class="o">=</span> <span class="n">N</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n1</span><span class="o">==</span><span class="n">n2</span>  <span class="c"># n1 and n2 are independently sampled, so they are not equal</span>
+<span class="go">False</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Z</span><span class="o">*</span><span class="n">Z</span><span class="o">==</span><span class="n">Z</span><span class="o">**</span><span class="mi">2</span>  <span class="c"># Both sides have the same root samples, so they are equal</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="correlations.html" title="Correlations"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="view_distribution.html" title="Viewing the distribution"
+             >previous</a> |</li>
+        <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic_examples.html">A Simple Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="distribution_constructors.html">Using Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="view_distribution.html">Viewing the distribution</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Probabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="correlations.html">Correlations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_example.html">Advanced Examples</a></li>
+</ul>
+
+ 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Abraham Lee.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
