@@ -1,3 +1,6 @@
+
+.. index: Overview
+
 ===============================
 ``mcerp`` Package Documentation
 ===============================
@@ -35,7 +38,7 @@ What's New In This Release
 ==========================
 
 - New ways that *equality* and *inequality* comparison operators function
-  (see `probabilities`_).
+  (see `probabilities <probabilities>`_).
   
   - **Two uncertain objects** created through MCERP (like 
     ``N(4, 1)<=Exp(3)``): Statistical tests are used to decide whether 
@@ -44,8 +47,8 @@ What's New In This Release
     estimated probability that the distribution lies above/below that value
     is calculated.
 
-- Some important bug fixes in the `distribution constructors`_. These
-  should all be working correctly now.
+- Some important bug fixes in the `distribution constructors <distribution
+  constructors>`_. These should all be working correctly now.
 
 Required Packages
 =================

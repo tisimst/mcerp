@@ -1,4 +1,6 @@
 
+.. index:: Viewing Distributions
+
 .. _viewing the distribution:
 
 Viewing the distribution

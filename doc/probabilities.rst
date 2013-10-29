@@ -1,4 +1,6 @@
 
+.. index:: Probabilities
+
 .. _probabilities:
 
 Probabilities
@@ -10,11 +12,11 @@ comparison operators (<, <=, >, >=)::
 
     # What is the percentage of samples below 21?
     >>> x1<21
-    0.0014
+    0.0014  (i.e., about 0.1%)
     
     # What percentage of samples are 1000 and above?
     >>> Z>=1000
-    0.6622
+    0.6622  (i.e., about 66%)
     
 On the otherhand, if we are comparing distributions to see if one is
 "less" or "more" than the other, we actually perform a T-test of the two

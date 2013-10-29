@@ -1,4 +1,6 @@
 
+.. index: Constructing Distributions
+
 .. _using distributions:
 
 Using Distributions

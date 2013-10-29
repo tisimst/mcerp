@@ -1,8 +1,10 @@
 
-.. _basic examples:
+.. index:: A Simple Example
 
-Basic examples
-==============
+.. _simple example:
+
+A Simple Example
+================
 
 Let's start with the main import::
 

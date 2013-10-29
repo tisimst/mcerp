@@ -1,8 +1,12 @@
 
+.. index:: Handling Correlations
+
 .. _correlations:
 
 Correlations
 ------------
+
+.. index:: correlate
 
 By default, the samples try to be as uncorrelated and independent as
 possible from any other inputs. However, sometimes inputs to have some
@@ -12,8 +16,8 @@ real-life situations, this can be done with the ``correlate`` function
 (NOTE: this should be done BEFORE any calculations have taken place in 
 order to work properly).
 
-For example, let's look at our original example with inputs ``x1``, ``x2``,
-and ``x3``::
+For example, let's look at our :ref:`simple example` with inputs 
+``x1``, ``x2``, and ``x3``::
 
     # The correlation coefficients before adjusting
     >>> print correlation_matrix([x1, x2, x3])
@@ -24,8 +28,12 @@ and ``x3``::
 You'll notice a few things about the correlation matrix. First, the 
 diagonals are all 1.0 (they always are). Second, the matrix is symmetric.
 Third, the correlation coefficients in the upper and lower triangular
-parts are relatively small. This is how ``mcerp`` is designed. Here is 
-what the actual samples looks like in a matrix plot form:
+parts are relatively small. This is how ``mcerp`` is designed. 
+
+.. index:: plotcorr
+
+Here is what the actual samples looks like in a matrix plot form (created
+using ``plotcorr([x1, x2, x3], labels=['x1', 'x2', 'x3'])``):
 
 .. image:: _static/before_correlation_matrixplot.png
     :scale: 60%
@@ -68,8 +76,8 @@ The newly correlated samples will now look something like:
    match the desired correlations.
 
 Now that the inputs' relations have been modified, let's check how 
-the output of our stack-up has changed (sometimes the correlations won't
-change the output much, but others can change a lot!)::
+the output of our stack-up has changed (sometimes the correlations 
+won't change the output much, but others can change a lot!)::
 
     # Z should now be a little different
     >>> Z = (x1*x2**2)/(15*(1.5 + x3))
