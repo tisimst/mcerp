@@ -15,18 +15,8 @@ to those in the standard `math`_ module can also be evaluated directly.
 What's New In This Release
 ==========================
 
-- New ways that *equality* and *inequality* comparison operators function
-  (see `package documentation`_ for details).
-  
-  - **Two uncertain objects** created through MCERP (like 
-    ``N(4, 1)<=Exp(3)``): Statistical tests are used to decide whether 
-    ``<=``, ``>``, etc. hold for the means of the two objects.
-  - **One uncertain object and a scalar** (like ``N(3, 0.2)<2``): An
-    estimated probability that the distribution lies above/below that value
-    is calculated.
-
-- Some important bug fixes in the distribution constructors. These
-  should all be working correctly now.
+- Added full customization capabilities to the plotting function with **kwargs.
+- Added `documentation website <package documentation>`.
 
 Required Packages
 =================
