@@ -253,7 +253,7 @@ class UncertainFunction(object):
                 plt.title(str(self), fontsize=12)
             plt.ylim(0, 1.1*h[0].max())
         else:
-            plt.plot(xp,p.evaluate(xp))
+            plt.plot(xp, p.evaluate(xp), **kwargs)
             if self.tag is not None:
                 # plt.suptitle('KDE of ('+self.tag+')')
                 plt.title(str(self), fontsize=12)
@@ -1081,7 +1081,7 @@ if __name__=='__main__':
     theta2 = vr2/mn2
     s4 = Gamma(k2, theta2)
     s5 = Exp(5)  # Exp(mu=0.2) is the same
-    s6 = X2(10)
+    s6 = Chi2(10)
     T = s1 + s2 + s3 + s4 + s5 + s6
     T.describe()
 
