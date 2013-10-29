@@ -15,8 +15,9 @@ to those in the standard `math`_ module can also be evaluated directly.
 What's New In This Release
 ==========================
 
-- Added full customization capabilities to the plotting function with **kwargs.
-- Added `documentation website <package documentation>`.
+- Added full customization capabilities to the plotting function with 
+  ``**kwargs``.
+- Added `package documentation`_.
 
 Required Packages
 =================
