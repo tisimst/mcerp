@@ -279,21 +279,21 @@ class UncertainFunction(object):
         if hist:
             h = plt.hist(vals, bins=np.round(np.sqrt(len(vals))), 
                      histtype='stepfilled', normed=True, **kwargs)
-            if self.tag is not None:
+            # if self.tag is not None:
                 # plt.suptitle('Histogram of ('+self.tag+')')
-                plt.title(str(self), fontsize=12)
-            else:
+                # plt.title(str(self), fontsize=12)
+            # else:
                 # plt.suptitle('Histogram of')
-                plt.title(str(self), fontsize=12)
+                # plt.title(str(self), fontsize=12)
             plt.ylim(0, 1.1*h[0].max())
         else:
             plt.plot(xp, p.evaluate(xp), **kwargs)
-            if self.tag is not None:
+            # if self.tag is not None:
                 # plt.suptitle('KDE of ('+self.tag+')')
-                plt.title(str(self), fontsize=12)
-            else:
+                # plt.title(str(self), fontsize=12)
+            # else:
                 # plt.suptitle('KDE of')
-                plt.title(str(self), fontsize=12)
+                # plt.title(str(self), fontsize=12)
 
         plt.xlim(low - (high - low)*0.1, high + (high - low)*0.1)
 
@@ -530,6 +530,8 @@ class UncertainVariable(UncertainFunction):
     +---------------------------+---------------------------------------------------------------+
     | Tri(a, b, c)              | http://en.wikipedia.org/wiki/Triangular_distribution          |
     +---------------------------+---------------------------------------------------------------+
+    | PERT(a, b, c)             | (This is based on the Beta distribution)                      |
+    +---------------------------+---------------------------------------------------------------+
     | T(df)                     | http://en.wikipedia.org/wiki/Student's_t-distribution         |
     +---------------------------+---------------------------------------------------------------+
     | Weib(lamda, k)            | http://en.wikipedia.org/wiki/Weibull_distribution             |
@@ -610,7 +612,8 @@ class UncertainVariable(UncertainFunction):
     
     See Also
     --------
-    N, U, Exp, Gamma, Beta, LogN, X2, F, Tri, T, Weib, Bern, B, G, H, Pois
+    N, U, Exp, Gamma, Beta, LogN, X2, F, Tri, PERT, T, Weib, Bern, B, G, H, 
+    Pois
         
     """
     
@@ -645,12 +648,12 @@ class UncertainVariable(UncertainFunction):
             h = plt.hist(vals, bins=np.round(np.sqrt(len(vals))), 
                      histtype='stepfilled', normed=True, **kwargs)
 
-            if self.tag is not None:
+            # if self.tag is not None:
                 # plt.suptitle('Histogram of (' + self.tag + ')')
-                plt.title(str(self), fontsize=12)
-            else:
+                # plt.title(str(self), fontsize=12)
+            # else:
                 # plt.suptitle('Histogram of')
-                plt.title(str(self), fontsize=12)
+                # plt.title(str(self), fontsize=12)
 
             plt.ylim(0, 1.1*h[0].max())
         else:
@@ -663,23 +666,23 @@ class UncertainVariable(UncertainFunction):
                 vals = range(low, high + 1)
                 plt.plot(vals, self.rv.pmf(vals), 'o', **kwargs)
 
-                if self.tag is not None:
+                # if self.tag is not None:
                     # plt.suptitle('PMF of (' + self.tag + ')')
-                    plt.title(str(self), fontsize=12)
-                else:
+                    # plt.title(str(self), fontsize=12)
+                # else:
                     # plt.suptitle('PMF of')
-                    plt.title(str(self), fontsize=12)
+                    # plt.title(str(self), fontsize=12)
 
             else:
                 vals = np.linspace(low, high, 500)
                 plt.plot(vals, self.rv.pdf(vals), **kwargs)
 
-                if self.tag is not None:
+                # if self.tag is not None:
                     # plt.suptitle('PDF of ('+self.tag+')')
-                    plt.title(str(self), fontsize=12)
-                else:
+                    # plt.title(str(self), fontsize=12)
+                # else:
                     # plt.suptitle('PDF of')
-                    plt.title(str(self), fontsize=12)
+                    # plt.title(str(self), fontsize=12)
 
         plt.xlim(low - (high - low)*0.1, high + (high - low)*0.1)
 
@@ -697,7 +700,7 @@ from correlate import *
 # scipy.stats.distributions.
 ###############################################################################
 
-def N(mu, sigma, tag=None):
+def Normal(mu, sigma, tag=None):
     """
     A Normal (or Gaussian) random variate
     
@@ -711,9 +714,11 @@ def N(mu, sigma, tag=None):
     assert sigma>0, 'Normal "sigma" must be greater than zero'
     return uv(ss.norm(loc=mu, scale=sigma), tag=tag)
 
+N = Normal  # for more concise use
+
 ###############################################################################
 
-def U(a, b, tag=None):
+def Uniform(a, b, tag=None):
     """
     A Uniform random variate
     
@@ -727,9 +732,11 @@ def U(a, b, tag=None):
     assert a<b, 'Uniform "a" must be less than "b"'
     return uv(ss.uniform(loc=a, scale=b-a), tag=tag)
 
+U = Uniform  # for more concise use
+
 ###############################################################################
 
-def Exp(lamda, tag=None):
+def Exponential(lamda, tag=None):
     """
     An Exponential random variate
     
@@ -740,6 +747,8 @@ def Exp(lamda, tag=None):
     """
     assert lamda>0, 'Exponential "lamda" must be greater than zero'
     return uv(ss.expon(scale=1./lamda), tag=tag)
+
+Exp = Exponential  # for more concise use
 
 ###############################################################################
 
@@ -782,7 +791,7 @@ def Beta(alpha, beta, a=0, b=1, tag=None):
 
 ###############################################################################
 
-def LogN(mu, sigma, tag=None):
+def LogNormal(mu, sigma, tag=None):
     """
     A Log-Normal random variate
     
@@ -796,9 +805,11 @@ def LogN(mu, sigma, tag=None):
     assert sigma>0, 'Log-Normal "sigma" must be positive'
     return uv(ss.lognorm(sigma, loc=mu), tag=tag)
 
+LogN = LogNormal  # for more concise use
+
 ###############################################################################
 
-def Chi2(k, tag=None):
+def ChiSquared(k, tag=None):
     """
     A Chi-Squared random variate
     
@@ -810,9 +821,11 @@ def Chi2(k, tag=None):
     assert isinstance(k, int) and k>=1, 'Chi-Squared "k" must be an integer greater than 0'
     return uv(ss.chi2(k), tag=tag)
 
+Chi2 = ChiSquared  # for more concise use
+
 ###############################################################################
 
-def F(d1, d2, tag=None):
+def Fisher(d1, d2, tag=None):
     """
     An F (fisher) random variate
     
@@ -827,27 +840,60 @@ def F(d1, d2, tag=None):
     assert isinstance(d2, int) and d2>=1, 'Fisher (F) "d2" must be an integer greater than 0'
     return uv(ss.f(d1, d2), tag=tag)
 
+F = Fisher  # for more concise use
+
 ###############################################################################
 
-def Tri(a, b, c, tag=None):
+def Triangular(low, peak, high, tag=None):
     """
     A triangular random variate
     
     Parameters
     ----------
-    a : scalar
+    low : scalar
         Lower bound of the distribution support
-    b : scalar
+    peak : scalar
+        The location of the triangle's peak (low <= peak <= high)
+    high : scalar
         Upper bound of the distribution support
-    c : scalar
-        The location of the triangle's peak (a <= c <= b)
     """
-    assert a<=c<=b, 'Triangular "c" must lie between "a" and "b"'
-    return uv(ss.triang((1.0*c-a)/(b-a), loc=a, scale=b-a), tag=tag)
+    assert low<=peak<=high, 'Triangular "peak" must lie between "low" and "high"'
+    return uv(ss.triang((1.0*peak - low)/(high - low), loc=low, 
+        scale=(high - low)), tag=tag)
+
+Tri = Triangular  # for more concise use
 
 ###############################################################################
 
-def T(v, tag=None):
+def PERT(low, peak, high, tag=None):
+    """
+    A PERT random variate
+    
+    Parameters
+    ----------
+    low : scalar
+        Lower bound of the distribution support
+    peak : scalar
+        The location of the triangle's peak (low <= peak <= high)
+    high : scalar
+        Upper bound of the distribution support
+    """
+    a = low
+    b = peak
+    c = high
+    assert a<=b<=c, 'PERT "b" must lie between "a" and "c"'
+    mu = (a + 4.0*b + c)/6
+    if mu==b:
+        a1 = a2 = 3.0
+    else:
+        a1 = ((mu - a)*(2*b - a - c))/((b - mu)*(c - a))
+        a2 = a1*(c - mu)/(mu - a)
+        
+    return Beta(a1, a2, a, c, tag)
+
+###############################################################################
+
+def StudentT(v, tag=None):
     """
     A Student-T random variate
     
@@ -859,9 +905,11 @@ def T(v, tag=None):
     assert isinstance(v, int) and v>=1, 'Student-T "v" must be an integer greater than 0'
     return uv(ss.t(v), tag=tag)
 
+T = StudentT  # for more concise use
+
 ###############################################################################
 
-def Weib(lamda, k, tag=None):
+def Weibull(lamda, k, tag=None):
     """
     A Weibull random variate
     
@@ -875,9 +923,11 @@ def Weib(lamda, k, tag=None):
     assert lamda>0 and k>0, 'Weibull "lamda" and "k" parameters must be greater than zero'
     return uv(ss.exponweib(lamda, k), tag=tag)
 
+Weib = Weibull  # for more concise use
+
 ###############################################################################
 
-def Bern(p, tag=None):
+def Bernoulli(p, tag=None):
     """
     A Bernoulli random variate
     
@@ -889,9 +939,11 @@ def Bern(p, tag=None):
     assert 0<p<1, 'Bernoulli probability "p" must be between zero and one, non-inclusive'
     return uv(ss.bernoulli(p), tag=tag)
 
+Bern = Bernoulli  # for more concise use
+
 ###############################################################################
 
-def B(n, p, tag=None):
+def Binomial(n, p, tag=None):
     """
     A Binomial random variate
     
@@ -906,9 +958,11 @@ def B(n, p, tag=None):
     assert 0<p<1, 'Binomial probability "p" must be between zero and one, non-inclusive'
     return uv(ss.binom(n, p), tag=tag)
 
+B = Binomial  # for more concise use
+
 ###############################################################################
 
-def G(p, tag=None):
+def Geometric(p, tag=None):
     """
     A Geometric random variate
     
@@ -920,9 +974,11 @@ def G(p, tag=None):
     assert 0<p<1, 'Geometric probability "p" must be between zero and one, non-inclusive'
     return uv(ss.geom(p), tag=tag)
 
+G = Geometric  # for more concise use
+
 ###############################################################################
 
-def H(N, n, K, tag=None):
+def Hypergeometric(N, n, K, tag=None):
     """
     A Hypergeometric random variate
     
@@ -961,9 +1017,11 @@ def H(N, n, K, tag=None):
     assert int(K)==K and 0<K<=N, 'Hypergeometric chosen population size "K" must be an integer greater than zero and no more than the total population size.'
     return uv(ss.hypergeom(N, n, K), tag=tag)
 
+H = Hypergeometric  # for more concise use
+
 ###############################################################################
 
-def Pois(lamda, tag=None):
+def Poisson(lamda, tag=None):
     """
     A Poisson random variate
     
@@ -974,6 +1032,8 @@ def Pois(lamda, tag=None):
     """
     assert lamda>0, 'Poisson "lamda" must be greater than zero.'
     return uv(ss.poisson(lamda), tag=tag)
+
+Pois = Poisson  # for more concise use
 
 ###############################################################################
 
