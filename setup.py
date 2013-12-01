@@ -15,7 +15,7 @@ import mcerp
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-readme = 'README'
+readme = 'README.rst'
 
 #distutils.core.setup(
 setup(
