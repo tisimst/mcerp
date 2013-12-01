@@ -700,39 +700,83 @@ from correlate import *
 # scipy.stats.distributions.
 ###############################################################################
 
-def Normal(mu, sigma, tag=None):
+###############################################################################
+# CONTINUOUS DISTRIBUTIONS
+###############################################################################
+
+def Beta(alpha, beta, low=0, high=1, tag=None):
     """
-    A Normal (or Gaussian) random variate
+    A Beta random variate
     
     Parameters
     ----------
-    mu : scalar
-        The mean value of the distribution
-    sigma : scalar
-        The standard deviation (must be positive and non-zero)
+    alpha : scalar
+        The first shape parameter
+    beta : scalar
+        The second shape parameter
+    
+    Optional
+    --------
+    low : scalar
+        Lower bound of the distribution support (default=0)
+    high : scalar
+        Upper bound of the distribution support (default=1)
     """
-    assert sigma>0, 'Normal "sigma" must be greater than zero'
-    return uv(ss.norm(loc=mu, scale=sigma), tag=tag)
-
-N = Normal  # for more concise use
+    assert alpha>0 and beta>0, 'Beta "alpha" and "beta" parameters must be greater than zero'
+    assert low<high, 'Beta "low" must be less than "high"'
+    return uv(ss.beta(alpha, beta, loc=low, scale=high-low), tag=tag)
 
 ###############################################################################
 
-def Uniform(a, b, tag=None):
+def Bradford(q, low=0, high=1, tag=None):
     """
-    A Uniform random variate
+    A Bradford random variate
     
     Parameters
     ----------
-    a : scalar
-        Lower bound of the distribution support.
-    b : scalar
-        Upper bound of the distribution support.
+    q : scalar
+        The shape parameter
+    low : scalar
+        The lower bound of the distribution (default=0)
+    high : scalar
+        The upper bound of the distribution (default=1)
     """
-    assert a<b, 'Uniform "a" must be less than "b"'
-    return uv(ss.uniform(loc=a, scale=b-a), tag=tag)
+    assert q>0, 'Bradford "q" parameter must be greater than zero'
+    assert low<high, 'Bradford "low" parameter must be less than "high"'
+    return uv(ss.bradford(q, loc=low, scale=high-low), tag=tag)
 
-U = Uniform  # for more concise use
+###############################################################################
+
+def Burr(c, k, tag=None):
+    """
+    A Burr random variate
+    
+    Parameters
+    ----------
+    c : scalar
+        The first shape parameter
+    k : scalar
+        The second shape parameter
+    
+    """
+    assert c>0 and k>0, 'Burr "c" and "k" parameters must be greater than zero'
+    return uv(ss.burr(c, k), tag=tag)
+
+###############################################################################
+
+def ChiSquared(k, tag=None):
+    """
+    A Chi-Squared random variate
+    
+    Parameters
+    ----------
+    k : int
+        The degrees of freedom of the distribution (must be greater than one)
+    """
+    assert int(k)==k and k>=1, 'Chi-Squared "k" must be an integer greater than 0'
+    return uv(ss.chi2(k), tag=tag)
+
+Chi2 = ChiSquared  # for more concise use
 
 ###############################################################################
 
@@ -746,9 +790,28 @@ def Exponential(lamda, tag=None):
         The inverse scale (as shown on Wikipedia). (FYI: mu = 1/lamda.)
     """
     assert lamda>0, 'Exponential "lamda" must be greater than zero'
-    return uv(ss.expon(scale=1./lamda), tag=tag)
+    return uv(ss.expon(scale=1.0/lamda), tag=tag)
 
 Exp = Exponential  # for more concise use
+
+###############################################################################
+
+def Fisher(d1, d2, tag=None):
+    """
+    An F (fisher) random variate
+    
+    Parameters
+    ----------
+    d1 : int
+        Numerator degrees of freedom
+    d2 : int
+        Denominator degrees of freedom
+    """
+    assert int(d1)==d1 and d1>=1, 'Fisher (F) "d1" must be an integer greater than 0'
+    assert int(d2)==d2 and d2>=1, 'Fisher (F) "d2" must be an integer greater than 0'
+    return uv(ss.f(d1, d2), tag=tag)
+
+F = Fisher  # for more concise use
 
 ###############################################################################
 
@@ -765,29 +828,6 @@ def Gamma(k, theta, tag=None):
     """
     assert k>0 and theta>0, 'Gamma "k" and "theta" parameters must be greater than zero'
     return uv(ss.gamma(k, scale=theta), tag=tag)
-
-###############################################################################
-
-def Beta(alpha, beta, a=0, b=1, tag=None):
-    """
-    A Beta random variate
-    
-    Parameters
-    ----------
-    alpha : scalar
-        The first shape parameter
-    beta : scalar
-        The second shape parameter
-    
-    Optional
-    --------
-    a : scalar
-        Lower bound of the distribution support (default=0)
-    b : scalar
-        Upper bound of the distribution support (default=1)
-    """
-    assert alpha>0 and beta>0, 'Beta "alpha" and "beta" parameters must be greater than zero'
-    return uv(ss.beta(alpha, beta, loc=a, scale=b-a), tag=tag)
 
 ###############################################################################
 
@@ -809,38 +849,65 @@ LogN = LogNormal  # for more concise use
 
 ###############################################################################
 
-def ChiSquared(k, tag=None):
+def Normal(mu, sigma, tag=None):
     """
-    A Chi-Squared random variate
+    A Normal (or Gaussian) random variate
     
     Parameters
     ----------
-    k : int
-        The degrees of freedom of the distribution (must be greater than one)
+    mu : scalar
+        The mean value of the distribution
+    sigma : scalar
+        The standard deviation (must be positive and non-zero)
     """
-    assert isinstance(k, int) and k>=1, 'Chi-Squared "k" must be an integer greater than 0'
-    return uv(ss.chi2(k), tag=tag)
+    assert sigma>0, 'Normal "sigma" must be greater than zero'
+    return uv(ss.norm(loc=mu, scale=sigma), tag=tag)
 
-Chi2 = ChiSquared  # for more concise use
+N = Normal  # for more concise use
 
 ###############################################################################
 
-def Fisher(d1, d2, tag=None):
+def PERT(low, peak, high, tag=None):
     """
-    An F (fisher) random variate
+    A PERT random variate
     
     Parameters
     ----------
-    d1 : int
-        Numerator degrees of freedom
-    d2 : int
-        Denominator degrees of freedom
+    low : scalar
+        Lower bound of the distribution support
+    peak : scalar
+        The location of the triangle's peak (low <= peak <= high)
+    high : scalar
+        Upper bound of the distribution support
     """
-    assert isinstance(d1, int) and d1>=1, 'Fisher (F) "d1" must be an integer greater than 0'
-    assert isinstance(d2, int) and d2>=1, 'Fisher (F) "d2" must be an integer greater than 0'
-    return uv(ss.f(d1, d2), tag=tag)
+    a = low
+    b = peak
+    c = high
+    assert a<=b<=c, 'PERT "peak" must be greater than "low" and less than "high"'
+    mu = (a + 4.0*b + c)/6
+    if mu==b:
+        a1 = a2 = 3.0
+    else:
+        a1 = ((mu - a)*(2*b - a - c))/((b - mu)*(c - a))
+        a2 = a1*(c - mu)/(mu - a)
+        
+    return Beta(a1, a2, a, c, tag)
 
-F = Fisher  # for more concise use
+###############################################################################
+
+def StudentT(v, tag=None):
+    """
+    A Student-T random variate
+    
+    Parameters
+    ----------
+    v : int
+        The degrees of freedom of the distribution (must be greater than one)
+    """
+    assert int(v)==v and v>=1, 'Student-T "v" must be an integer greater than 0'
+    return uv(ss.t(v), tag=tag)
+
+T = StudentT  # for more concise use
 
 ###############################################################################
 
@@ -865,47 +932,21 @@ Tri = Triangular  # for more concise use
 
 ###############################################################################
 
-def PERT(low, peak, high, tag=None):
+def Uniform(low, high, tag=None):
     """
-    A PERT random variate
+    A Uniform random variate
     
     Parameters
     ----------
     low : scalar
-        Lower bound of the distribution support
-    peak : scalar
-        The location of the triangle's peak (low <= peak <= high)
+        Lower bound of the distribution support.
     high : scalar
-        Upper bound of the distribution support
+        Upper bound of the distribution support.
     """
-    a = low
-    b = peak
-    c = high
-    assert a<=b<=c, 'PERT "b" must lie between "a" and "c"'
-    mu = (a + 4.0*b + c)/6
-    if mu==b:
-        a1 = a2 = 3.0
-    else:
-        a1 = ((mu - a)*(2*b - a - c))/((b - mu)*(c - a))
-        a2 = a1*(c - mu)/(mu - a)
-        
-    return Beta(a1, a2, a, c, tag)
+    assert low<high, 'Uniform "low" must be less than "high"'
+    return uv(ss.uniform(loc=low, scale=high-low), tag=tag)
 
-###############################################################################
-
-def StudentT(v, tag=None):
-    """
-    A Student-T random variate
-    
-    Parameters
-    ----------
-    v : int
-        The degrees of freedom of the distribution (must be greater than one)
-    """
-    assert isinstance(v, int) and v>=1, 'Student-T "v" must be an integer greater than 0'
-    return uv(ss.t(v), tag=tag)
-
-T = StudentT  # for more concise use
+U = Uniform  # for more concise use
 
 ###############################################################################
 
@@ -925,6 +966,8 @@ def Weibull(lamda, k, tag=None):
 
 Weib = Weibull  # for more concise use
 
+###############################################################################
+# DISCRETE DISTRIBUTIONS
 ###############################################################################
 
 def Bernoulli(p, tag=None):
@@ -1036,6 +1079,8 @@ def Poisson(lamda, tag=None):
 Pois = Poisson  # for more concise use
 
 ###############################################################################
+# STATISTICAL FUNCTIONS
+###############################################################################
 
 def covariance_matrix(nums_with_uncert):
     """
@@ -1081,6 +1126,8 @@ def covariance_matrix(nums_with_uncert):
                                 for j in range(i+1, len(cov_matrix)))
 
     return cov_matrix
+
+###############################################################################
 
 def correlation_matrix(nums_with_uncert):
     """
