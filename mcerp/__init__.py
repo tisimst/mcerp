@@ -780,6 +780,46 @@ Chi2 = ChiSquared  # for more concise use
 
 ###############################################################################
 
+def Erf(h, tag=None):
+    """
+    An Error Function random variate. 
+    
+    This distribution is derived from a normal distribution by setting 
+    m = 0 and s = 1/(h*sqrt(2)), and thus is used in similar situations 
+    as the normal distribution.
+    
+    Parameters
+    ----------
+    h : scalar
+        The scale parameter.
+    """
+    assert h>0, 'Erf "h" must be greater than zero'
+    return Normal(0, 1/(h*2**0.5), tag)
+
+###############################################################################
+
+def Erlang(m, b, tag=None):
+    """
+    An Erlang random variate.
+    
+    This distribution is the same as a Gamma(k, theta) distribution, but 
+    with the restriction that k (i.e., m) must be a positive integer. This
+    is provided for greater compatibility with other simulation tools, but
+    provides no advantage over the Gamma distribution in its applications.
+    
+    Parameters
+    ----------
+    m : int
+        The shape parameter (must be a positive integer)
+    b : scalar
+        The scale parameter (must be greater than zero)
+    """
+    assert int(m)==m and m>0, 'Erlang "m" must be a positive integer'
+    assert b>0, 'Erlang "b" must be greater than zero'
+    return Gamma(m, b, tag)
+
+###############################################################################
+
 def Exponential(lamda, tag=None):
     """
     An Exponential random variate
@@ -793,6 +833,44 @@ def Exponential(lamda, tag=None):
     return uv(ss.expon(scale=1.0/lamda), tag=tag)
 
 Exp = Exponential  # for more concise use
+
+###############################################################################
+
+def ExtValueMax(mu, sigma, tag=None):
+    """
+    An Extreme Value Maximum random variate.
+    
+    Parameters
+    ----------
+    mu : scalar
+        The location parameter
+    sigma : scalar
+        The scale parameter (must be greater than zero)
+    """
+    assert sigma>0, 'ExtremeValueMax "sigma" must be greater than zero'
+    p = U(0, 1)._mcpts[:]
+    return UncertainFunction(mu - sigma*np.log(-np.log(p)), tag=tag)
+
+EVMax = ExtValueMax  # for more concise use
+
+###############################################################################
+
+def ExtValueMin(mu, sigma, tag=None):
+    """
+    An Extreme Value Minimum random variate.
+    
+    Parameters
+    ----------
+    mu : scalar
+        The location parameter
+    sigma : scalar
+        The scale parameter (must be greater than zero)
+    """
+    assert sigma>0, 'ExtremeValueMin "sigma" must be greater than zero'
+    p = U(0, 1)._mcpts[:]
+    return UncertainFunction(mu + sigma*np.log(-np.log(1-p)), tag=tag)
+
+EVMin = ExtValueMin  # for more concise use
 
 ###############################################################################
 

@@ -12,7 +12,8 @@ convenience constructors that should make defining a distribution easier,
 though it's not necessary to use them. See the `source code`_ of the
 ``UncertainVariable`` class for info that describes how to construct many 
 of the most common statistical continuous and discrete distributions using 
-the `scipy.stats`_ distributions.
+the `scipy.stats`_ distributions (and some others not currently part of
+`scipy.stats`).
 
 Here are a set of **equivalent constructors** that I've found to be 
 **easier to use** for the most common kinds of distributions (the location, 
@@ -30,6 +31,10 @@ scale, and shape parameters are described in the respective Wikipedia pages):
 | ``ChiSquared(k)`` or ``Chi2(k)``                              | `Chi-squared distribution`_            |
 +---------------------------------------------------------------+----------------------------------------+
 | ``Exponential(lamda)`` or ``Exp(lamda)``                      | `Exponential distribution`_            |
++---------------------------------------------------------------+----------------------------------------+
+| ``ExtValueMax(mu, sigma)`` or ``EVMax(mu, sigma)``            | `Extreme Value Maximum distribution`_  |
++---------------------------------------------------------------+----------------------------------------+
+| ``ExtValueMin(mu, sigma)`` or ``EVMin(mu, sigma)``            | `Extreme Value Minimum distribution`_  |
 +---------------------------------------------------------------+----------------------------------------+
 | ``Fisher(d1, d2)`` or ``F(d1, d2)``                           | `F-distribution`_                      |
 +---------------------------------------------------------------+----------------------------------------+
