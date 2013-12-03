@@ -17,7 +17,7 @@ the `scipy.stats`_ distributions (and some others not currently part of
 
 Here are a set of **equivalent constructors** that I've found to be 
 **easier to use** for the most common kinds of distributions (the location, 
-scale, and shape parameters are described in the respective Wikipedia pages):
+scale, and shape parameters are described in the respective web pages):
 
 +--------------------------------------------------------------------------------------------------------+
 | **Continuous Distributions**                                                                           |
@@ -91,6 +91,8 @@ list, let me know!
 .. _Burr distribution: http://en.wikipedia.org/wiki/Burr_distribution
 .. _Chi-squared distribution: http://en.wikipedia.org/wiki/Chi-squared_distribution
 .. _Exponential distribution: http://en.wikipedia.org/wiki/Exponential_distribution
+.. _Extreme Value Maximum distribution: http://www.math.uah.edu/stat/special/ExtremeValue.html
+.. _Extreme Value Minimum distribution: http://www.math.uah.edu/stat/special/ExtremeValue.html
 .. _F-distribution: http://en.wikipedia.org/wiki/F-distribution
 .. _Gamma distribution: http://en.wikipedia.org/wiki/Gamma_distribution
 .. _Log-normal distribution: http://en.wikipedia.org/wiki/Log-normal_distribution
