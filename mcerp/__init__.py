@@ -692,7 +692,9 @@ uv = UncertainVariable # a nicer form for the user
 
 # DON'T MOVE THIS IMPORT!!! The prior definitions must be in place before
 # importing the correlation-related functions
-from correlate import *
+from .correlate import *
+import umath
+import stats
 
 ###############################################################################
 # Define some convenience constructors for common statistical distributions.
