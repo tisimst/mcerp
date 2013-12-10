@@ -7,30 +7,62 @@ Overview
 
 ``mcerp`` is a stochastic calculator for `Monte Carlo methods`_ that uses 
 `latin-hypercube sampling`_ to perform non-order specific 
-`error propagation`_ (or uncertainty analysis). With this package you can 
-**easily** and **transparently** track the effects of uncertainty 
-through mathematical calculations. Advanced mathematical functions, similar 
-to those in the standard `math`_ module can also be evaluated directly. 
+`error propagation`_ (or uncertainty analysis). 
+
+If you are familiar with Excel-based risk analysis programs like @Risk, 
+Crystal Ball, ModelRisk, etc., this package will work wonders for you (and 
+probably even be faster!) and give you more modelling flexibility with the 
+powerful Python language.
+
+With this package you can **easily** and **transparently** track the effects
+of uncertainty through mathematical calculations. Advanced mathematical 
+functions, similar to those in the standard `math`_ module, and statistical
+functions like those in the `scipy.stats`_ module, can also be evaluated 
+directly.
 
 What's New In This Release
 ==========================
 
-- Added full customization capabilities to the plotting function with 
-  ``**kwargs``.
-- Added `package documentation`_.
+- Extensive support for `scipy.stats`_ statistical functions (like 
+  ``linregress``, ``wilcoxon``, ``bayes_mvs``, ``scoreatpercentile``, etc.)
+  in the sub-module ``mcerp.stats``. The syntax is the same as the original 
+  scipy functions, but now you can use objects created with MCERP as input 
+  to the ``args`` of the functions (keyword-arguments not yet supported).
+  
+- The math and statistical functions are now imported a little easier::
 
-Required Packages
-=================
+    >>> from mcerp.umath import *  # imports the math functions
+    >>> from mcerp.stats import *  # imports the statistical functions
 
-The following packages should be installed automatically (if using ``pip``
-or ``easy_install``), otherwise they will need to be installed manually:
+- New distribution constructors (see the `package documentation`_ for help
+  with the syntax and links to more detailed information about each):
 
-- `NumPy`_ : Numeric Python
-- `SciPy`_ : Scientific Python
-- `Matplotlib`_ : Python plotting library
+  - ``Bradford``
+  - ``Burr``
+  - ``Erf``
+  - ``Erlang``
+  - ``ExtremeValueMax`` or ``EVMax``
+  - ``ExtremeValueMin`` or ``EVMin``
+  - ``PERT``
 
-These packages come standard in *Python(x,y)*, *Spyder*, and other 
-scientific computing python bundles.
+- Aliased names for many other distributions (i.e., either can be used to
+  create the same distribution, like, ``N(0, 1)`` is the same as 
+  ``Normal(0, 1)``):
+
+  - ``ChiSquared`` or ``Chi2``
+  - ``Exponential`` or ``Exp``
+  - ``Fisher`` or ``F``
+  - ``LogNormal`` or ``LogN``
+  - ``Normal`` or ``N``
+  - ``StudentT`` or ``T``
+  - ``Triangular`` or ``Tri``
+  - ``Uniform`` or ``U``
+  - ``Weibull`` or ``Weib``
+  - ``Bernoulli`` or ``Bern``
+  - ``Binomial`` or ``B``
+  - ``Geometric`` or ``G``
+  - ``Hypergeometric`` or ``H``
+  - ``Poisson`` or ``Pois``
 
 Main Features
 =============
@@ -53,11 +85,26 @@ Main Features
 
 6. **Probability calculations** using conventional comparison operators.
 
+7. Advanced Scipy statistical function compatibility with package functions.
+
 Installation
 ============
 
-**Make sure you have the**  `SciPy`_ **and** `NumPy`_ **and** `Matplotlib`_ 
-**packages installed!** This package won't work without them.
+Required Packages
+-----------------
+
+The following packages should be installed automatically (if using ``pip``
+or ``easy_install``), otherwise they will need to be installed manually:
+
+- `NumPy`_ : Numeric Python
+- `SciPy`_ : Scientific Python
+- `Matplotlib`_ : Python plotting library
+
+These packages come standard in *Python(x,y)*, *Spyder*, and other 
+scientific computing python bundles.
+
+How to install
+--------------
 
 You have **several easy, convenient options** to install the ``mcerp`` 
 package (administrative privileges may be required)

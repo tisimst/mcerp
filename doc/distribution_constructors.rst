@@ -7,17 +7,28 @@ Using Distributions
 ===================
 
 Since all of the variables in ``mcerp`` are statistical distributions, they 
-are created using the `scipy.stats`_ distributions. There are also some 
-convenience constructors that should make defining a distribution easier, 
+are created internally using the `scipy.stats`_ distributions. There are also 
+some convenience constructors that should make defining a distribution easier, 
 though it's not necessary to use them. See the `source code`_ of the
 ``UncertainVariable`` class for info that describes how to construct many 
 of the most common statistical continuous and discrete distributions using 
 the `scipy.stats`_ distributions (and some others not currently part of
 `scipy.stats`).
 
-Here are a set of **equivalent constructors** that I've found to be 
-**easier to use** for the most common kinds of distributions (the location, 
-scale, and shape parameters are described in the respective web pages):
+Tracking
+--------
+
+To track variables that may share the same distribution, each of the
+constructors below accepts an optional ``tag=...`` kwarg that can be
+accessed at anytime using ``x.tag``.
+
+Constructors
+------------
+
+Now, if you are like me, the easier the syntax--the better, thus, here are a 
+set of **equivalent constructors** that I've found to be **easier to use** 
+for the most common kinds of distributions (the location, scale, and shape 
+parameters are described in their respective web pages):
 
 +--------------------------------------------------------------------------------------------------------+
 | **Continuous Distributions**                                                                           |
@@ -29,6 +40,10 @@ scale, and shape parameters are described in the respective web pages):
 | ``Burr(c, k)``                                                | `Burr distribution`_                   |
 +---------------------------------------------------------------+----------------------------------------+
 | ``ChiSquared(k)`` or ``Chi2(k)``                              | `Chi-squared distribution`_            |
++---------------------------------------------------------------+----------------------------------------+
+| ``Erf(h)``                                                    | `Error Function distribution`_         |
++---------------------------------------------------------------+----------------------------------------+
+| ``Erlang(m, b)``                                              | `Erlang distribution`_                 |
 +---------------------------------------------------------------+----------------------------------------+
 | ``Exponential(lamda)`` or ``Exp(lamda)``                      | `Exponential distribution`_            |
 +---------------------------------------------------------------+----------------------------------------+
@@ -74,6 +89,9 @@ For example, the following constructions are equivalent::
     >>> x = uv(ss.norm(loc=10, scale=1))
 
     # using a built-in constructor
+    >>> x = Normal(10, 1)
+    
+    # and if there's a short-name alias available
     >>> x = N(10, 1)
 
 From my experience, the first option can be tedious and difficult to work 
@@ -90,6 +108,8 @@ list, let me know!
 .. _Bradford distribution: http://www.vosesoftware.com/ModelRiskHelp/index.htm#Distributions/Continuous_distributions/Bradford_distribution.htm
 .. _Burr distribution: http://en.wikipedia.org/wiki/Burr_distribution
 .. _Chi-squared distribution: http://en.wikipedia.org/wiki/Chi-squared_distribution
+.. _Error Function distribution: http://www.mathwave.com/articles/error_function_distribution.html
+.. _Erlang distribution: http://en.wikipedia.org/wiki/Erlang_distribution
 .. _Exponential distribution: http://en.wikipedia.org/wiki/Exponential_distribution
 .. _Extreme Value Maximum distribution: http://www.math.uah.edu/stat/special/ExtremeValue.html
 .. _Extreme Value Minimum distribution: http://www.math.uah.edu/stat/special/ExtremeValue.html

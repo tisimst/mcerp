@@ -12,33 +12,10 @@ import scipy.stats as ss
 import matplotlib.pyplot as plt
 from lhd import lhd
 
-__version_info__ = (0, 9, 8)
+__version_info__ = (0, 10)
 __version__ = '.'.join(map(str, __version_info__))
 
 __author__ = 'Abraham Lee'
-
-#__all__ = [
-    ## core functions
-    #'uv', 'covariance_matrix', 'correlation_matrix',
-    ## continuous distribution constructors
-    #'N',
-    #'U',
-    #'Exp',
-    #'Gamma',
-    #'Beta',
-    #'LogN',
-    #'Chi2',
-    #'F',
-    #'Tri',
-    #'T',
-    #'Weib',
-    ## discrete distribution constructors
-    #'Bern',
-    #'B',
-    #'G',
-    #'H',
-    #'Pois'
-    #]
 
 npts = 10000
 
@@ -800,25 +777,25 @@ def Erf(h, tag=None):
 
 ###############################################################################
 
-def Erlang(m, b, tag=None):
+def Erlang(k, lamda, tag=None):
     """
     An Erlang random variate.
     
     This distribution is the same as a Gamma(k, theta) distribution, but 
-    with the restriction that k (i.e., m) must be a positive integer. This
+    with the restriction that k must be a positive integer. This
     is provided for greater compatibility with other simulation tools, but
     provides no advantage over the Gamma distribution in its applications.
     
     Parameters
     ----------
-    m : int
+    k : int
         The shape parameter (must be a positive integer)
-    b : scalar
+    lamda : scalar
         The scale parameter (must be greater than zero)
     """
-    assert int(m)==m and m>0, 'Erlang "m" must be a positive integer'
-    assert b>0, 'Erlang "b" must be greater than zero'
-    return Gamma(m, b, tag)
+    assert int(k)==k and k>0, 'Erlang "k" must be a positive integer'
+    assert lamda>0, 'Erlang "lamda" must be greater than zero'
+    return Gamma(k, lamda, tag)
 
 ###############################################################################
 
@@ -956,7 +933,7 @@ def PERT(low, peak, high, tag=None):
     low : scalar
         Lower bound of the distribution support
     peak : scalar
-        The location of the triangle's peak (low <= peak <= high)
+        The location of the distribution's peak (low <= peak <= high)
     high : scalar
         Upper bound of the distribution support
     """

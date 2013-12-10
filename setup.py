@@ -30,7 +30,6 @@ setup(
     package_data={'': [readme]},
     packages=[
         'mcerp', 
-        'mcerp.umath'
         ],
     install_requires=[
         'numpy', 
@@ -43,6 +42,7 @@ setup(
         'sampling calculator', 
         'error propagation', 
         'uncertainty', 
+        'risk analysis',
         'error', 
         'real-time'],
     classifiers=[
