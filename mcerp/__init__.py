@@ -507,8 +507,6 @@ class UncertainVariable(UncertainFunction):
     +---------------------------+---------------------------------------------------------------+
     | Tri(a, b, c)              | http://en.wikipedia.org/wiki/Triangular_distribution          |
     +---------------------------+---------------------------------------------------------------+
-    | PERT(a, b, c)             | (This is based on the Beta distribution)                      |
-    +---------------------------+---------------------------------------------------------------+
     | T(df)                     | http://en.wikipedia.org/wiki/Student's_t-distribution         |
     +---------------------------+---------------------------------------------------------------+
     | Weib(lamda, k)            | http://en.wikipedia.org/wiki/Weibull_distribution             |
@@ -704,6 +702,24 @@ def Beta(alpha, beta, low=0, high=1, tag=None):
     assert alpha>0 and beta>0, 'Beta "alpha" and "beta" parameters must be greater than zero'
     assert low<high, 'Beta "low" must be less than "high"'
     return uv(ss.beta(alpha, beta, loc=low, scale=high-low), tag=tag)
+
+###############################################################################
+
+def BetaPrime(alpha, beta, tag=None):
+    """
+    A BetaPrime random variate
+    
+    Parameters
+    ----------
+    alpha : scalar
+        The first shape parameter
+    beta : scalar
+        The second shape parameter
+    
+    """
+    assert alpha>0 and beta>0, 'BetaPrime "alpha" and "beta" parameters must be greater than zero'
+    x = Beta(alpha, beta, tag)
+    return x/(1-x)
 
 ###############################################################################
 
@@ -924,7 +940,41 @@ N = Normal  # for more concise use
 
 ###############################################################################
 
-def PERT(low, peak, high, tag=None):
+def Pareto(q, a, tag=None):
+    """
+    A Pareto random variate (first kind)
+    
+    Parameters
+    ----------
+    q : scalar
+        The scale parameter
+    a : scalar
+        The shape parameter (the minimum possible value)
+    """
+    assert q>0 and a>0, 'Pareto "q" and "a" must be positive scalars'
+    p = Uniform(0, 1, tag)
+    return a*(1 - p)**(-1.0/q)
+
+###############################################################################
+
+def Pareto2(q, b, tag=None):
+    """
+    A Pareto random variate (second kind). This form always starts at the
+    origin.
+    
+    Parameters
+    ----------
+    q : scalar
+        The scale parameter
+    b : scalar
+        The shape parameter
+    """
+    assert q>0 and b>0, 'Pareto2 "q" and "b" must be positive scalars'
+    return Pareto(q, b, tag) - b
+
+###############################################################################
+
+def PERT(low, peak, high, g=4, tag=None):
     """
     A PERT random variate
     
@@ -936,12 +986,21 @@ def PERT(low, peak, high, tag=None):
         The location of the distribution's peak (low <= peak <= high)
     high : scalar
         Upper bound of the distribution support
+    
+    Optional
+    --------
+    g : scalar
+        Controls the uncertainty of the distribution around the peak. Smaller
+        values make the distribution flatter and more uncertain around the 
+        peak while larger values make it focused and less uncertain around
+        the peak. (Default: 4)
     """
     a = low
     b = peak
     c = high
     assert a<=b<=c, 'PERT "peak" must be greater than "low" and less than "high"'
-    mu = (a + 4.0*b + c)/6
+    assert g>=0, 'PERT "g" must be non-negative'
+    mu = (a + g*b + c)/(g + 2)
     if mu==b:
         a1 = a2 = 3.0
     else:
