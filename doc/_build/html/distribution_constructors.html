@@ -114,7 +114,7 @@
 <p>Since all of the variables in <tt class="docutils literal"><span class="pre">mcerp</span></tt> are statistical distributions, they
 are created internally using the <a class="reference external" href="http://docs.scipy.org/doc/scipy/reference/stats.html">scipy.stats</a> distributions. There are also
 some convenience constructors that should make defining a distribution easier,
-though it&#8217;s not necessary to use them. See the <a class="reference external" href="https://github.com/tisimst/mcerp">source code</a> of the
+though it&#8217;s not necessary to use them. See the <a class="reference external" href="https://github.com/tisimst/mcerp/blob/master/mcerp/__init__.py">source code</a> of the
 <tt class="docutils literal"><span class="pre">UncertainVariable</span></tt> class for info that describes how to construct many
 of the most common statistical continuous and discrete distributions using
 the <a class="reference external" href="http://docs.scipy.org/doc/scipy/reference/stats.html">scipy.stats</a> distributions (and some others not currently part of
@@ -130,7 +130,7 @@ accessed at anytime using <tt class="docutils literal"><span class="pre">x.tag</
 <p>Now, if you are like me, the easier the syntax&#8211;the better, thus, here are a
 set of <strong>equivalent constructors</strong> that I&#8217;ve found to be <strong>easier to use</strong>
 for the most common kinds of distributions (the location, scale, and shape
-parameters are described in their respective web pages):</p>
+parameters are described in their respective web pages and the <a class="reference external" href="https://github.com/tisimst/mcerp/blob/master/mcerp/__init__.py">source code</a>):</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="61%" />
@@ -177,6 +177,12 @@ parameters are described in their respective web pages):</p>
 </tr>
 <tr class="row-even"><td><tt class="docutils literal"><span class="pre">Normal(mu,</span> <span class="pre">sigma)</span></tt> or <tt class="docutils literal"><span class="pre">N(mu,</span> <span class="pre">sigma)</span></tt></td>
 <td><a class="reference external" href="http://en.wikipedia.org/wiki/Normal_distribution">Normal distribution</a></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">Pareto(q,</span> <span class="pre">a)</span></tt> (first kind)</td>
+<td><a class="reference external" href="http://www.vosesoftware.com/ModelRiskHelp/Distributions/Continuous_distributions/Pareto_(first_kind)_distribution.htm">Pareto distribution</a></td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">Pareto2(q,</span> <span class="pre">b)</span></tt> (second kind)</td>
+<td><a class="reference external" href="http://www.vosesoftware.com/ModelRiskHelp/Distributions/Continuous_distributions/Pareto_(second_kind)_distribution.htm">Pareto2 distribution</a></td>
 </tr>
 <tr class="row-odd"><td><tt class="docutils literal"><span class="pre">PERT(low,</span> <span class="pre">peak,</span> <span class="pre">high)</span></tt></td>
 <td><a class="reference external" href="http://www.vosesoftware.com/ModelRiskHelp/index.htm#Distributions/Continuous_distributions/PERT_distribution.htm">PERT distribution</a></td>

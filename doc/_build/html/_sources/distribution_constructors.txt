@@ -28,7 +28,7 @@ Constructors
 Now, if you are like me, the easier the syntax--the better, thus, here are a 
 set of **equivalent constructors** that I've found to be **easier to use** 
 for the most common kinds of distributions (the location, scale, and shape 
-parameters are described in their respective web pages):
+parameters are described in their respective web pages and the `source code`_):
 
 +--------------------------------------------------------------------------------------------------------+
 | **Continuous Distributions**                                                                           |
@@ -58,6 +58,10 @@ parameters are described in their respective web pages):
 | ``LogNormal(mu, sigma)`` or ``LogN(mu, sigma)``               | `Log-normal distribution`_             |
 +---------------------------------------------------------------+----------------------------------------+
 | ``Normal(mu, sigma)`` or ``N(mu, sigma)``                     | `Normal distribution`_                 |
++---------------------------------------------------------------+----------------------------------------+
+| ``Pareto(q, a)`` (first kind)                                 | `Pareto distribution`_                 |
++---------------------------------------------------------------+----------------------------------------+
+| ``Pareto2(q, b)`` (second kind)                               | `Pareto2 distribution`_                |
 +---------------------------------------------------------------+----------------------------------------+
 | ``PERT(low, peak, high)``                                     | `PERT distribution`_                   |
 +---------------------------------------------------------------+----------------------------------------+
@@ -103,7 +107,7 @@ list, let me know!
 
 
 .. _scipy.stats: http://docs.scipy.org/doc/scipy/reference/stats.html
-.. _source code: https://github.com/tisimst/mcerp
+.. _source code: https://github.com/tisimst/mcerp/blob/master/mcerp/__init__.py
 .. _Beta distribution: http://en.wikipedia.org/wiki/Beta_distribution
 .. _Bradford distribution: http://www.vosesoftware.com/ModelRiskHelp/index.htm#Distributions/Continuous_distributions/Bradford_distribution.htm
 .. _Burr distribution: http://en.wikipedia.org/wiki/Burr_distribution
@@ -117,6 +121,8 @@ list, let me know!
 .. _Gamma distribution: http://en.wikipedia.org/wiki/Gamma_distribution
 .. _Log-normal distribution: http://en.wikipedia.org/wiki/Log-normal_distribution
 .. _Normal distribution: http://en.wikipedia.org/wiki/Normal_distribution
+.. _Pareto distribution: http://www.vosesoftware.com/ModelRiskHelp/Distributions/Continuous_distributions/Pareto_(first_kind)_distribution.htm
+.. _Pareto2 distribution: http://www.vosesoftware.com/ModelRiskHelp/Distributions/Continuous_distributions/Pareto_(second_kind)_distribution.htm
 .. _PERT distribution: http://www.vosesoftware.com/ModelRiskHelp/index.htm#Distributions/Continuous_distributions/PERT_distribution.htm
 .. _T-distribution: http://en.wikipedia.org/wiki/Student's_t-distribution
 .. _Triangular distribution: http://en.wikipedia.org/wiki/Triangular_distribution
