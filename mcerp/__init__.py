@@ -12,7 +12,7 @@ import scipy.stats as ss
 import matplotlib.pyplot as plt
 from lhd import lhd
 
-__version_info__ = (0, 10)
+__version_info__ = (0, 10, 1)
 __version__ = '.'.join(map(str, __version_info__))
 
 __author__ = 'Abraham Lee'

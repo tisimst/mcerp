@@ -9,60 +9,29 @@ Overview
 `latin-hypercube sampling`_ to perform non-order specific 
 `error propagation`_ (or uncertainty analysis). 
 
-If you are familiar with Excel-based risk analysis programs like @Risk, 
-Crystal Ball, ModelRisk, etc., this package will work wonders for you (and 
-probably even be faster!) and give you more modelling flexibility with the 
-powerful Python language.
-
 With this package you can **easily** and **transparently** track the effects
 of uncertainty through mathematical calculations. Advanced mathematical 
 functions, similar to those in the standard `math`_ module, and statistical
 functions like those in the `scipy.stats`_ module, can also be evaluated 
 directly.
 
+If you are familiar with Excel-based risk analysis programs like *@Risk*, 
+*Crystal Ball*, *ModelRisk*, etc., this package **will work wonders** for you
+(and probably even be faster!) and give you more modelling flexibility with 
+the powerful Python language. This package also *doesn't cost a penny*, 
+compared to those commercial packages which cost *thousands of dollars* for a 
+single-seat license. Feel free to copy and redistribute this package as much 
+as you desire!
+
 What's New In This Release
 ==========================
 
-- Extensive support for `scipy.stats`_ statistical functions (like 
-  ``linregress``, ``wilcoxon``, ``bayes_mvs``, ``scoreatpercentile``, etc.)
-  in the sub-module ``mcerp.stats``. The syntax is the same as the original 
-  scipy functions, but now you can use objects created with MCERP as input 
-  to the ``args`` of the functions (keyword-arguments not yet supported).
+- Added two Pareto distributions: 
   
-- The math and statistical functions are now imported a little easier::
-
-    >>> from mcerp.umath import *  # imports the math functions
-    >>> from mcerp.stats import *  # imports the statistical functions
-
-- New distribution constructors (see the `package documentation`_ for help
-  with the syntax and links to more detailed information about each):
-
-  - ``Bradford``
-  - ``Burr``
-  - ``Erf``
-  - ``Erlang``
-  - ``ExtremeValueMax`` or ``EVMax``
-  - ``ExtremeValueMin`` or ``EVMin``
-  - ``PERT``
-
-- Aliased names for many other distributions (i.e., either can be used to
-  create the same distribution, like, ``N(0, 1)`` is the same as 
-  ``Normal(0, 1)``):
-
-  - ``ChiSquared`` or ``Chi2``
-  - ``Exponential`` or ``Exp``
-  - ``Fisher`` or ``F``
-  - ``LogNormal`` or ``LogN``
-  - ``Normal`` or ``N``
-  - ``StudentT`` or ``T``
-  - ``Triangular`` or ``Tri``
-  - ``Uniform`` or ``U``
-  - ``Weibull`` or ``Weib``
-  - ``Bernoulli`` or ``Bern``
-  - ``Binomial`` or ``B``
-  - ``Geometric`` or ``G``
-  - ``Hypergeometric`` or ``H``
-  - ``Poisson`` or ``Pois``
+  - First kind - ``Pareto(q, a)`` with minimum possible value at ``x=a``
+  - Second kind - ``Pareto2(q, b)`` with minimum always at origin (i.e., 
+    ``Pareto2(q, b) = Pareto(q, b) - b``). Otherwise, these distributions 
+    will share the same variance, skewness and kurtosis.
 
 Main Features
 =============
@@ -79,13 +48,15 @@ Main Features
 
 4. **Easy statistical distribution constructors**. The location, scale, 
    and shape parameters follow the notation in the respective Wikipedia 
-   articles.
+   articles and other relevant web pages.
 
 5. **Correlation enforcement** and variable sample visualization capabilities.
 
 6. **Probability calculations** using conventional comparison operators.
 
-7. Advanced Scipy statistical function compatibility with package functions.
+7. Advanced Scipy **statistical function compatibility** with package 
+   functions. Depending on your version of Scipy, some functions might not
+   work.
 
 Installation
 ============
@@ -114,17 +85,18 @@ package (administrative privileges may be required)
     
 #. From the command-line, do one of the following:
    
-   a. Manually download the package files below, unzip to any directory, and run::
+   a. Manually download the package files below, unzip to any directory, and 
+      run::
    
        $ [sudo] python setup.py install
 
    b. If ``setuptools`` is installed, run::
 
-       $ [sudo] easy_install --upgrade mcerp
+       $ [sudo] easy_install [--upgrade] mcerp
     
    c. If ``pip`` is installed, run::
 
-       $ [sudo] pip install --upgrade mcerp
+       $ [sudo] pip install [--upgrade] mcerp
 
 Python 3
 --------
