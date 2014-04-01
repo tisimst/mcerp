@@ -362,7 +362,7 @@ class UncertainFunction(object):
         # less than val
         if isinstance(val, UncertainFunction):
             tstat, pval = ss.ttest_rel(self._mcpts, val._mcpts)
-            sgn = tstat/abs(tstat)
+            sgn = np.sign(tstat)
             if pval>0.05:  # Since, statistically, we can't really tell
                 return False
             else:
@@ -384,7 +384,7 @@ class UncertainFunction(object):
         # greater than val
         if isinstance(val, UncertainFunction):
             tstat, pval = ss.ttest_rel(self._mcpts, val._mcpts)
-            sgn = tstat/abs(tstat)
+            sgn = np.sign(tstat)
             if pval>0.05:  # Since, statistically, we can't really tell
                 return False
             else:
