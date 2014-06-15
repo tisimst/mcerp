@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Probabilities &mdash; mcerp Python package 0.10 documentation</title>
+    <title>Probabilities &mdash; mcerp Python package 0.11 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.10',
+        VERSION:     '0.11',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -26,7 +26,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="mcerp Python package 0.10 documentation" href="index.html" />
+    <link rel="top" title="mcerp Python package 0.11 documentation" href="index.html" />
     <link rel="next" title="Correlations" href="correlations.html" />
     <link rel="prev" title="Viewing the distribution" href="view_distribution.html" /> 
   </head>
@@ -103,8 +103,8 @@
   <div class="section" id="probabilities">
 <span id="index-0"></span><span id="id1"></span><h1>Probabilities<a class="headerlink" href="#probabilities" title="Permalink to this headline">¶</a></h1>
 <p>To estimate the fraction of the distribution that lies above or
-below some point in a distribution, we can use the standard inequality
-comparison operators (&lt;, &lt;=, &gt;, &gt;=):</p>
+below some point in a distribution, we can use the standard comparison
+operators (&lt;, &lt;=, &gt;, &gt;=, ==, !=):</p>
 <div class="highlight-python"><pre># What is the percentage of samples below 21?
 &gt;&gt;&gt; x1&lt;21
 0.0014  (i.e., about 0.1%)
@@ -189,6 +189,38 @@ the distributions are identical, thus:</p>
 <span class="go">True</span>
 </pre></div>
 </div>
+<p>If an MCERP object is compared to a scalar value, then a sampled probability
+is calculated. For example, let&#8217;s say we have a 45 black marbles, 5 white
+marbles, and we are going to put them all into a hat and pick out 10. What&#8217;s
+the probability that 4 of the ten will be white? Let&#8217;s see:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="n">H</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">==</span><span class="mi">4</span>
+<span class="go">0.004  # the precise answer is 0.0039..., so not bad.</span>
+</pre></div>
+</div>
+<p>What&#8217;s the probability we will get three or less (that includes 0):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">h</span><span class="o">&lt;=</span><span class="mi">3</span>
+<span class="go">0.9959</span>
+</pre></div>
+</div>
+<p>For MCERP objects that represent continuous distributions, we see that any
+equality operators (usually) return a probability of zero:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="n">N</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="o">==</span><span class="mi">0</span>
+<span class="go">0.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="o">==</span><span class="mf">0.5</span>
+<span class="go">0.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="o">==</span><span class="mf">1.2345</span>
+<span class="go">0.0</span>
+</pre></div>
+</div>
+<p>But inequality operators are more useful:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="o">&lt;</span><span class="mi">0</span>
+<span class="go">0.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="o">&lt;</span><span class="mf">1.5</span>
+<span class="go">0.9332  # actual is 0.9331927, so not to far off with 10000 samples!</span>
+</pre></div>
+</div>
 </div>
 
 
@@ -223,7 +255,7 @@ the distributions are identical, thus:</p>
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2013, Abraham Lee.
+        &copy; Copyright 2013–2014, Abraham Lee.
       Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>

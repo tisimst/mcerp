@@ -7,8 +7,8 @@ Probabilities
 -------------
 
 To estimate the fraction of the distribution that lies above or 
-below some point in a distribution, we can use the standard inequality
-comparison operators (<, <=, >, >=)::
+below some point in a distribution, we can use the standard comparison 
+operators (<, <=, >, >=, ==, !=)::
 
     # What is the percentage of samples below 21?
     >>> x1<21
@@ -94,3 +94,35 @@ the distributions are identical, thus::
     
     >>> Z*Z==Z**2  # Both sides have the same root samples, so they are equal
     True
+
+If an MCERP object is compared to a scalar value, then a sampled probability
+is calculated. For example, let's say we have a 45 black marbles, 5 white
+marbles, and we are going to put them all into a hat and pick out 10. What's
+the probability that 4 of the ten will be white? Let's see::
+
+    >>> h = H(50, 5, 10)
+    >>> h==4
+    0.004  # the precise answer is 0.0039..., so not bad.
+
+What's the probability we will get three or less (that includes 0)::
+
+    >>> h<=3
+    0.9959
+    
+For MCERP objects that represent continuous distributions, we see that any
+equality operators (usually) return a probability of zero::
+
+    >>> n = N(0, 1)
+    >>> n==0
+    0.0
+    >>> n==0.5
+    0.0
+    >>> n==1.2345
+    0.0
+
+But inequality operators are more useful::
+
+    >>> n<0
+    0.5
+    >>> n<1.5
+    0.9332  # actual is 0.9331927, so not to far off with 10000 samples!
