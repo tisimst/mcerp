@@ -26,12 +26,19 @@ as you desire!
 What's New In This Release
 ==========================
 
-- Added two Pareto distributions: 
+- **Significant** speed enhancements in MCERP object creation.
+
+- Updated *plotcorr* function to display correct plots when ``full``-kwarg is
+  set to ``False`` (i.e., to display only an upper triangular scatterplot
+  matrix).
+
+- Fixed a sign bug when two MCERP are compared with boolean operators >, <, 
+  etc.
   
-  - First kind - ``Pareto(q, a)`` with minimum possible value at ``x=a``
-  - Second kind - ``Pareto2(q, b)`` with minimum always at origin (i.e., 
-    ``Pareto2(q, b) = Pareto(q, b) - b``). Otherwise, these distributions 
-    will share the same variance, skewness and kurtosis.
+- Improved boolean operators in general to handle MCERP objects that have
+  discrete values so that (``H(50, 5, 10)==4`` returns a meaningful probability
+  like the <, <=, >, >= operators do.
+
 
 Main Features
 =============

@@ -95,7 +95,7 @@ def lhd(dist=None,size=None,dims=1,form='randomized',iterations=100,
     if not size or not dist:
         return None
     
-    def _lhs(x,samples=20):
+    def _lhs(x, samples=20):
         """
         _lhs(x) returns a latin-hypercube matrix (each row is a different
         set of sample inputs) using a default sample size of 20 for each column
@@ -141,45 +141,55 @@ def lhd(dist=None,size=None,dims=1,form='randomized',iterations=100,
              [ 0.21128576 -0.13439798  3.65652016]
              [ 0.47516308  0.39957406  4.5797308 ]
              [ 0.64400392  0.90890999  4.92379431]
-             [ 0.96279472  1.79415307  5.52028238]]	
+             [ 0.96279472  1.79415307  5.52028238]]    
       """
     
-    	# determine the segment size
-    	segmentSize = 1.0/samples
+        # determine the segment size
+        segmentSize = 1.0/samples
     
-    	# get the number of dimensions to sample (number of columns)
-    	numVars = x.shape[1]
+        # get the number of dimensions to sample (number of columns)
+        numVars = x.shape[1]
     
-    	# populate each dimension
-    	out = np.zeros((samples,numVars))
-    	pointValue = np.zeros(samples)
+        # populate each dimension
+        out = np.zeros((samples,numVars))
+        pointValue = np.zeros(samples)
     
-    	for n in range(numVars):
-    		for i in range(samples):
-    			segmentMin = i*segmentSize
-    			point = segmentMin + (np.random.random()*segmentSize)
-    			pointValue[i] = (point*(x[1,n]-x[0,n])) + x[0,n]
-    		out[:,n] = pointValue
+        for n in range(numVars):
+            for i in range(samples):
+                segmentMin = i*segmentSize
+                point = segmentMin + (np.random.random()*segmentSize)
+                pointValue[i] = (point*(x[1,n]-x[0,n])) + x[0,n]
+            out[:,n] = pointValue
     
-    	# now randomly arrange the different segments
-    	return _mix(out)
+        # now randomly arrange the different segments
+        return _mix(out)
     
-    def _mix(data,dim='rows'):
-    	"""
-    	Takes a data matrix and mixes up the values along dim (either "rows" or "cols")
-    	"""
-    	tmpdata = copy(data)
-    	if dim is 'cols':
-    		tmpdata = tmpdata.T
-    
-    	for k in range(data.shape[1]):
-    		for i in range(data.shape[0]):
-    			j = np.random.randint(data.shape[0])
-    			temp = copy(tmpdata[i,k])
-    			tmpdata[i,k] = copy(tmpdata[j,k])
-    			tmpdata[j,k] = copy(temp)
-    	
-    	return tmpdata
+    def _mix(data, dim='cols'):
+        """
+        Takes a data matrix and mixes up the values along dim (either "rows" or 
+        "cols"). In other words, if dim='rows', then each row's data is mixed
+        ONLY WITHIN ITSELF. Likewise, if dim='cols', then each column's data is
+        mixed ONLY WITHIN ITSELF.
+        """
+        data = np.atleast_2d(data)
+        n = data.shape[0]
+
+        if dim=='rows':
+            data = data.T
+
+        data_rank = range(n)
+        for i in range(data.shape[1]):
+            new_data_rank = np.random.permutation(data_rank)
+            vals, order = np.unique(np.hstack((data_rank, new_data_rank)), return_inverse=True)
+            old_order = order[:n]
+            new_order = order[-n:]
+            tmp = data[np.argsort(old_order), i][new_order]
+            data[:, i] = tmp[:]
+            
+        if dim=='rows':
+            data = data.T
+
+        return data
     
     if form is 'randomized':
         if hasattr(dist,'__getitem__'): # if multiple distributions were input

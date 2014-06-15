@@ -4,7 +4,7 @@ mcerp: Real-time latin-hypercube-sampling-based Monte Carlo Error Propagation
 ================================================================================
 
 Author: Abraham Lee
-Copyright: 2013
+Copyright: 2013 - 2014
 """
 
 import numpy as np
@@ -12,7 +12,7 @@ import scipy.stats as ss
 import matplotlib.pyplot as plt
 from lhd import lhd
 
-__version_info__ = (0, 10, 1)
+__version_info__ = (0, 11)
 __version__ = '.'.join(map(str, __version_info__))
 
 __author__ = 'Abraham Lee'
@@ -233,7 +233,7 @@ class UncertainFunction(object):
         s += ' > Kurtosis Coefficient... {: }\n'.format(kt)
         print s
         
-    def plot(self, hist=False, **kwargs):
+    def plot(self, hist=False, show=False, **kwargs):
         """
         Plot the distribution of the UncertainFunction. By default, the
         distribution is shown with a kernel density estimate (kde).
@@ -242,6 +242,10 @@ class UncertainFunction(object):
         --------
         hist : bool
             If true, a density histogram is displayed (histtype='stepfilled')
+        show : bool
+            If ``True``, the figure will be displayed after plotting the 
+            distribution. If ``False``, an explicit call to ``plt.show()`` is
+            required to display the figure.
         kwargs : any valid matplotlib.pyplot.plot or .hist kwarg
         
         """
@@ -252,27 +256,17 @@ class UncertainFunction(object):
         p = ss.kde.gaussian_kde(vals)
         xp = np.linspace(low,high,100)
 
-#        plt.figure()
         if hist:
             h = plt.hist(vals, bins=np.round(np.sqrt(len(vals))), 
                      histtype='stepfilled', normed=True, **kwargs)
-            # if self.tag is not None:
-                # plt.suptitle('Histogram of ('+self.tag+')')
-                # plt.title(str(self), fontsize=12)
-            # else:
-                # plt.suptitle('Histogram of')
-                # plt.title(str(self), fontsize=12)
             plt.ylim(0, 1.1*h[0].max())
         else:
             plt.plot(xp, p.evaluate(xp), **kwargs)
-            # if self.tag is not None:
-                # plt.suptitle('KDE of ('+self.tag+')')
-                # plt.title(str(self), fontsize=12)
-            # else:
-                # plt.suptitle('KDE of')
-                # plt.title(str(self), fontsize=12)
 
         plt.xlim(low - (high - low)*0.1, high + (high - low)*0.1)
+        
+        if show:
+            self.show()
 
     def show(self):
         plt.show()
@@ -350,53 +344,92 @@ class UncertainFunction(object):
         return UncertainFunction(mcpts)
     
     def __eq__(self, val):
-        diff = self - val
-        return not (diff.mean or diff.var or diff.skew or diff.kurt)
+        """
+        If we are comparing two distributions, check the resulting moments. If
+        they are the same distribution, then the moments will all be zero and
+        we can know that it is actually the same distribution we are comparing
+        ``self`` to, otherwise, at least one statistical moment will be non-
+        zero.
+        
+        If we are comparing ``self`` to a scalar, just do a normal comparison
+        so that if the underlying distribution looks like a PMF, a meaningful
+        probability of self==val is returned. This can still work quite safely
+        for PDF distributions since the likelihood of comparing self to an
+        actual sampled value is negligible when mcerp.npts is large.
+        
+        Examples:
+        
+            >>> h = H(50, 5, 10)  # Hypergeometric distribution (PMF)
+            >>> h==4  # what's the probability of getting 4 of the 5?
+            0.004
+            >>> sum([h==i for i in (0, 1, 2, 3, 4, 5)])  # sum of all discrete probabilities
+            1.0
+            
+            >>> n = N(0, 1)  # Normal distribution (PDF)
+            >>> n==0  # what's the probability of being exactly 0.0?
+            0.0
+            >>> n>0  # greater than 0.0?
+            0.5
+            >>> n<0  # less than 0.0?
+            0.5
+            >>> n==1  # exactly 1.0?
+            0.0
+        """
+        if isinstance(val, UncertainFunction):
+            diff = self - val
+            return not (diff.mean or diff.var or diff.skew or diff.kurt)
+        else:
+            return len(self._mcpts[self._mcpts==val])/float(npts)
     
     def __ne__(self, val):
-        return not self==val
+        if isinstance(val, UncertainFunction):
+            return not self==val
+        else:
+            return 1 - (self==val)
     
     def __lt__(self, val):
-        # If we are comparing two distributions, perform statistical tests,
-        # otherwise, calculate the probability that the distribution is
-        # less than val
+        """
+        If we are comparing two distributions, perform statistical tests,
+        otherwise, calculate the probability that the distribution is
+        less than val
+        """
         if isinstance(val, UncertainFunction):
             tstat, pval = ss.ttest_rel(self._mcpts, val._mcpts)
-            sgn = tstat/abs(tstat)
+            sgn = np.sign(tstat)
             if pval>0.05:  # Since, statistically, we can't really tell
                 return False
             else:
                 return True if sgn==-1 else False
         else:
-            val = to_uncertain_func(val)
-            return len(self._mcpts[self._mcpts<val._mcpts])/float(npts)
+            return len(self._mcpts[self._mcpts<val])/float(npts)
     
     def __le__(self, val):
         if isinstance(val, UncertainFunction):
             return self<val  # since it doesn't matter to the test
         else:
-            val = to_uncertain_func(val)
-            return len(self._mcpts[self._mcpts<=val._mcpts])/float(npts)
+            return len(self._mcpts[self._mcpts<=val])/float(npts)
     
     def __gt__(self, val):
-        # If we are comparing two distributions, perform statistical tests,
-        # otherwise, calculate the probability that the distribution is
-        # greater than val
+        """
+        If we are comparing two distributions, perform statistical tests,
+        otherwise, calculate the probability that the distribution is
+        greater than val
+        """
         if isinstance(val, UncertainFunction):
             tstat, pval = ss.ttest_rel(self._mcpts, val._mcpts)
-            sgn = tstat/abs(tstat)
+            sgn = np.sign(tstat)
             if pval>0.05:  # Since, statistically, we can't really tell
                 return False
             else:
                 return True if sgn==1 else False
         else:
-            return 1 - (self<val)
+            return 1 - (self<=val)
     
     def __ge__(self, val):
         if isinstance(val, UncertainFunction):
             return self>val
         else:
-            return 1 - (self<=val)
+            return 1 - (self<val)
 
     def __nonzero__(self):
         return not (1 - ((self>0) + (self<0)))
@@ -602,7 +635,7 @@ class UncertainVariable(UncertainFunction):
         self._mcpts = lhd(dist=self.rv, size=npts).flatten()
         self.tag = tag
         
-    def plot(self, hist=False, **kwargs):
+    def plot(self, hist=False, show=False, **kwargs):
         """
         Plot the distribution of the UncertainVariable. Continuous 
         distributions are plotted with a line plot and discrete distributions
@@ -612,6 +645,10 @@ class UncertainVariable(UncertainFunction):
         --------
         hist : bool
             If true, a histogram is displayed
+        show : bool
+            If ``True``, the figure will be displayed after plotting the 
+            distribution. If ``False``, an explicit call to ``plt.show()`` is
+            required to display the figure.
         kwargs : any valid matplotlib.pyplot.plot kwarg
         
         """
@@ -622,14 +659,6 @@ class UncertainVariable(UncertainFunction):
             high = vals.max()
             h = plt.hist(vals, bins=np.round(np.sqrt(len(vals))), 
                      histtype='stepfilled', normed=True, **kwargs)
-
-            # if self.tag is not None:
-                # plt.suptitle('Histogram of (' + self.tag + ')')
-                # plt.title(str(self), fontsize=12)
-            # else:
-                # plt.suptitle('Histogram of')
-                # plt.title(str(self), fontsize=12)
-
             plt.ylim(0, 1.1*h[0].max())
         else:
             bound = 0.0001
@@ -640,27 +669,13 @@ class UncertainVariable(UncertainFunction):
                 high = int(high)
                 vals = range(low, high + 1)
                 plt.plot(vals, self.rv.pmf(vals), 'o', **kwargs)
-
-                # if self.tag is not None:
-                    # plt.suptitle('PMF of (' + self.tag + ')')
-                    # plt.title(str(self), fontsize=12)
-                # else:
-                    # plt.suptitle('PMF of')
-                    # plt.title(str(self), fontsize=12)
-
             else:
                 vals = np.linspace(low, high, 500)
                 plt.plot(vals, self.rv.pdf(vals), **kwargs)
-
-                # if self.tag is not None:
-                    # plt.suptitle('PDF of ('+self.tag+')')
-                    # plt.title(str(self), fontsize=12)
-                # else:
-                    # plt.suptitle('PDF of')
-                    # plt.title(str(self), fontsize=12)
-
         plt.xlim(low - (high - low)*0.1, high + (high - low)*0.1)
-
+        
+        if show:
+            self.show()
                 
         
 uv = UncertainVariable # a nicer form for the user
@@ -974,7 +989,7 @@ def Pareto2(q, b, tag=None):
 
 ###############################################################################
 
-def PERT(low, peak, high, g=4, tag=None):
+def PERT(low, peak, high, g=4.0, tag=None):
     """
     A PERT random variate
     
@@ -995,9 +1010,7 @@ def PERT(low, peak, high, g=4, tag=None):
         peak while larger values make it focused and less uncertain around
         the peak. (Default: 4)
     """
-    a = low
-    b = peak
-    c = high
+    a, b, c = [float(x) for x in [low, peak, high]]
     assert a<=b<=c, 'PERT "peak" must be greater than "low" and less than "high"'
     assert g>=0, 'PERT "g" must be non-negative'
     mu = (a + g*b + c)/(g + 2)
@@ -1041,6 +1054,7 @@ def Triangular(low, peak, high, tag=None):
         Upper bound of the distribution support
     """
     assert low<=peak<=high, 'Triangular "peak" must lie between "low" and "high"'
+    low, peak, high = [float(x) for x in [low, peak, high]]
     return uv(ss.triang((1.0*peak - low)/(high - low), loc=low, 
         scale=(high - low)), tag=tag)
 
@@ -1275,14 +1289,6 @@ def correlation_matrix(nums_with_uncert):
     ufuncs = map(to_uncertain_func, nums_with_uncert)
     data = np.vstack([ufunc._mcpts for ufunc in ufuncs])
     return np.corrcoef(data.T, rowvar=0)
-    #cov_matrix = covariance_matrix(ufuncs)
-    #corr_matrix = []
-    #for (i1, expr1) in enumerate(ufuncs):
-        #row_data = []
-        #for (i2, expr2) in enumerate(ufuncs):
-            #row_data.append(cov_matrix[i1][i2]/expr1.std/expr2.std)
-        #corr_matrix.append(row_data)
-    #return corr_matrix
     
 if __name__=='__main__':
     
