@@ -7,10 +7,13 @@ Author: Abraham Lee
 Copyright: 2013 - 2014
 """
 
+from __future__ import print_function # Python2 compatibility
+
+import sys
 import numpy as np
 import scipy.stats as ss
 import matplotlib.pyplot as plt
-from lhd import lhd
+from .lhd import lhd
 
 __version_info__ = (0, 11)
 __version__ = '.'.join(map(str, __version_info__))
@@ -19,7 +22,10 @@ __author__ = 'Abraham Lee'
 
 npts = 10000
 
-CONSTANT_TYPES = (float, int, long)
+if sys.version_info > (3,):
+    CONSTANT_TYPES = (float, int)
+else:
+    CONSTANT_TYPES = (float, int, long)
 
 class NotUpcast(Exception):
     'Raised when an object cannot be converted to a number with uncertainty'
@@ -231,7 +237,7 @@ class UncertainFunction(object):
         s += ' > Variance............... {: }\n'.format(vr)
         s += ' > Skewness Coefficient... {: }\n'.format(sk)
         s += ' > Kurtosis Coefficient... {: }\n'.format(kt)
-        print s
+        print(s)
         
     def plot(self, hist=False, show=False, **kwargs):
         """
@@ -272,62 +278,62 @@ class UncertainFunction(object):
         plt.show()
 
     def __add__(self, val):
-        uf = map(to_uncertain_func, [self, val])
+        uf = list(map(to_uncertain_func, [self, val]))
         mcpts = uf[0]._mcpts + uf[1]._mcpts
         return UncertainFunction(mcpts)
 
     def __radd__(self, val):
-        uf = map(to_uncertain_func, [self, val])
+        uf = list(map(to_uncertain_func, [self, val]))
         mcpts = uf[0]._mcpts + uf[1]._mcpts
         return UncertainFunction(mcpts)
         
     def __mul__(self, val):
-        uf = map(to_uncertain_func, [self, val])
+        uf = list(map(to_uncertain_func, [self, val]))
         mcpts = uf[0]._mcpts * uf[1]._mcpts
         return UncertainFunction(mcpts)
 
     def __rmul__(self, val):
-        uf = map(to_uncertain_func, [self, val])
+        uf = list(map(to_uncertain_func, [self, val]))
         mcpts = uf[0]._mcpts * uf[1]._mcpts
         return UncertainFunction(mcpts)
         
     def __sub__(self, val):
-        uf = map(to_uncertain_func, [self, val])
+        uf = list(map(to_uncertain_func, [self, val]))
         mcpts = uf[0]._mcpts - uf[1]._mcpts
         return UncertainFunction(mcpts)
 
     def __rsub__(self, val):
-        uf = map(to_uncertain_func, [self, val])
+        uf = list(map(to_uncertain_func, [self, val]))
         mcpts = uf[1]._mcpts - uf[0]._mcpts
         return UncertainFunction(mcpts)
         
     def __div__(self, val):
-        uf = map(to_uncertain_func, [self, val])
+        uf = list(map(to_uncertain_func, [self, val]))
         mcpts = uf[0]._mcpts/uf[1]._mcpts
         return UncertainFunction(mcpts)
 
     def __rdiv__(self, val):
-        uf = map(to_uncertain_func, [self, val])
+        uf = list(map(to_uncertain_func, [self, val]))
         mcpts = uf[1]._mcpts/uf[0]._mcpts
         return UncertainFunction(mcpts)
         
     def __truediv__(self, val):
-        uf = map(to_uncertain_func, [self, val])
+        uf = list(map(to_uncertain_func, [self, val]))
         mcpts = uf[0]._mcpts/uf[1]._mcpts
         return UncertainFunction(mcpts)
 
     def __rtruediv__(self, val):
-        uf = map(to_uncertain_func, [self, val])
+        uf = list(map(to_uncertain_func, [self, val]))
         mcpts = uf[1]._mcpts/uf[0]._mcpts
         return UncertainFunction(mcpts)
         
     def __pow__(self, val):
-        uf = map(to_uncertain_func, [self, val])
+        uf = list(map(to_uncertain_func, [self, val]))
         mcpts = uf[0]._mcpts**uf[1]._mcpts
         return UncertainFunction(mcpts)
 
     def __rpow__(self, val):
-        uf = map(to_uncertain_func, [self, val])
+        uf = list(map(to_uncertain_func, [self, val]))
         mcpts = uf[1]._mcpts**uf[0]._mcpts
         return UncertainFunction(mcpts)
     
@@ -433,6 +439,8 @@ class UncertainFunction(object):
 
     def __nonzero__(self):
         return not (1 - ((self>0) + (self<0)))
+
+    __bool__ = __nonzero__
 
 ################################################################################
 
@@ -683,8 +691,8 @@ uv = UncertainVariable # a nicer form for the user
 # DON'T MOVE THIS IMPORT!!! The prior definitions must be in place before
 # importing the correlation-related functions
 from .correlate import *
-import umath
-import stats
+from . import umath
+from . import stats
 
 ###############################################################################
 # Define some convenience constructors for common statistical distributions.
@@ -1244,7 +1252,7 @@ def covariance_matrix(nums_with_uncert):
     for (i1, expr1) in enumerate(ufuncs):
         coefs_expr1 = []
         mean1 = expr1.mean
-        for (i2, expr2) in enumerate(ufuncs[:i1+1]):
+        for (i2, expr2) in enumerate(list(ufuncs)[:i1+1]):
             mean2 = expr2.mean
             coef = np.mean((expr1._mcpts - mean1)*(expr2._mcpts - mean2))
             coefs_expr1.append(coef)
@@ -1294,18 +1302,18 @@ if __name__=='__main__':
     
     import mcerp.umath as umath
     
-    print '*'*80
-    print 'TEST FUNCTIONS USING DERIVED MOMENTS FROM SCIPY DISTRIBUTIONS'
-    print '*'*80
-    print 'Example of a three part assembly'
+    print('*'*80)
+    print('TEST FUNCTIONS USING DERIVED MOMENTS FROM SCIPY DISTRIBUTIONS')
+    print('*'*80)
+    print('Example of a three part assembly')
     x1 = N(24, 1)
     x2 = N(37, 4)
     x3 = Exp(2)  # Exp(mu=0.5) is the same
     Z = (x1*x2**2)/(15*(1.5 + x3))
     Z.describe()
     
-    print '*'*80
-    print 'Example of volumetric gas flow through orifice meter'
+    print('*'*80)
+    print('Example of volumetric gas flow through orifice meter')
     H = N(64, 0.5)
     M = N(16, 0.1)
     P = N(361, 2)
@@ -1314,8 +1322,8 @@ if __name__=='__main__':
     Q = C*umath.sqrt((520*H*P)/(M*(t + 460)))
     Q.describe()
 
-    print '*'*80
-    print 'Example of manufacturing tolerance stackup'
+    print('*'*80)
+    print('Example of manufacturing tolerance stackup')
     # for a gamma distribution we need the following conversions:
     # shape = mean**2/var
     # scale = var/mean
@@ -1329,8 +1337,8 @@ if __name__=='__main__':
     w = x + y + z
     w.describe()
 
-    print '*'*80
-    print 'Example of scheduling facilities (six stations)'
+    print('*'*80)
+    print('Example of scheduling facilities (six stations)')
     s1 = N(10, 1)
     s2 = N(20, 2**0.5)
     mn1 = 1.5
@@ -1348,8 +1356,8 @@ if __name__=='__main__':
     T = s1 + s2 + s3 + s4 + s5 + s6
     T.describe()
 
-    print '*'*80
-    print 'Example of two-bar truss stress/deflection analysis'
+    print('*'*80)
+    print('Example of two-bar truss stress/deflection analysis')
     H = N(30, 5/3., tag='H')
     B = N(60, 0.5/3., tag='B')
     d = N(3, 0.1/3, tag='d')
@@ -1362,9 +1370,9 @@ if __name__=='__main__':
     strs = (P*umath.sqrt((B/2)**2 + H**2))/(2*pi*d*t*H)
     buck = (pi**2*E*(d**2 + t**2))/(8*((B/2)**2 + H**2))
     defl = (P*((B/2)**2 + H**2)**(1.5))/(2*pi*d*t*H**2*E)
-    print wght.describe('wght')
-    print strs.describe('strs')
-    print buck.describe('buck')
-    print defl.describe('defl')
+    print(wght.describe('wght'))
+    print(strs.describe('strs'))
+    print(buck.describe('buck'))
+    print(defl.describe('defl'))
 
-    print '** TESTS COMPLETE **'
+    print('** TESTS COMPLETE **')
