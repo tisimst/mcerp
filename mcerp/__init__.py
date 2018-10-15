@@ -257,8 +257,11 @@ class UncertainFunction(object):
         xp = np.linspace(low,high,100)
 
         if hist:
-            h = plt.hist(vals, bins=np.round(np.sqrt(len(vals))), 
-                     histtype='stepfilled', normed=True, **kwargs)
+            if 'bins' not in kwargs:
+                kwargs['bins'] = int(np.round(np.sqrt(len(vals))))
+            if 'histtype' not in kwargs:
+                kwargs['histtype'] = 'stepfilled'
+            h = plt.hist(vals, normed=True, **kwargs)
             plt.ylim(0, 1.1*h[0].max())
         else:
             plt.plot(xp, p.evaluate(xp), **kwargs)
