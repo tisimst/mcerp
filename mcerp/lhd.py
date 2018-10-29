@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
 """
-Created on Wed Apr 24 05:32:45 2013
-
 @author: tisimst
 """
-from copy import copy
 import numpy as np
 import scipy.stats as ss
 

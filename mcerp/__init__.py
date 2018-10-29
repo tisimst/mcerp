@@ -21,7 +21,7 @@ CONSTANT_TYPES = (float, int, int)
 
 
 class NotUpcast(Exception):
-    "Raised when an object cannot be converted to a number with uncertainty"
+    """Raised when an object cannot be converted to a number with uncertainty"""
 
 
 def to_uncertain_func(x):
@@ -37,7 +37,7 @@ def to_uncertain_func(x):
     if isinstance(x, UncertainFunction):
         return x
 
-    #! In Python 2.6+, numbers.Number could be used instead, here:
+    # ! In Python 2.6+, numbers.Number could be used instead, here:
     elif isinstance(x, CONSTANT_TYPES):
         # No variable => no derivative to define:
         return UncertainFunction([x] * npts)
@@ -52,8 +52,6 @@ class UncertainFunction(object):
     operations are supported.
     
     This class is mostly intended for internal use.
-    
-    
     """
 
     def __init__(self, mcpts):
@@ -79,7 +77,7 @@ class UncertainFunction(object):
 
     @property
     def std(self):
-        """
+        r"""
         Standard deviation value as a result of an uncertainty calculation, 
         defined as::
             
@@ -91,7 +89,7 @@ class UncertainFunction(object):
 
     @property
     def skew(self):
-        """
+        r"""
         Skewness coefficient value as a result of an uncertainty calculation,
         defined as::
             
@@ -638,9 +636,9 @@ class UncertainVariable(UncertainFunction):
 
     def __init__(self, rv, tag=None):
 
-        assert hasattr(rv, "dist"), (
-            "Input must be a  distribution from " + "the scipy.stats module."
-        )
+        assert hasattr(
+            rv, "dist"
+        ), "Input must be a  distribution from the scipy.stats module."
         self.rv = rv
 
         # generate the latin-hypercube points
@@ -702,6 +700,7 @@ uv = UncertainVariable  # a nicer form for the user
 from .correlate import *
 from . import umath
 from . import stats
+
 
 ###############################################################################
 # Define some convenience constructors for common statistical distributions.
@@ -1119,6 +1118,7 @@ def Weibull(lamda, k, tag=None):
 
 Weib = Weibull  # for more concise use
 
+
 ###############################################################################
 # DISCRETE DISTRIBUTIONS
 ###############################################################################
@@ -1246,6 +1246,7 @@ def Poisson(lamda, tag=None):
 
 
 Pois = Poisson  # for more concise use
+
 
 ###############################################################################
 # STATISTICAL FUNCTIONS
