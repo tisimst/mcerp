@@ -8,8 +8,15 @@ from copy import copy
 import numpy as np
 import scipy.stats as ss
 
-def lhd(dist=None,size=None,dims=1,form='randomized',iterations=100,
-        showcorrelations=False):
+
+def lhd(
+    dist=None,
+    size=None,
+    dims=1,
+    form="randomized",
+    iterations=100,
+    showcorrelations=False,
+):
     """
     Create a Latin-Hypercube sample design based on distributions defined in the
     `scipy.stats` module
@@ -91,10 +98,10 @@ def lhd(dist=None,size=None,dims=1,form='randomized',iterations=100,
      [ 0.80805686  0.38891031  0.02076505]
      [ 1.63028931  0.52104917  1.48016008]]
     """
-    assert dims>0,'kwarg "dims" must be at least 1'
+    assert dims > 0, 'kwarg "dims" must be at least 1'
     if not size or not dist:
         return None
-    
+
     def _lhs(x, samples=20):
         """
         _lhs(x) returns a latin-hypercube matrix (each row is a different
@@ -143,28 +150,28 @@ def lhd(dist=None,size=None,dims=1,form='randomized',iterations=100,
              [ 0.64400392  0.90890999  4.92379431]
              [ 0.96279472  1.79415307  5.52028238]]    
       """
-    
+
         # determine the segment size
-        segmentSize = 1.0/samples
-    
+        segmentSize = 1.0 / samples
+
         # get the number of dimensions to sample (number of columns)
         numVars = x.shape[1]
-    
+
         # populate each dimension
-        out = np.zeros((samples,numVars))
+        out = np.zeros((samples, numVars))
         pointValue = np.zeros(samples)
-    
+
         for n in range(numVars):
             for i in range(samples):
-                segmentMin = i*segmentSize
-                point = segmentMin + (np.random.random()*segmentSize)
-                pointValue[i] = (point*(x[1,n]-x[0,n])) + x[0,n]
-            out[:,n] = pointValue
-    
+                segmentMin = i * segmentSize
+                point = segmentMin + (np.random.random() * segmentSize)
+                pointValue[i] = (point * (x[1, n] - x[0, n])) + x[0, n]
+            out[:, n] = pointValue
+
         # now randomly arrange the different segments
         return _mix(out)
-    
-    def _mix(data, dim='cols'):
+
+    def _mix(data, dim="cols"):
         """
         Takes a data matrix and mixes up the values along dim (either "rows" or 
         "cols"). In other words, if dim='rows', then each row's data is mixed
@@ -174,128 +181,144 @@ def lhd(dist=None,size=None,dims=1,form='randomized',iterations=100,
         data = np.atleast_2d(data)
         n = data.shape[0]
 
-        if dim=='rows':
+        if dim == "rows":
             data = data.T
 
         data_rank = list(range(n))
         for i in range(data.shape[1]):
             new_data_rank = np.random.permutation(data_rank)
-            vals, order = np.unique(np.hstack((data_rank, new_data_rank)), return_inverse=True)
+            vals, order = np.unique(
+                np.hstack((data_rank, new_data_rank)), return_inverse=True
+            )
             old_order = order[:n]
             new_order = order[-n:]
             tmp = data[np.argsort(old_order), i][new_order]
             data[:, i] = tmp[:]
-            
-        if dim=='rows':
+
+        if dim == "rows":
             data = data.T
 
         return data
-    
-    if form is 'randomized':
-        if hasattr(dist,'__getitem__'): # if multiple distributions were input
+
+    if form is "randomized":
+        if hasattr(dist, "__getitem__"):  # if multiple distributions were input
             nvars = len(dist)
-            x = np.vstack((np.zeros(nvars),np.ones(nvars)))
-            unif_data = _lhs(x,samples=size)
+            x = np.vstack((np.zeros(nvars), np.ones(nvars)))
+            unif_data = _lhs(x, samples=size)
             dist_data = np.empty_like(unif_data)
-            for i,d in enumerate(dist):
-                dist_data[:,i] = d.ppf(unif_data[:,i])
-                
-        else: # if a single distribution was input
+            for i, d in enumerate(dist):
+                dist_data[:, i] = d.ppf(unif_data[:, i])
+
+        else:  # if a single distribution was input
             nvars = dims
-            x = np.vstack((np.zeros(nvars),np.ones(nvars)))
-            unif_data = _lhs(x,samples=size)
+            x = np.vstack((np.zeros(nvars), np.ones(nvars)))
+            unif_data = _lhs(x, samples=size)
             dist_data = np.empty_like(unif_data)
             for i in range(nvars):
-                dist_data[:,i] = dist.ppf(unif_data[:,i])
-        
-    elif form is 'spacefilling':
+                dist_data[:, i] = dist.ppf(unif_data[:, i])
+
+    elif form is "spacefilling":
+
         def euclid_distance(arr):
             n = arr.shape[0]
             ans = 0.0
-            for i in range(n-1):
-                for j in range(i+1,n):
-                    d = np.sqrt(np.sum([(arr[i,k]-arr[j,k])**2 for k in range(arr.shape[1])]))
-                    ans += 1.0/d**2
+            for i in range(n - 1):
+                for j in range(i + 1, n):
+                    d = np.sqrt(
+                        np.sum(
+                            [(arr[i, k] - arr[j, k]) ** 2 for k in range(arr.shape[1])]
+                        )
+                    )
+                    ans += 1.0 / d ** 2
             return ans
-        
+
         def fill_space(data):
             best = 1e8
             for it in range(iterations):
                 d = euclid_distance(data)
-                if d<best:
+                if d < best:
                     d_opt = d
                     data_opt = data.copy()
-                
+
                 data = _mix(data)
-            
-            print('Optimized Distance:',d_opt)
+
+            print("Optimized Distance:", d_opt)
             return data_opt
 
-        if hasattr(dist,'__getitem__'): # if multiple distributions were input
+        if hasattr(dist, "__getitem__"):  # if multiple distributions were input
             nvars = len(dist)
-            x = np.vstack((np.zeros(nvars),np.ones(nvars)))
-            unif_data = fill_space(_lhs(x,samples=size))
+            x = np.vstack((np.zeros(nvars), np.ones(nvars)))
+            unif_data = fill_space(_lhs(x, samples=size))
             dist_data = np.empty_like(unif_data)
-            for i,d in enumerate(dist):
-                dist_data[:,i] = d.ppf(unif_data[:,i])
-                
-        else: # if a single distribution was input
+            for i, d in enumerate(dist):
+                dist_data[:, i] = d.ppf(unif_data[:, i])
+
+        else:  # if a single distribution was input
             nvars = dims
-            x = np.vstack((np.zeros(nvars),np.ones(nvars)))
-            unif_data = fill_space(_lhs(x,samples=size))
+            x = np.vstack((np.zeros(nvars), np.ones(nvars)))
+            unif_data = fill_space(_lhs(x, samples=size))
             dist_data = np.empty_like(unif_data)
             for i in range(nvars):
-                dist_data[:,i] = dist.ppf(unif_data[:,i])
-                
+                dist_data[:, i] = dist.ppf(unif_data[:, i])
 
-    elif form is 'orthogonal':
-        raise NotImplementedError("Sorry. The orthogonal space-filling algorithm hasn't been implemented yet.")
+    elif form is "orthogonal":
+        raise NotImplementedError(
+            "Sorry. The orthogonal space-filling algorithm hasn't been implemented yet."
+        )
     else:
-        raise ValueError('Invalid "form" value: %s'%(form))
+        raise ValueError('Invalid "form" value: %s' % (form))
 
-    if dist_data.shape[1]>1:
-        cor_matrix = np.zeros((nvars,nvars))
+    if dist_data.shape[1] > 1:
+        cor_matrix = np.zeros((nvars, nvars))
         for i in range(nvars):
             for j in range(nvars):
-                x_data = dist_data[:,i].copy()
-                y_data = dist_data[:,j].copy()
+                x_data = dist_data[:, i].copy()
+                y_data = dist_data[:, j].copy()
                 x_mean = x_data.mean()
                 y_mean = y_data.mean()
-                num = np.sum((x_data-x_mean)*(y_data-y_mean))
-                den = np.sqrt(np.sum((x_data-x_mean)**2)*np.sum((y_data-y_mean)**2))
-                cor_matrix[i,j] = num/den
-                cor_matrix[j,i] = num/den
+                num = np.sum((x_data - x_mean) * (y_data - y_mean))
+                den = np.sqrt(
+                    np.sum((x_data - x_mean) ** 2) * np.sum((y_data - y_mean) ** 2)
+                )
+                cor_matrix[i, j] = num / den
+                cor_matrix[j, i] = num / den
         inv_cor_matrix = np.linalg.pinv(cor_matrix)
         VIF = np.max(np.diag(inv_cor_matrix))
-            
+
         if showcorrelations:
-            print('Correlation Matrix:\n',cor_matrix)
-            print('Inverted Correlation Matrix:\n',inv_cor_matrix)
-            print('Variance Inflation Factor (VIF):',VIF)
-#        elif VIF >= 1:
-#            print 'WARNING: Variance Inflation Factor (%5.3f) indicates that there'%(VIF)
-#            print 'may be some undesirably large pairwise correlations present.'
-                
+            print("Correlation Matrix:\n", cor_matrix)
+            print("Inverted Correlation Matrix:\n", inv_cor_matrix)
+            print("Variance Inflation Factor (VIF):", VIF)
+    #        elif VIF >= 1:
+    #            print 'WARNING: Variance Inflation Factor (%5.3f) indicates that there'%(VIF)
+    #            print 'may be some undesirably large pairwise correlations present.'
+
     return dist_data
-    
-if __name__=='__main__':
+
+
+if __name__ == "__main__":
     # test single distribution
-    d0 = ss.uniform(loc=-1,scale=2) # uniform distribution,low=-1, width=2
-    print(lhd(dist=d0,size=5))
-    
+    d0 = ss.uniform(loc=-1, scale=2)  # uniform distribution,low=-1, width=2
+    print(lhd(dist=d0, size=5))
+
     # test single distribution for multiple variables
-    d1 = ss.norm(loc=0,scale=1) # normal distribution, mean=0, stdev=1
-    print(lhd(dist=d1,size=7,dims=5))
-    
+    d1 = ss.norm(loc=0, scale=1)  # normal distribution, mean=0, stdev=1
+    print(lhd(dist=d1, size=7, dims=5))
+
     # test multiple distributions
-    d2 = ss.beta(2,5) # beta distribution, alpha=2, beta=5
-    d3 = ss.expon(scale=1/1.5) # exponential distribution, lambda=1.5
-    print(lhd(dist=(d1,d2,d3),size=6))
-    
-    rand_lhs = lhd(dist=(d0,d1,d2,d3),size=100)
-    spac_lhs = lhd(dist=(d0,d1,d2,d3),size=100,form='spacefilling',
-                   iterations=100,showcorrelations=True)
-    
+    d2 = ss.beta(2, 5)  # beta distribution, alpha=2, beta=5
+    d3 = ss.expon(scale=1 / 1.5)  # exponential distribution, lambda=1.5
+    print(lhd(dist=(d1, d2, d3), size=6))
+
+    rand_lhs = lhd(dist=(d0, d1, d2, d3), size=100)
+    spac_lhs = lhd(
+        dist=(d0, d1, d2, d3),
+        size=100,
+        form="spacefilling",
+        iterations=100,
+        showcorrelations=True,
+    )
+
     try:
         from scatterplot_matrix import scatterplot_matrix as spm
         import matplotlib.pyplot as plt
@@ -303,11 +326,10 @@ if __name__=='__main__':
         print(rand_lhs)
         print(spac_lhs)
     else:
-        names = ['U(-1,1)','N(0,1)','Beta(2,5)','Exp(1.5)']
-        spm(rand_lhs.T,names=names)
-        plt.suptitle('Completely Random LHS Design')
+        names = ["U(-1,1)", "N(0,1)", "Beta(2,5)", "Exp(1.5)"]
+        spm(rand_lhs.T, names=names)
+        plt.suptitle("Completely Random LHS Design")
         plt.show()
-        spm(spac_lhs.T,names=names)
-        plt.suptitle('Space-Filling LHS Design')
+        spm(spac_lhs.T, names=names)
+        plt.suptitle("Space-Filling LHS Design")
         plt.show()
-        

@@ -12,7 +12,8 @@ Copyright: 2013
 from mcerp import UncertainFunction, to_uncertain_func
 import numpy as np
 
-__author__ = 'Abraham Lee'
+__author__ = "Abraham Lee"
+
 
 def abs(x):
     """
@@ -23,7 +24,8 @@ def abs(x):
         return UncertainFunction(mcpts)
     else:
         return np.abs(x)
-    
+
+
 def acos(x):
     """
     Inverse cosine
@@ -33,6 +35,7 @@ def acos(x):
         return UncertainFunction(mcpts)
     else:
         return np.arccos(x)
+
 
 def acosh(x):
     """
@@ -44,6 +47,7 @@ def acosh(x):
     else:
         return np.arccosh(x)
 
+
 def asin(x):
     """
     Inverse sine
@@ -53,6 +57,7 @@ def asin(x):
         return UncertainFunction(mcpts)
     else:
         return np.arcsin(x)
+
 
 def asinh(x):
     """
@@ -64,6 +69,7 @@ def asinh(x):
     else:
         return np.arcsinh(x)
 
+
 def atan(x):
     """
     Inverse tangent
@@ -73,6 +79,7 @@ def atan(x):
         return UncertainFunction(mcpts)
     else:
         return np.arctan(x)
+
 
 def atanh(x):
     """
@@ -84,6 +91,7 @@ def atanh(x):
     else:
         return np.arctanh(x)
 
+
 def ceil(x):
     """
     Ceiling function (round towards positive infinity)
@@ -93,6 +101,7 @@ def ceil(x):
         return UncertainFunction(mcpts)
     else:
         return np.ceil(x)
+
 
 def cos(x):
     """
@@ -104,6 +113,7 @@ def cos(x):
     else:
         return np.cos(x)
 
+
 def cosh(x):
     """
     Hyperbolic cosine
@@ -113,6 +123,7 @@ def cosh(x):
         return UncertainFunction(mcpts)
     else:
         return np.cosh(x)
+
 
 def degrees(x):
     """
@@ -124,6 +135,7 @@ def degrees(x):
     else:
         return np.degrees(x)
 
+
 def exp(x):
     """
     Exponential function
@@ -133,6 +145,7 @@ def exp(x):
         return UncertainFunction(mcpts)
     else:
         return np.exp(x)
+
 
 def expm1(x):
     """
@@ -144,6 +157,7 @@ def expm1(x):
     else:
         return np.expm1(x)
 
+
 def fabs(x):
     """
     Absolute value function
@@ -154,6 +168,7 @@ def fabs(x):
     else:
         return np.fabs(x)
 
+
 def floor(x):
     """
     Floor function (round towards negative infinity)
@@ -163,6 +178,7 @@ def floor(x):
         return UncertainFunction(mcpts)
     else:
         return np.floor(x)
+
 
 def hypot(x, y):
     """
@@ -176,11 +192,13 @@ def hypot(x, y):
     else:
         return np.hypot(x, y)
 
+
 def ln(x):
     """
     Natural logarithm (same as "log(x)")
     """
     return log(x)
+
 
 def log(x):
     """
@@ -192,6 +210,7 @@ def log(x):
     else:
         return np.log(x)
 
+
 def log10(x):
     """
     Base-10 logarithm
@@ -201,6 +220,7 @@ def log10(x):
         return UncertainFunction(mcpts)
     else:
         return np.log10(x)
+
 
 def log1p(x):
     """
@@ -212,6 +232,7 @@ def log1p(x):
     else:
         return np.log1p(x)
 
+
 def radians(x):
     """
     Convert degrees to radians
@@ -221,6 +242,7 @@ def radians(x):
         return UncertainFunction(mcpts)
     else:
         return np.radians(x)
+
 
 def sin(x):
     """
@@ -232,6 +254,7 @@ def sin(x):
     else:
         return np.sin(x)
 
+
 def sinh(x):
     """
     Hyperbolic sine
@@ -241,6 +264,7 @@ def sinh(x):
         return UncertainFunction(mcpts)
     else:
         return np.sinh(x)
+
 
 def sqrt(x):
     """
@@ -252,6 +276,7 @@ def sqrt(x):
     else:
         return np.sqrt(x)
 
+
 def tan(x):
     """
     Tangent
@@ -261,6 +286,7 @@ def tan(x):
         return UncertainFunction(mcpts)
     else:
         return np.tan(x)
+
 
 def tanh(x):
     """
@@ -272,6 +298,7 @@ def tanh(x):
     else:
         return np.tanh(x)
 
+
 def trunc(x):
     """
     Truncate the values to the integer value without rounding
@@ -281,5 +308,3 @@ def trunc(x):
         return UncertainFunction(mcpts)
     else:
         return np.trunc(x)
-
-    

@@ -13,16 +13,18 @@ import matplotlib.pyplot as plt
 from .lhd import lhd
 
 __version_info__ = (0, 11)
-__version__ = '.'.join(map(str, __version_info__))
+__version__ = ".".join(map(str, __version_info__))
 
-__author__ = 'Abraham Lee'
+__author__ = "Abraham Lee"
 
 npts = 10000
 
 CONSTANT_TYPES = (float, int, int)
 
+
 class NotUpcast(Exception):
-    'Raised when an object cannot be converted to a number with uncertainty'
+    "Raised when an object cannot be converted to a number with uncertainty"
+
 
 def to_uncertain_func(x):
     """
@@ -40,12 +42,10 @@ def to_uncertain_func(x):
     #! In Python 2.6+, numbers.Number could be used instead, here:
     elif isinstance(x, CONSTANT_TYPES):
         # No variable => no derivative to define:
-        return UncertainFunction([x]*npts)
-    
-    raise NotUpcast("%s cannot be converted to a number with"
-                    " uncertainty" % type(x))
-    
-    
+        return UncertainFunction([x] * npts)
+
+    raise NotUpcast("%s cannot be converted to a number with" " uncertainty" % type(x))
+
 
 class UncertainFunction(object):
     """
@@ -57,6 +57,7 @@ class UncertainFunction(object):
     
     
     """
+
     def __init__(self, mcpts):
         self._mcpts = np.atleast_1d(mcpts).flatten()
         self.tag = None
@@ -68,16 +69,16 @@ class UncertainFunction(object):
         """
         mn = np.mean(self._mcpts)
         return mn
-    
+
     @property
     def var(self):
         """
         Variance value as a result of an uncertainty calculation
         """
         mn = self.mean
-        vr = np.mean((self._mcpts - mn)**2)
+        vr = np.mean((self._mcpts - mn) ** 2)
         return vr
-        
+
     @property
     def std(self):
         """
@@ -88,8 +89,8 @@ class UncertainFunction(object):
             std = \/variance
             
         """
-        return self.var**0.5
-    
+        return self.var ** 0.5
+
     @property
     def skew(self):
         """
@@ -104,9 +105,9 @@ class UncertainFunction(object):
         """
         mn = self.mean
         sd = self.std
-        sk = 0.0 if abs(sd)<=1e-8 else np.mean((self._mcpts - mn)**3)/sd**3
+        sk = 0.0 if abs(sd) <= 1e-8 else np.mean((self._mcpts - mn) ** 3) / sd ** 3
         return sk
-    
+
     @property
     def kurt(self):
         """
@@ -121,9 +122,9 @@ class UncertainFunction(object):
         """
         mn = self.mean
         sd = self.std
-        kt = 0.0 if abs(sd)<=1e-8 else np.mean((self._mcpts - mn)**4)/sd**4
+        kt = 0.0 if abs(sd) <= 1e-8 else np.mean((self._mcpts - mn) ** 4) / sd ** 4
         return kt
-    
+
     @property
     def stats(self):
         """
@@ -135,7 +136,7 @@ class UncertainFunction(object):
         sk = self.skew
         kt = self.kurt
         return [mn, vr, sk, kt]
-    
+
     def percentile(self, val):
         """
         Get the distribution value at a given percentile or set of percentiles.
@@ -157,30 +158,34 @@ class UncertainFunction(object):
             # test to see if an input is given as an array
             out = [self.percentile(vi) for vi in val]
         except (ValueError, TypeError):
-            if val<=0:
+            if val <= 0:
                 out = float(min(self._mcpts))
-            elif val>=1:
+            elif val >= 1:
                 out = float(max(self._mcpts))
             else:
                 tmp = np.sort(self._mcpts)
-                n = val*(len(tmp) + 1)
+                n = val * (len(tmp) + 1)
                 k, d = int(n), n - int(n)
-                out = float(tmp[k] + d*(tmp[k + 1] - tmp[k]))
+                out = float(tmp[k] + d * (tmp[k + 1] - tmp[k]))
         if isinstance(val, np.ndarray):
             out = np.array(out)
         return out
-    
-    def _to_general_representation(self,str_func):
+
+    def _to_general_representation(self, str_func):
         mn, vr, sk, kt = self.stats
-        return ('uv({:}, {:}, {:}, {:})'.format(
-            str_func(mn), str_func(vr), str_func(sk), str_func(kt)) 
-            if any([vr, sk, kt]) else str_func(mn))
+        return (
+            "uv({:}, {:}, {:}, {:})".format(
+                str_func(mn), str_func(vr), str_func(sk), str_func(kt)
+            )
+            if any([vr, sk, kt])
+            else str_func(mn)
+        )
 
     def __str__(self):
         return self._to_general_representation(str)
 
     def __repr__(self):
-#        return self._to_general_representation(repr)
+        #        return self._to_general_representation(repr)
         return str(self)
 
     def describe(self, name=None):
@@ -222,17 +227,17 @@ class UncertainFunction(object):
          """
         mn, vr, sk, kt = self.stats
         if name is not None:
-            s = 'MCERP Uncertain Value ('+name+'):\n'
+            s = "MCERP Uncertain Value (" + name + "):\n"
         elif self.tag is not None:
-            s = 'MCERP Uncertain Value ('+self.tag+'):\n'
+            s = "MCERP Uncertain Value (" + self.tag + "):\n"
         else:
-            s = 'MCERP Uncertain Value:\n'
-        s += ' > Mean................... {: }\n'.format(mn)
-        s += ' > Variance............... {: }\n'.format(vr)
-        s += ' > Skewness Coefficient... {: }\n'.format(sk)
-        s += ' > Kurtosis Coefficient... {: }\n'.format(kt)
+            s = "MCERP Uncertain Value:\n"
+        s += " > Mean................... {: }\n".format(mn)
+        s += " > Variance............... {: }\n".format(vr)
+        s += " > Skewness Coefficient... {: }\n".format(sk)
+        s += " > Kurtosis Coefficient... {: }\n".format(kt)
         print(s)
-        
+
     def plot(self, hist=False, show=False, **kwargs):
         """
         Plot the distribution of the UncertainFunction. By default, the
@@ -254,17 +259,22 @@ class UncertainFunction(object):
         high = max(vals)
 
         p = ss.kde.gaussian_kde(vals)
-        xp = np.linspace(low,high,100)
+        xp = np.linspace(low, high, 100)
 
         if hist:
-            h = plt.hist(vals, bins=int(np.sqrt(len(vals)) + 0.5),
-                     histtype='stepfilled', normed=True, **kwargs)
-            plt.ylim(0, 1.1*h[0].max())
+            h = plt.hist(
+                vals,
+                bins=int(np.sqrt(len(vals)) + 0.5),
+                histtype="stepfilled",
+                normed=True,
+                **kwargs
+            )
+            plt.ylim(0, 1.1 * h[0].max())
         else:
             plt.plot(xp, p.evaluate(xp), **kwargs)
 
-        plt.xlim(low - (high - low)*0.1, high + (high - low)*0.1)
-        
+        plt.xlim(low - (high - low) * 0.1, high + (high - low) * 0.1)
+
         if show:
             self.show()
 
@@ -280,7 +290,7 @@ class UncertainFunction(object):
         uf = list(map(to_uncertain_func, [self, val]))
         mcpts = uf[0]._mcpts + uf[1]._mcpts
         return UncertainFunction(mcpts)
-        
+
     def __mul__(self, val):
         uf = list(map(to_uncertain_func, [self, val]))
         mcpts = uf[0]._mcpts * uf[1]._mcpts
@@ -290,7 +300,7 @@ class UncertainFunction(object):
         uf = list(map(to_uncertain_func, [self, val]))
         mcpts = uf[0]._mcpts * uf[1]._mcpts
         return UncertainFunction(mcpts)
-        
+
     def __sub__(self, val):
         uf = list(map(to_uncertain_func, [self, val]))
         mcpts = uf[0]._mcpts - uf[1]._mcpts
@@ -300,49 +310,49 @@ class UncertainFunction(object):
         uf = list(map(to_uncertain_func, [self, val]))
         mcpts = uf[1]._mcpts - uf[0]._mcpts
         return UncertainFunction(mcpts)
-        
+
     def __div__(self, val):
         uf = list(map(to_uncertain_func, [self, val]))
-        mcpts = uf[0]._mcpts/uf[1]._mcpts
+        mcpts = uf[0]._mcpts / uf[1]._mcpts
         return UncertainFunction(mcpts)
 
     def __rdiv__(self, val):
         uf = list(map(to_uncertain_func, [self, val]))
-        mcpts = uf[1]._mcpts/uf[0]._mcpts
+        mcpts = uf[1]._mcpts / uf[0]._mcpts
         return UncertainFunction(mcpts)
-        
+
     def __truediv__(self, val):
         uf = list(map(to_uncertain_func, [self, val]))
-        mcpts = uf[0]._mcpts/uf[1]._mcpts
+        mcpts = uf[0]._mcpts / uf[1]._mcpts
         return UncertainFunction(mcpts)
 
     def __rtruediv__(self, val):
         uf = list(map(to_uncertain_func, [self, val]))
-        mcpts = uf[1]._mcpts/uf[0]._mcpts
+        mcpts = uf[1]._mcpts / uf[0]._mcpts
         return UncertainFunction(mcpts)
-        
+
     def __pow__(self, val):
         uf = list(map(to_uncertain_func, [self, val]))
-        mcpts = uf[0]._mcpts**uf[1]._mcpts
+        mcpts = uf[0]._mcpts ** uf[1]._mcpts
         return UncertainFunction(mcpts)
 
     def __rpow__(self, val):
         uf = list(map(to_uncertain_func, [self, val]))
-        mcpts = uf[1]._mcpts**uf[0]._mcpts
+        mcpts = uf[1]._mcpts ** uf[0]._mcpts
         return UncertainFunction(mcpts)
-    
+
     def __neg__(self):
         mcpts = -self._mcpts
         return UncertainFunction(mcpts)
-        
+
     def __pos__(self):
         mcpts = self._mcpts
         return UncertainFunction(mcpts)
-    
+
     def __abs__(self):
         mcpts = np.abs(self._mcpts)
         return UncertainFunction(mcpts)
-    
+
     def __eq__(self, val):
         """
         If we are comparing two distributions, check the resulting moments. If
@@ -379,14 +389,14 @@ class UncertainFunction(object):
             diff = self - val
             return not (diff.mean or diff.var or diff.skew or diff.kurt)
         else:
-            return len(self._mcpts[self._mcpts==val])/float(npts)
-    
+            return len(self._mcpts[self._mcpts == val]) / float(npts)
+
     def __ne__(self, val):
         if isinstance(val, UncertainFunction):
-            return not self==val
+            return not self == val
         else:
-            return 1 - (self==val)
-    
+            return 1 - (self == val)
+
     def __lt__(self, val):
         """
         If we are comparing two distributions, perform statistical tests,
@@ -396,19 +406,19 @@ class UncertainFunction(object):
         if isinstance(val, UncertainFunction):
             tstat, pval = ss.ttest_rel(self._mcpts, val._mcpts)
             sgn = np.sign(tstat)
-            if pval>0.05:  # Since, statistically, we can't really tell
+            if pval > 0.05:  # Since, statistically, we can't really tell
                 return False
             else:
-                return True if sgn==-1 else False
+                return True if sgn == -1 else False
         else:
-            return len(self._mcpts[self._mcpts<val])/float(npts)
-    
+            return len(self._mcpts[self._mcpts < val]) / float(npts)
+
     def __le__(self, val):
         if isinstance(val, UncertainFunction):
-            return self<val  # since it doesn't matter to the test
+            return self < val  # since it doesn't matter to the test
         else:
-            return len(self._mcpts[self._mcpts<=val])/float(npts)
-    
+            return len(self._mcpts[self._mcpts <= val]) / float(npts)
+
     def __gt__(self, val):
         """
         If we are comparing two distributions, perform statistical tests,
@@ -418,23 +428,25 @@ class UncertainFunction(object):
         if isinstance(val, UncertainFunction):
             tstat, pval = ss.ttest_rel(self._mcpts, val._mcpts)
             sgn = np.sign(tstat)
-            if pval>0.05:  # Since, statistically, we can't really tell
+            if pval > 0.05:  # Since, statistically, we can't really tell
                 return False
             else:
-                return True if sgn==1 else False
+                return True if sgn == 1 else False
         else:
-            return 1 - (self<=val)
-    
+            return 1 - (self <= val)
+
     def __ge__(self, val):
         if isinstance(val, UncertainFunction):
-            return self>val
+            return self > val
         else:
-            return 1 - (self<val)
+            return 1 - (self < val)
 
     def __bool__(self):
-        return not (1 - ((self>0) + (self<0)))
+        return not (1 - ((self > 0) + (self < 0)))
+
 
 ################################################################################
+
 
 class UncertainVariable(UncertainFunction):
     """
@@ -624,17 +636,18 @@ class UncertainVariable(UncertainFunction):
     Pois
         
     """
-    
+
     def __init__(self, rv, tag=None):
-        
-        assert hasattr(rv, 'dist'), 'Input must be a  distribution from ' + \
-            'the scipy.stats module.'
+
+        assert hasattr(rv, "dist"), (
+            "Input must be a  distribution from " + "the scipy.stats module."
+        )
         self.rv = rv
-        
+
         # generate the latin-hypercube points
         self._mcpts = lhd(dist=self.rv, size=npts).flatten()
         self.tag = tag
-        
+
     def plot(self, hist=False, show=False, **kwargs):
         """
         Plot the distribution of the UncertainVariable. Continuous 
@@ -652,33 +665,38 @@ class UncertainVariable(UncertainFunction):
         kwargs : any valid matplotlib.pyplot.plot kwarg
         
         """
-        
+
         if hist:
             vals = self._mcpts
             low = vals.min()
             high = vals.max()
-            h = plt.hist(vals, bins=int(np.sqrt(len(vals)) + 0.5),
-                     histtype='stepfilled', normed=True, **kwargs)
-            plt.ylim(0, 1.1*h[0].max())
+            h = plt.hist(
+                vals,
+                bins=int(np.sqrt(len(vals)) + 0.5),
+                histtype="stepfilled",
+                normed=True,
+                **kwargs
+            )
+            plt.ylim(0, 1.1 * h[0].max())
         else:
             bound = 0.0001
             low = self.rv.ppf(bound)
             high = self.rv.ppf(1 - bound)
-            if hasattr(self.rv.dist, 'pmf'):
+            if hasattr(self.rv.dist, "pmf"):
                 low = int(low)
                 high = int(high)
                 vals = list(range(low, high + 1))
-                plt.plot(vals, self.rv.pmf(vals), 'o', **kwargs)
+                plt.plot(vals, self.rv.pmf(vals), "o", **kwargs)
             else:
                 vals = np.linspace(low, high, 500)
                 plt.plot(vals, self.rv.pdf(vals), **kwargs)
-        plt.xlim(low - (high - low)*0.1, high + (high - low)*0.1)
-        
+        plt.xlim(low - (high - low) * 0.1, high + (high - low) * 0.1)
+
         if show:
             self.show()
-                
-        
-uv = UncertainVariable # a nicer form for the user
+
+
+uv = UncertainVariable  # a nicer form for the user
 
 # DON'T MOVE THIS IMPORT!!! The prior definitions must be in place before
 # importing the correlation-related functions
@@ -688,13 +706,14 @@ from . import stats
 
 ###############################################################################
 # Define some convenience constructors for common statistical distributions.
-# Hopefully these are a little easier/more intuitive to use than the 
+# Hopefully these are a little easier/more intuitive to use than the
 # scipy.stats.distributions.
 ###############################################################################
 
 ###############################################################################
 # CONTINUOUS DISTRIBUTIONS
 ###############################################################################
+
 
 def Beta(alpha, beta, low=0, high=1, tag=None):
     """
@@ -714,11 +733,15 @@ def Beta(alpha, beta, low=0, high=1, tag=None):
     high : scalar
         Upper bound of the distribution support (default=1)
     """
-    assert alpha>0 and beta>0, 'Beta "alpha" and "beta" parameters must be greater than zero'
-    assert low<high, 'Beta "low" must be less than "high"'
-    return uv(ss.beta(alpha, beta, loc=low, scale=high-low), tag=tag)
+    assert (
+        alpha > 0 and beta > 0
+    ), 'Beta "alpha" and "beta" parameters must be greater than zero'
+    assert low < high, 'Beta "low" must be less than "high"'
+    return uv(ss.beta(alpha, beta, loc=low, scale=high - low), tag=tag)
+
 
 ###############################################################################
+
 
 def BetaPrime(alpha, beta, tag=None):
     """
@@ -732,11 +755,15 @@ def BetaPrime(alpha, beta, tag=None):
         The second shape parameter
     
     """
-    assert alpha>0 and beta>0, 'BetaPrime "alpha" and "beta" parameters must be greater than zero'
+    assert (
+        alpha > 0 and beta > 0
+    ), 'BetaPrime "alpha" and "beta" parameters must be greater than zero'
     x = Beta(alpha, beta, tag)
-    return x/(1-x)
+    return x / (1 - x)
+
 
 ###############################################################################
+
 
 def Bradford(q, low=0, high=1, tag=None):
     """
@@ -751,11 +778,13 @@ def Bradford(q, low=0, high=1, tag=None):
     high : scalar
         The upper bound of the distribution (default=1)
     """
-    assert q>0, 'Bradford "q" parameter must be greater than zero'
-    assert low<high, 'Bradford "low" parameter must be less than "high"'
-    return uv(ss.bradford(q, loc=low, scale=high-low), tag=tag)
+    assert q > 0, 'Bradford "q" parameter must be greater than zero'
+    assert low < high, 'Bradford "low" parameter must be less than "high"'
+    return uv(ss.bradford(q, loc=low, scale=high - low), tag=tag)
+
 
 ###############################################################################
+
 
 def Burr(c, k, tag=None):
     """
@@ -769,10 +798,12 @@ def Burr(c, k, tag=None):
         The second shape parameter
     
     """
-    assert c>0 and k>0, 'Burr "c" and "k" parameters must be greater than zero'
+    assert c > 0 and k > 0, 'Burr "c" and "k" parameters must be greater than zero'
     return uv(ss.burr(c, k), tag=tag)
 
+
 ###############################################################################
+
 
 def ChiSquared(k, tag=None):
     """
@@ -783,12 +814,14 @@ def ChiSquared(k, tag=None):
     k : int
         The degrees of freedom of the distribution (must be greater than one)
     """
-    assert int(k)==k and k>=1, 'Chi-Squared "k" must be an integer greater than 0'
+    assert int(k) == k and k >= 1, 'Chi-Squared "k" must be an integer greater than 0'
     return uv(ss.chi2(k), tag=tag)
+
 
 Chi2 = ChiSquared  # for more concise use
 
 ###############################################################################
+
 
 def Erf(h, tag=None):
     """
@@ -803,10 +836,12 @@ def Erf(h, tag=None):
     h : scalar
         The scale parameter.
     """
-    assert h>0, 'Erf "h" must be greater than zero'
-    return Normal(0, 1/(h*2**0.5), tag)
+    assert h > 0, 'Erf "h" must be greater than zero'
+    return Normal(0, 1 / (h * 2 ** 0.5), tag)
+
 
 ###############################################################################
+
 
 def Erlang(k, lamda, tag=None):
     """
@@ -824,11 +859,13 @@ def Erlang(k, lamda, tag=None):
     lamda : scalar
         The scale parameter (must be greater than zero)
     """
-    assert int(k)==k and k>0, 'Erlang "k" must be a positive integer'
-    assert lamda>0, 'Erlang "lamda" must be greater than zero'
+    assert int(k) == k and k > 0, 'Erlang "k" must be a positive integer'
+    assert lamda > 0, 'Erlang "lamda" must be greater than zero'
     return Gamma(k, lamda, tag)
 
+
 ###############################################################################
+
 
 def Exponential(lamda, tag=None):
     """
@@ -839,12 +876,14 @@ def Exponential(lamda, tag=None):
     lamda : scalar
         The inverse scale (as shown on Wikipedia). (FYI: mu = 1/lamda.)
     """
-    assert lamda>0, 'Exponential "lamda" must be greater than zero'
-    return uv(ss.expon(scale=1.0/lamda), tag=tag)
+    assert lamda > 0, 'Exponential "lamda" must be greater than zero'
+    return uv(ss.expon(scale=1.0 / lamda), tag=tag)
+
 
 Exp = Exponential  # for more concise use
 
 ###############################################################################
+
 
 def ExtValueMax(mu, sigma, tag=None):
     """
@@ -857,13 +896,15 @@ def ExtValueMax(mu, sigma, tag=None):
     sigma : scalar
         The scale parameter (must be greater than zero)
     """
-    assert sigma>0, 'ExtremeValueMax "sigma" must be greater than zero'
+    assert sigma > 0, 'ExtremeValueMax "sigma" must be greater than zero'
     p = U(0, 1)._mcpts[:]
-    return UncertainFunction(mu - sigma*np.log(-np.log(p)), tag=tag)
+    return UncertainFunction(mu - sigma * np.log(-np.log(p)), tag=tag)
+
 
 EVMax = ExtValueMax  # for more concise use
 
 ###############################################################################
+
 
 def ExtValueMin(mu, sigma, tag=None):
     """
@@ -876,13 +917,15 @@ def ExtValueMin(mu, sigma, tag=None):
     sigma : scalar
         The scale parameter (must be greater than zero)
     """
-    assert sigma>0, 'ExtremeValueMin "sigma" must be greater than zero'
+    assert sigma > 0, 'ExtremeValueMin "sigma" must be greater than zero'
     p = U(0, 1)._mcpts[:]
-    return UncertainFunction(mu + sigma*np.log(-np.log(1-p)), tag=tag)
+    return UncertainFunction(mu + sigma * np.log(-np.log(1 - p)), tag=tag)
+
 
 EVMin = ExtValueMin  # for more concise use
 
 ###############################################################################
+
 
 def Fisher(d1, d2, tag=None):
     """
@@ -895,13 +938,19 @@ def Fisher(d1, d2, tag=None):
     d2 : int
         Denominator degrees of freedom
     """
-    assert int(d1)==d1 and d1>=1, 'Fisher (F) "d1" must be an integer greater than 0'
-    assert int(d2)==d2 and d2>=1, 'Fisher (F) "d2" must be an integer greater than 0'
+    assert (
+        int(d1) == d1 and d1 >= 1
+    ), 'Fisher (F) "d1" must be an integer greater than 0'
+    assert (
+        int(d2) == d2 and d2 >= 1
+    ), 'Fisher (F) "d2" must be an integer greater than 0'
     return uv(ss.f(d1, d2), tag=tag)
+
 
 F = Fisher  # for more concise use
 
 ###############################################################################
+
 
 def Gamma(k, theta, tag=None):
     """
@@ -914,10 +963,14 @@ def Gamma(k, theta, tag=None):
     theta : scalar
         The scale parameter (must be positive and non-zero)
     """
-    assert k>0 and theta>0, 'Gamma "k" and "theta" parameters must be greater than zero'
+    assert (
+        k > 0 and theta > 0
+    ), 'Gamma "k" and "theta" parameters must be greater than zero'
     return uv(ss.gamma(k, scale=theta), tag=tag)
 
+
 ###############################################################################
+
 
 def LogNormal(mu, sigma, tag=None):
     """
@@ -930,12 +983,14 @@ def LogNormal(mu, sigma, tag=None):
     sigma : scalar
         The scale parameter (must be positive and non-zero)
     """
-    assert sigma>0, 'Log-Normal "sigma" must be positive'
+    assert sigma > 0, 'Log-Normal "sigma" must be positive'
     return uv(ss.lognorm(sigma, loc=mu), tag=tag)
+
 
 LogN = LogNormal  # for more concise use
 
 ###############################################################################
+
 
 def Normal(mu, sigma, tag=None):
     """
@@ -948,12 +1003,14 @@ def Normal(mu, sigma, tag=None):
     sigma : scalar
         The standard deviation (must be positive and non-zero)
     """
-    assert sigma>0, 'Normal "sigma" must be greater than zero'
+    assert sigma > 0, 'Normal "sigma" must be greater than zero'
     return uv(ss.norm(loc=mu, scale=sigma), tag=tag)
+
 
 N = Normal  # for more concise use
 
 ###############################################################################
+
 
 def Pareto(q, a, tag=None):
     """
@@ -966,11 +1023,13 @@ def Pareto(q, a, tag=None):
     a : scalar
         The shape parameter (the minimum possible value)
     """
-    assert q>0 and a>0, 'Pareto "q" and "a" must be positive scalars'
+    assert q > 0 and a > 0, 'Pareto "q" and "a" must be positive scalars'
     p = Uniform(0, 1, tag)
-    return a*(1 - p)**(-1.0/q)
+    return a * (1 - p) ** (-1.0 / q)
+
 
 ###############################################################################
+
 
 def Pareto2(q, b, tag=None):
     """
@@ -984,10 +1043,12 @@ def Pareto2(q, b, tag=None):
     b : scalar
         The shape parameter
     """
-    assert q>0 and b>0, 'Pareto2 "q" and "b" must be positive scalars'
+    assert q > 0 and b > 0, 'Pareto2 "q" and "b" must be positive scalars'
     return Pareto(q, b, tag) - b
 
+
 ###############################################################################
+
 
 def PERT(low, peak, high, g=4.0, tag=None):
     """
@@ -1011,18 +1072,20 @@ def PERT(low, peak, high, g=4.0, tag=None):
         the peak. (Default: 4)
     """
     a, b, c = [float(x) for x in [low, peak, high]]
-    assert a<=b<=c, 'PERT "peak" must be greater than "low" and less than "high"'
-    assert g>=0, 'PERT "g" must be non-negative'
-    mu = (a + g*b + c)/(g + 2)
-    if mu==b:
+    assert a <= b <= c, 'PERT "peak" must be greater than "low" and less than "high"'
+    assert g >= 0, 'PERT "g" must be non-negative'
+    mu = (a + g * b + c) / (g + 2)
+    if mu == b:
         a1 = a2 = 3.0
     else:
-        a1 = ((mu - a)*(2*b - a - c))/((b - mu)*(c - a))
-        a2 = a1*(c - mu)/(mu - a)
-        
+        a1 = ((mu - a) * (2 * b - a - c)) / ((b - mu) * (c - a))
+        a2 = a1 * (c - mu) / (mu - a)
+
     return Beta(a1, a2, a, c, tag)
 
+
 ###############################################################################
+
 
 def StudentT(v, tag=None):
     """
@@ -1033,12 +1096,14 @@ def StudentT(v, tag=None):
     v : int
         The degrees of freedom of the distribution (must be greater than one)
     """
-    assert int(v)==v and v>=1, 'Student-T "v" must be an integer greater than 0'
+    assert int(v) == v and v >= 1, 'Student-T "v" must be an integer greater than 0'
     return uv(ss.t(v), tag=tag)
+
 
 T = StudentT  # for more concise use
 
 ###############################################################################
+
 
 def Triangular(low, peak, high, tag=None):
     """
@@ -1053,14 +1118,18 @@ def Triangular(low, peak, high, tag=None):
     high : scalar
         Upper bound of the distribution support
     """
-    assert low<=peak<=high, 'Triangular "peak" must lie between "low" and "high"'
+    assert low <= peak <= high, 'Triangular "peak" must lie between "low" and "high"'
     low, peak, high = [float(x) for x in [low, peak, high]]
-    return uv(ss.triang((1.0*peak - low)/(high - low), loc=low, 
-        scale=(high - low)), tag=tag)
+    return uv(
+        ss.triang((1.0 * peak - low) / (high - low), loc=low, scale=(high - low)),
+        tag=tag,
+    )
+
 
 Tri = Triangular  # for more concise use
 
 ###############################################################################
+
 
 def Uniform(low, high, tag=None):
     """
@@ -1073,12 +1142,14 @@ def Uniform(low, high, tag=None):
     high : scalar
         Upper bound of the distribution support.
     """
-    assert low<high, 'Uniform "low" must be less than "high"'
-    return uv(ss.uniform(loc=low, scale=high-low), tag=tag)
+    assert low < high, 'Uniform "low" must be less than "high"'
+    return uv(ss.uniform(loc=low, scale=high - low), tag=tag)
+
 
 U = Uniform  # for more concise use
 
 ###############################################################################
+
 
 def Weibull(lamda, k, tag=None):
     """
@@ -1091,14 +1162,18 @@ def Weibull(lamda, k, tag=None):
     k : scalar
         The shape parameter
     """
-    assert lamda>0 and k>0, 'Weibull "lamda" and "k" parameters must be greater than zero'
+    assert (
+        lamda > 0 and k > 0
+    ), 'Weibull "lamda" and "k" parameters must be greater than zero'
     return uv(ss.exponweib(lamda, k), tag=tag)
+
 
 Weib = Weibull  # for more concise use
 
 ###############################################################################
 # DISCRETE DISTRIBUTIONS
 ###############################################################################
+
 
 def Bernoulli(p, tag=None):
     """
@@ -1109,12 +1184,16 @@ def Bernoulli(p, tag=None):
     p : scalar
         The probability of success
     """
-    assert 0<p<1, 'Bernoulli probability "p" must be between zero and one, non-inclusive'
+    assert (
+        0 < p < 1
+    ), 'Bernoulli probability "p" must be between zero and one, non-inclusive'
     return uv(ss.bernoulli(p), tag=tag)
+
 
 Bern = Bernoulli  # for more concise use
 
 ###############################################################################
+
 
 def Binomial(n, p, tag=None):
     """
@@ -1127,13 +1206,19 @@ def Binomial(n, p, tag=None):
     p : scalar
         The probability of success
     """
-    assert int(n)==n and n>0, 'Binomial number of trials "n" must be an integer greater than zero'
-    assert 0<p<1, 'Binomial probability "p" must be between zero and one, non-inclusive'
+    assert (
+        int(n) == n and n > 0
+    ), 'Binomial number of trials "n" must be an integer greater than zero'
+    assert (
+        0 < p < 1
+    ), 'Binomial probability "p" must be between zero and one, non-inclusive'
     return uv(ss.binom(n, p), tag=tag)
+
 
 B = Binomial  # for more concise use
 
 ###############################################################################
+
 
 def Geometric(p, tag=None):
     """
@@ -1144,12 +1229,16 @@ def Geometric(p, tag=None):
     p : scalar
         The probability of success
     """
-    assert 0<p<1, 'Geometric probability "p" must be between zero and one, non-inclusive'
+    assert (
+        0 < p < 1
+    ), 'Geometric probability "p" must be between zero and one, non-inclusive'
     return uv(ss.geom(p), tag=tag)
+
 
 G = Geometric  # for more concise use
 
 ###############################################################################
+
 
 def Hypergeometric(N, n, K, tag=None):
     """
@@ -1185,14 +1274,22 @@ def Hypergeometric(N, n, K, tag=None):
         0.0039645830580151975
         
     """
-    assert int(N)==N and N>0, 'Hypergeometric total population size "N" must be an integer greater than zero.'
-    assert int(n)==n and 0<n<=N, 'Hypergeometric interest population size "n" must be an integer greater than zero and no more than the total population size.'
-    assert int(K)==K and 0<K<=N, 'Hypergeometric chosen population size "K" must be an integer greater than zero and no more than the total population size.'
+    assert (
+        int(N) == N and N > 0
+    ), 'Hypergeometric total population size "N" must be an integer greater than zero.'
+    assert (
+        int(n) == n and 0 < n <= N
+    ), 'Hypergeometric interest population size "n" must be an integer greater than zero and no more than the total population size.'
+    assert (
+        int(K) == K and 0 < K <= N
+    ), 'Hypergeometric chosen population size "K" must be an integer greater than zero and no more than the total population size.'
     return uv(ss.hypergeom(N, n, K), tag=tag)
+
 
 H = Hypergeometric  # for more concise use
 
 ###############################################################################
+
 
 def Poisson(lamda, tag=None):
     """
@@ -1203,14 +1300,16 @@ def Poisson(lamda, tag=None):
     lamda : scalar
         The rate of an occurance within a specified interval of time or space.
     """
-    assert lamda>0, 'Poisson "lamda" must be greater than zero.'
+    assert lamda > 0, 'Poisson "lamda" must be greater than zero.'
     return uv(ss.poisson(lamda), tag=tag)
+
 
 Pois = Poisson  # for more concise use
 
 ###############################################################################
 # STATISTICAL FUNCTIONS
 ###############################################################################
+
 
 def covariance_matrix(nums_with_uncert):
     """
@@ -1239,25 +1338,26 @@ def covariance_matrix(nums_with_uncert):
          [  1.00477488e-02   2.00218642e-02   5.00914772e-02]]
 
     """
-    ufuncs = list(map(to_uncertain_func,nums_with_uncert))
+    ufuncs = list(map(to_uncertain_func, nums_with_uncert))
     cov_matrix = []
     for (i1, expr1) in enumerate(ufuncs):
         coefs_expr1 = []
         mean1 = expr1.mean
-        for (i2, expr2) in enumerate(ufuncs[:i1+1]):
+        for (i2, expr2) in enumerate(ufuncs[: i1 + 1]):
             mean2 = expr2.mean
-            coef = np.mean((expr1._mcpts - mean1)*(expr2._mcpts - mean2))
+            coef = np.mean((expr1._mcpts - mean1) * (expr2._mcpts - mean2))
             coefs_expr1.append(coef)
         cov_matrix.append(coefs_expr1)
-        
+
     # We symmetrize the matrix:
     for (i, covariance_coefs) in enumerate(cov_matrix):
-        covariance_coefs.extend(cov_matrix[j][i]
-                                for j in range(i+1, len(cov_matrix)))
+        covariance_coefs.extend(cov_matrix[j][i] for j in range(i + 1, len(cov_matrix)))
 
     return cov_matrix
 
+
 ###############################################################################
+
 
 def correlation_matrix(nums_with_uncert):
     """
@@ -1289,82 +1389,83 @@ def correlation_matrix(nums_with_uncert):
     ufuncs = list(map(to_uncertain_func, nums_with_uncert))
     data = np.vstack([ufunc._mcpts for ufunc in ufuncs])
     return np.corrcoef(data.T, rowvar=0)
-    
-if __name__=='__main__':
-    
+
+
+if __name__ == "__main__":
+
     import mcerp.umath as umath
-    
-    print('*'*80)
-    print('TEST FUNCTIONS USING DERIVED MOMENTS FROM SCIPY DISTRIBUTIONS')
-    print('*'*80)
-    print('Example of a three part assembly')
+
+    print("*" * 80)
+    print("TEST FUNCTIONS USING DERIVED MOMENTS FROM SCIPY DISTRIBUTIONS")
+    print("*" * 80)
+    print("Example of a three part assembly")
     x1 = N(24, 1)
     x2 = N(37, 4)
     x3 = Exp(2)  # Exp(mu=0.5) is the same
-    Z = (x1*x2**2)/(15*(1.5 + x3))
+    Z = (x1 * x2 ** 2) / (15 * (1.5 + x3))
     Z.describe()
-    
-    print('*'*80)
-    print('Example of volumetric gas flow through orifice meter')
+
+    print("*" * 80)
+    print("Example of volumetric gas flow through orifice meter")
     H = N(64, 0.5)
     M = N(16, 0.1)
     P = N(361, 2)
     t = N(165, 0.5)
     C = 38.4
-    Q = C*umath.sqrt((520*H*P)/(M*(t + 460)))
+    Q = C * umath.sqrt((520 * H * P) / (M * (t + 460)))
     Q.describe()
 
-    print('*'*80)
-    print('Example of manufacturing tolerance stackup')
+    print("*" * 80)
+    print("Example of manufacturing tolerance stackup")
     # for a gamma distribution we need the following conversions:
     # shape = mean**2/var
     # scale = var/mean
     mn = 1.5
     vr = 0.25
-    k = mn**2/vr
-    theta = vr/mn
+    k = mn ** 2 / vr
+    theta = vr / mn
     x = Gamma(k, theta)
     y = Gamma(k, theta)
     z = Gamma(k, theta)
     w = x + y + z
     w.describe()
 
-    print('*'*80)
-    print('Example of scheduling facilities (six stations)')
+    print("*" * 80)
+    print("Example of scheduling facilities (six stations)")
     s1 = N(10, 1)
-    s2 = N(20, 2**0.5)
+    s2 = N(20, 2 ** 0.5)
     mn1 = 1.5
     vr1 = 0.25
-    k1 = mn1**2/vr1
-    theta1 = vr1/mn1
+    k1 = mn1 ** 2 / vr1
+    theta1 = vr1 / mn1
     s3 = Gamma(k1, theta1)
     mn2 = 10
     vr2 = 10
-    k2 = mn2**2/vr2
-    theta2 = vr2/mn2
+    k2 = mn2 ** 2 / vr2
+    theta2 = vr2 / mn2
     s4 = Gamma(k2, theta2)
     s5 = Exp(5)  # Exp(mu=0.2) is the same
     s6 = Chi2(10)
     T = s1 + s2 + s3 + s4 + s5 + s6
     T.describe()
 
-    print('*'*80)
-    print('Example of two-bar truss stress/deflection analysis')
-    H = N(30, 5/3., tag='H')
-    B = N(60, 0.5/3., tag='B')
-    d = N(3, 0.1/3, tag='d')
-    t = N(0.15, 0.01/3, tag='t')
-    E = N(30000, 1500/3., tag='E')
-    rho = N(0.3, 0.01/3., tag='rho')
-    P = N(66, 3/3., tag='P')
+    print("*" * 80)
+    print("Example of two-bar truss stress/deflection analysis")
+    H = N(30, 5 / 3.0, tag="H")
+    B = N(60, 0.5 / 3.0, tag="B")
+    d = N(3, 0.1 / 3, tag="d")
+    t = N(0.15, 0.01 / 3, tag="t")
+    E = N(30000, 1500 / 3.0, tag="E")
+    rho = N(0.3, 0.01 / 3.0, tag="rho")
+    P = N(66, 3 / 3.0, tag="P")
     pi = np.pi
-    wght = 2*pi*rho*d*t*umath.sqrt((B/2)**2 + H**2)
-    strs = (P*umath.sqrt((B/2)**2 + H**2))/(2*pi*d*t*H)
-    buck = (pi**2*E*(d**2 + t**2))/(8*((B/2)**2 + H**2))
-    defl = (P*((B/2)**2 + H**2)**(1.5))/(2*pi*d*t*H**2*E)
-    print(wght.describe('wght'))
-    print(strs.describe('strs'))
-    print(buck.describe('buck'))
-    print(defl.describe('defl'))
+    wght = 2 * pi * rho * d * t * umath.sqrt((B / 2) ** 2 + H ** 2)
+    strs = (P * umath.sqrt((B / 2) ** 2 + H ** 2)) / (2 * pi * d * t * H)
+    buck = (pi ** 2 * E * (d ** 2 + t ** 2)) / (8 * ((B / 2) ** 2 + H ** 2))
+    defl = (P * ((B / 2) ** 2 + H ** 2) ** (1.5)) / (2 * pi * d * t * H ** 2 * E)
+    print(wght.describe("wght"))
+    print(strs.describe("strs"))
+    print(buck.describe("buck"))
+    print(defl.describe("defl"))
 
-    print('** TESTS COMPLETE **')
+    print("** TESTS COMPLETE **")
