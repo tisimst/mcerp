@@ -3,19 +3,17 @@ from .. import N, Exp, Gamma, Chi2
 import mcerp.umath as umath
 
 
-def test():
-    print("*" * 80)
-    print("TEST FUNCTIONS USING DERIVED MOMENTS FROM SCIPY DISTRIBUTIONS")
-    print("*" * 80)
-    print("Example of a three part assembly")
+def test_three_part_assembly():
+    """Example of a three part assembly"""
     x1 = N(24, 1)
     x2 = N(37, 4)
     x3 = Exp(2)  # Exp(mu=0.5) is the same
     Z = (x1 * x2 ** 2) / (15 * (1.5 + x3))
     Z.describe()
 
-    print("*" * 80)
-    print("Example of volumetric gas flow through orifice meter")
+
+def test_volumetric_gas_flow():
+    """Example of volumetric gas flow through orifice meter"""
     H = N(64, 0.5)
     M = N(16, 0.1)
     P = N(361, 2)
@@ -24,8 +22,9 @@ def test():
     Q = C * umath.sqrt((520 * H * P) / (M * (t + 460)))
     Q.describe()
 
-    print("*" * 80)
-    print("Example of manufacturing tolerance stackup")
+
+def test_manufacturing_tolerance_stackup():
+    """Example of manufacturing tolerance stackup"""
     # for a gamma distribution we need the following conversions:
     # shape = mean**2/var
     # scale = var/mean
@@ -39,8 +38,9 @@ def test():
     w = x + y + z
     w.describe()
 
-    print("*" * 80)
-    print("Example of scheduling facilities (six stations)")
+
+def test_scheduling():
+    """Example of scheduling facilities (six stations)"""
     s1 = N(10, 1)
     s2 = N(20, 2 ** 0.5)
     mn1 = 1.5
@@ -58,8 +58,9 @@ def test():
     T = s1 + s2 + s3 + s4 + s5 + s6
     T.describe()
 
-    print("*" * 80)
-    print("Example of two-bar truss stress/deflection analysis")
+
+def test_two_bar_truss_analysis():
+    """Example of two-bar truss stress/deflection analysis"""
     H = N(30, 5 / 3.0, tag="H")
     B = N(60, 0.5 / 3.0, tag="B")
     d = N(3, 0.1 / 3, tag="d")
@@ -76,5 +77,3 @@ def test():
     print(strs.describe("strs"))
     print(buck.describe("buck"))
     print(defl.describe("defl"))
-
-    print("** TESTS COMPLETE **")

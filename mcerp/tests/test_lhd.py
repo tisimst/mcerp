@@ -1,3 +1,4 @@
+import pytest
 from ..lhd import ss, lhd
 
 
@@ -24,6 +25,8 @@ def test():
         showcorrelations=True,
     )
 
+    pytest.importorskip('matplotlib')
+    pytest.importorskip('scatterplot_matrix')
     try:
         from scatterplot_matrix import scatterplot_matrix as spm
         import matplotlib.pyplot as plt
