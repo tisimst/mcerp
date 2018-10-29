@@ -20,7 +20,8 @@ from mcerp import UncertainFunction
 import numpy as np
 import scipy.stats as ss
 
-__author__ = 'Abraham Lee'
+__author__ = "Abraham Lee"
+
 
 def wrap(func):
     def wrappedfunc(*args, **kwargs):
@@ -37,12 +38,13 @@ def wrap(func):
         args = tuple(tmpargs)
 
         return func(*args, **kwargs)
-    
+
     wrappedfunc.__name__ = func.__name__
     wrappedfunc.__doc__ = func.__doc__
-    
+
     return wrappedfunc
-    
+
+
 describe = wrap(ss.describe)
 gmean = wrap(ss.gmean)
 hmean = wrap(ss.hmean)
@@ -62,7 +64,6 @@ tsem = wrap(ss.tsem)
 variation = wrap(ss.variation)
 percentileofscore = wrap(ss.percentileofscore)
 scoreatpercentile = wrap(ss.scoreatpercentile)
-# signaltonoise = wrap(ss.signaltonoise)
 bayes_mvs = wrap(ss.bayes_mvs)
 sem = wrap(ss.sem)
 zmap = wrap(ss.zmap)
@@ -78,7 +79,6 @@ ttest_ind = wrap(ss.ttest_ind)
 ttest_rel = wrap(ss.ttest_rel)
 kstest = wrap(ss.kstest)
 chisquare = wrap(ss.chisquare)
-# power_divergence = wrap(ss.power_divergence)
 ks_2samp = wrap(ss.ks_2samp)
 mannwhitneyu = wrap(ss.mannwhitneyu)
 rankdata = wrap(ss.rankdata)
@@ -94,5 +94,3 @@ anderson = wrap(ss.anderson)
 binom_test = wrap(ss.binom_test)
 fligner = wrap(ss.fligner)
 mood = wrap(ss.mood)
-
-
