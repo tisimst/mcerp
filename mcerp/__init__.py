@@ -8,7 +8,6 @@ Copyright: 2013 - 2014
 """
 import numpy as np
 import scipy.stats as ss
-import matplotlib.pyplot as plt
 from .lhd import lhd
 
 __version_info__ = (0, 11)
@@ -253,6 +252,8 @@ class UncertainFunction(object):
         kwargs : any valid matplotlib.pyplot.plot or .hist kwarg
         
         """
+        import matplotlib.pyplot as plt
+
         vals = self._mcpts
         low = min(vals)
         high = max(vals)
@@ -278,6 +279,8 @@ class UncertainFunction(object):
             self.show()
 
     def show(self):
+        import matplotlib.pyplot as plt
+
         plt.show()
 
     def __add__(self, val):
