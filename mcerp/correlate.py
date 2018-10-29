@@ -2,7 +2,6 @@ import itertools
 import numpy as np
 from scipy.stats import rankdata
 from scipy.stats.distributions import norm
-import matplotlib.pyplot as plt
 from . import UncertainFunction
 
 
@@ -117,6 +116,7 @@ def plotcorr(X, plotargs=None, full=True, labels=None):
     Additional keyword arguments are passed on to matplotlib's "plot" command. 
     Returns the matplotlib figure object containing the subplot grid.
     """
+    import matplotlib.pyplot as plt
     X = [Xi._mcpts if isinstance(Xi, UncertainFunction) else Xi for Xi in X]
     X = np.atleast_2d(X)
     numvars, numdata = X.shape
