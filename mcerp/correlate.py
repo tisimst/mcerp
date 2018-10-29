@@ -35,9 +35,6 @@ def correlate(params, corrmat):
         params[i]._mcpts = new_data[:, i]
 
 
-################################################################################
-
-
 def induce_correlations(data, corrmat):
     """
     Induce a set of correlations on a column-wise dataset
@@ -97,9 +94,6 @@ def induce_correlations(data, corrmat):
         data[:, i] = tmp[:]
 
     return data
-
-
-################################################################################
 
 
 def plotcorr(X, plotargs=None, full=True, labels=None):
@@ -204,9 +198,6 @@ def plotcorr(X, plotargs=None, full=True, labels=None):
         axes[-1, -1].set_ylim(ylimits)
 
     return fig
-
-
-################################################################################
 
 
 def chol(A):

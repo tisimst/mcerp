@@ -6,7 +6,6 @@ mcerp: Real-time latin-hypercube-sampling-based Monte Carlo Error Propagation
 Author: Abraham Lee
 Copyright: 2013 - 2014
 """
-
 import numpy as np
 import scipy.stats as ss
 import matplotlib.pyplot as plt
@@ -445,9 +444,6 @@ class UncertainFunction(object):
         return not (1 - ((self > 0) + (self < 0)))
 
 
-################################################################################
-
-
 class UncertainVariable(UncertainFunction):
     """
     UncertainVariable objects track the effects of uncertainty, characterized 
@@ -740,9 +736,6 @@ def Beta(alpha, beta, low=0, high=1, tag=None):
     return uv(ss.beta(alpha, beta, loc=low, scale=high - low), tag=tag)
 
 
-###############################################################################
-
-
 def BetaPrime(alpha, beta, tag=None):
     """
     A BetaPrime random variate
@@ -760,9 +753,6 @@ def BetaPrime(alpha, beta, tag=None):
     ), 'BetaPrime "alpha" and "beta" parameters must be greater than zero'
     x = Beta(alpha, beta, tag)
     return x / (1 - x)
-
-
-###############################################################################
 
 
 def Bradford(q, low=0, high=1, tag=None):
@@ -783,9 +773,6 @@ def Bradford(q, low=0, high=1, tag=None):
     return uv(ss.bradford(q, loc=low, scale=high - low), tag=tag)
 
 
-###############################################################################
-
-
 def Burr(c, k, tag=None):
     """
     A Burr random variate
@@ -800,9 +787,6 @@ def Burr(c, k, tag=None):
     """
     assert c > 0 and k > 0, 'Burr "c" and "k" parameters must be greater than zero'
     return uv(ss.burr(c, k), tag=tag)
-
-
-###############################################################################
 
 
 def ChiSquared(k, tag=None):
@@ -820,8 +804,6 @@ def ChiSquared(k, tag=None):
 
 Chi2 = ChiSquared  # for more concise use
 
-###############################################################################
-
 
 def Erf(h, tag=None):
     """
@@ -838,9 +820,6 @@ def Erf(h, tag=None):
     """
     assert h > 0, 'Erf "h" must be greater than zero'
     return Normal(0, 1 / (h * 2 ** 0.5), tag)
-
-
-###############################################################################
 
 
 def Erlang(k, lamda, tag=None):
@@ -864,9 +843,6 @@ def Erlang(k, lamda, tag=None):
     return Gamma(k, lamda, tag)
 
 
-###############################################################################
-
-
 def Exponential(lamda, tag=None):
     """
     An Exponential random variate
@@ -881,8 +857,6 @@ def Exponential(lamda, tag=None):
 
 
 Exp = Exponential  # for more concise use
-
-###############################################################################
 
 
 def ExtValueMax(mu, sigma, tag=None):
@@ -903,8 +877,6 @@ def ExtValueMax(mu, sigma, tag=None):
 
 EVMax = ExtValueMax  # for more concise use
 
-###############################################################################
-
 
 def ExtValueMin(mu, sigma, tag=None):
     """
@@ -923,8 +895,6 @@ def ExtValueMin(mu, sigma, tag=None):
 
 
 EVMin = ExtValueMin  # for more concise use
-
-###############################################################################
 
 
 def Fisher(d1, d2, tag=None):
@@ -949,8 +919,6 @@ def Fisher(d1, d2, tag=None):
 
 F = Fisher  # for more concise use
 
-###############################################################################
-
 
 def Gamma(k, theta, tag=None):
     """
@@ -967,9 +935,6 @@ def Gamma(k, theta, tag=None):
         k > 0 and theta > 0
     ), 'Gamma "k" and "theta" parameters must be greater than zero'
     return uv(ss.gamma(k, scale=theta), tag=tag)
-
-
-###############################################################################
 
 
 def LogNormal(mu, sigma, tag=None):
@@ -989,8 +954,6 @@ def LogNormal(mu, sigma, tag=None):
 
 LogN = LogNormal  # for more concise use
 
-###############################################################################
-
 
 def Normal(mu, sigma, tag=None):
     """
@@ -1009,8 +972,6 @@ def Normal(mu, sigma, tag=None):
 
 N = Normal  # for more concise use
 
-###############################################################################
-
 
 def Pareto(q, a, tag=None):
     """
@@ -1028,9 +989,6 @@ def Pareto(q, a, tag=None):
     return a * (1 - p) ** (-1.0 / q)
 
 
-###############################################################################
-
-
 def Pareto2(q, b, tag=None):
     """
     A Pareto random variate (second kind). This form always starts at the
@@ -1045,9 +1003,6 @@ def Pareto2(q, b, tag=None):
     """
     assert q > 0 and b > 0, 'Pareto2 "q" and "b" must be positive scalars'
     return Pareto(q, b, tag) - b
-
-
-###############################################################################
 
 
 def PERT(low, peak, high, g=4.0, tag=None):
@@ -1084,9 +1039,6 @@ def PERT(low, peak, high, g=4.0, tag=None):
     return Beta(a1, a2, a, c, tag)
 
 
-###############################################################################
-
-
 def StudentT(v, tag=None):
     """
     A Student-T random variate
@@ -1101,8 +1053,6 @@ def StudentT(v, tag=None):
 
 
 T = StudentT  # for more concise use
-
-###############################################################################
 
 
 def Triangular(low, peak, high, tag=None):
@@ -1128,8 +1078,6 @@ def Triangular(low, peak, high, tag=None):
 
 Tri = Triangular  # for more concise use
 
-###############################################################################
-
 
 def Uniform(low, high, tag=None):
     """
@@ -1147,8 +1095,6 @@ def Uniform(low, high, tag=None):
 
 
 U = Uniform  # for more concise use
-
-###############################################################################
 
 
 def Weibull(lamda, k, tag=None):
@@ -1192,8 +1138,6 @@ def Bernoulli(p, tag=None):
 
 Bern = Bernoulli  # for more concise use
 
-###############################################################################
-
 
 def Binomial(n, p, tag=None):
     """
@@ -1217,8 +1161,6 @@ def Binomial(n, p, tag=None):
 
 B = Binomial  # for more concise use
 
-###############################################################################
-
 
 def Geometric(p, tag=None):
     """
@@ -1236,8 +1178,6 @@ def Geometric(p, tag=None):
 
 
 G = Geometric  # for more concise use
-
-###############################################################################
 
 
 def Hypergeometric(N, n, K, tag=None):
@@ -1287,8 +1227,6 @@ def Hypergeometric(N, n, K, tag=None):
 
 
 H = Hypergeometric  # for more concise use
-
-###############################################################################
 
 
 def Poisson(lamda, tag=None):
@@ -1354,9 +1292,6 @@ def covariance_matrix(nums_with_uncert):
         covariance_coefs.extend(cov_matrix[j][i] for j in range(i + 1, len(cov_matrix)))
 
     return cov_matrix
-
-
-###############################################################################
 
 
 def correlation_matrix(nums_with_uncert):

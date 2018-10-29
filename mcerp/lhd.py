@@ -289,9 +289,6 @@ def lhd(
             print("Correlation Matrix:\n", cor_matrix)
             print("Inverted Correlation Matrix:\n", inv_cor_matrix)
             print("Variance Inflation Factor (VIF):", VIF)
-    #        elif VIF >= 1:
-    #            print 'WARNING: Variance Inflation Factor (%5.3f) indicates that there'%(VIF)
-    #            print 'may be some undesirably large pairwise correlations present.'
 
     return dist_data
 

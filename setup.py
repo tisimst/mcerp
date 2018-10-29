@@ -1,16 +1,5 @@
 import os
 from setuptools import setup
-
-# import distutils.core
-
-## Building through 2to3, for Python 3 (see also setup(...,
-## cmdclass=...), below:
-# try:
-# from distutils.command.build_py import build_py_2to3 as build_py
-# except ImportError:
-## 2.x
-# from distutils.command.build_py import build_py
-
 import mcerp
 
 
@@ -20,7 +9,6 @@ def read(fname):
 
 readme = "README.rst"
 
-# distutils.core.setup(
 setup(
     name="mcerp",
     version=mcerp.__version__,
