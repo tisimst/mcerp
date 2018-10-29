@@ -662,6 +662,7 @@ class UncertainVariable(UncertainFunction):
         kwargs : any valid matplotlib.pyplot.plot kwarg
         
         """
+        import matplotlib.pyplot as plt
 
         if hist:
             vals = self._mcpts

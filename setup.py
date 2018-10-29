@@ -73,5 +73,4 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Utilities",
     ],
-    # cmdclass={'build_py': build_py}
 )
