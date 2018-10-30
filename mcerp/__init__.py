@@ -6,12 +6,16 @@ mcerp: Real-time latin-hypercube-sampling-based Monte Carlo Error Propagation
 Author: Abraham Lee
 Copyright: 2013 - 2014
 """
+from pkg_resources import get_distribution, DistributionNotFound
 import numpy as np
 import scipy.stats as ss
 from .lhd import lhd
 
-__version_info__ = (0, 11)
-__version__ = ".".join(map(str, __version_info__))
+try:
+    __version__ = get_distribution(__name__).version
+except DistributionNotFound:
+    # package is not installed
+    pass
 
 __author__ = "Abraham Lee"
 

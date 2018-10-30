@@ -1,6 +1,5 @@
 import os
 from setuptools import setup
-import mcerp
 
 
 def read(fname):
@@ -11,7 +10,6 @@ readme = "README.rst"
 
 setup(
     name="mcerp",
-    version=mcerp.__version__,
     author="Abraham Lee",
     description="Real-time latin-hypercube-sampling-based Monte Carlo Error Propagation",
     author_email="tisimst@gmail.com",
@@ -20,6 +18,8 @@ setup(
     long_description=read(readme),
     package_data={"": [readme]},
     packages=["mcerp"],
+    use_scm_version=True,
+    setup_requires=['setuptools_scm'],
     install_requires=["numpy", "scipy", "matplotlib"],
     keywords=[
         "monte carlo",
