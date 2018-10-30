@@ -2,6 +2,10 @@
 ``mcerp`` Package Documentation
 ===============================
 
+.. image:: https://dev.azure.com/tisimst/tisimst/_apis/build/status/tisimst.mcerp
+    :target: https://dev.azure.com/tisimst/tisimst/_build/latest?definitionId=1
+    :alt: Build Status
+
 Overview
 ========
 
