@@ -19,7 +19,7 @@ setup(
     package_data={"": [readme]},
     packages=["mcerp"],
     use_scm_version=True,
-    setup_requires=['setuptools_scm'],
+    setup_requires=["setuptools_scm"],
     install_requires=["numpy", "scipy", "matplotlib"],
     keywords=[
         "monte carlo",

@@ -12,3 +12,4 @@ Table of Contents
    correlations
    advanced_example
    changes
+   contribute

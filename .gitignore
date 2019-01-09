@@ -7,3 +7,5 @@ doc/_build
 MANIFEST
 .idea
 .eggs
+.coverage
+htmlcov
