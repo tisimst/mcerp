@@ -3,6 +3,7 @@
 *.egg-info
 dist
 build
+doc/_build
 MANIFEST
 .idea
 .eggs
