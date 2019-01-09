@@ -11,4 +11,4 @@ Table of Contents
    probabilities
    correlations
    advanced_example
-
+   changes

@@ -1,16 +1,34 @@
-mcerp-0.9.2
-===========
+Changes
+=======
+
+This is the changelog for ``mcerp``.
+You can find the releases at https://pypi.org/project/mcerp/
+
+v0.12 (Jan 9, 2019)
+-------------------
+
+- Python 3 support added (now ``mcerp`` works on Python 2.7 as well as
+  Python 3.5 or later with a single codebase)
+- Several small issues fixed
+
+v0.11 (Jun 12, 2014)
+--------------------
+
+(changelog wasn't filled, not clear what changed)
+
+v0.10 (Dec 10, 2013)
+--------------------
+
+(changelog wasn't filled, not clear what changed)
+
+v0.9.2 (Aug 17, 2013)
+---------------------
 
 - Fixed bug in 'umath.py' where the 'mcpts' member references should have been
   '_mcpts'.
 
-mcerp-0.9.1
-===========
-
-- Updated documentation
-
-mcerp-0.9
-===========
+v0.9 (Jul 11, 2013)
+-------------------
 
 - Removed dependencies on the 'ad' package since the core functionality didn't
   really depend on it.
@@ -26,22 +44,14 @@ mcerp-0.9
 - Updated the 'describe' method to allow the user to specify a printed 
   identifier as an input other than the 'tag' member.
 
-mcerp-0.8.2
-===========
-
 - Added 'covariance_matrix' and 'correlation_matrix' utility functions.
 
 - Renamed display text from 'UF(...)' and 'UV(...)' to just 'uv(...)'.
 
 - Made the sample statistics permanent properties via the @property decorator.
 
-mcerp-0.8.1
-===========
-
-- Fixed some minor formatting issues to comply with PEP8
-
-mcerp-0.8
-=========
+v0.8 (Jun 27, 2013)
+-------------------
 
 - First public release.
  
