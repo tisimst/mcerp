@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 from mcerp import *
 
 x1 = N(24, 1)
