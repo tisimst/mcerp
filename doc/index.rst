@@ -55,6 +55,10 @@ Main Features
 
 6. **Probability calculations** using conventional comparison operators.
 
+7. Advanced Scipy **statistical function compatibility** with package
+   functions. Depending on your version of Scipy, some functions might not
+   work.
+
 Installation
 ============
 
