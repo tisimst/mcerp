@@ -4,6 +4,8 @@ Changes
 This is the changelog for ``mcerp``.
 You can find the releases at https://pypi.org/project/mcerp/
 
+Starting wit ``v0.12``, git tags are available for stable versions.
+
 v0.12 (Jan 9, 2019)
 -------------------
 
