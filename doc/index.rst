@@ -34,19 +34,6 @@ The result of all calculations generates a *mean*, *variance*, and
 *standardized skewness and kurtosis* coefficients (this means that a 
 *Normal* distribution has a kurtosis of 3, **NOT** 0).
 
-Required Packages
-=================
-
-The following packages should be installed automatically (if using ``pip``
-or ``easy_install``), otherwise they will need to be installed manually:
-
-- `NumPy`_ : Numeric Python
-- `SciPy`_ : Scientific Python
-- `Matplotlib`_ : Python plotting library
-
-These packages come standard in *Python(x,y)*, *Spyder*, and other 
-scientific computing python bundles.
-
 Main Features
 =============
 
@@ -71,44 +58,19 @@ Main Features
 Installation
 ============
 
-**Make sure you have the**  `SciPy`_ **and** `NumPy`_ **and** `Matplotlib`_ **packages installed!**
-This package won't work without them.
+``mcerp`` works on Linux, MacOS and Windows, with Python 2.7 or with Python 3.5 or later.
 
-You have **several easy, convenient options** to install the ``mcerp`` 
-package (administrative privileges may be required)
+To install it, use ``pip``::
 
-#. Simply copy the unzipped ``mcerp-XYZ`` directory to any other location that
-   python can find it and rename it ``mcerp``.
-    
-#. From the command-line, do one of the following:
-   
-   a. Manually download the package files below, unzip to any directory, and run::
-   
-       $ [sudo] python setup.py install
+    pip install mcerp
 
-   b. If ``setuptools`` is installed, run::
+The ``mcerp`` dependencies should be installed automatically if using ``pip``,
+otherwise they will need to be installed manually:
 
-       $ [sudo] easy_install --upgrade mcerp
-    
-   c. If ``pip`` is installed, run::
+- `NumPy`_ : Numeric Python
+- `SciPy`_ : Scientific Python
+- `Matplotlib`_ : Python plotting library
 
-       $ [sudo] pip install --upgrade mcerp
-
-Python 3
---------
-
-To use this package with Python 3.x, you will need to run the ``2to3`` 
-conversion tool at the command-line using the following syntax while in the 
-unzipped ``mcerp`` directory::
-
-    $ 2to3 -w .
-    
-This should take care of the main changes required. Then, run::
-
-    $ python3 setup.py install
-
-If bugs continue to pop up, please email the author.
-    
 See also
 ========
 
@@ -121,8 +83,6 @@ Contact
 Please send **feature requests, bug reports, or feedback** to 
 `Abraham Lee`_.
 
-
-    
 .. _Monte Carlo methods: http://en.wikipedia.org/wiki/Monte_Carlo_method
 .. _latin-hypercube sampling: http://en.wikipedia.org/wiki/Latin_hypercube_sampling
 .. _soerp: http://pypi.python.org/pypi/soerp
