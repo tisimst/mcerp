@@ -17,7 +17,6 @@ Author: Abraham Lee
 Copyright: 2013
 """
 from mcerp import UncertainFunction
-import numpy as np
 import scipy.stats as ss
 
 __author__ = "Abraham Lee"
