@@ -268,7 +268,7 @@ class UncertainFunction(object):
                 vals,
                 bins=int(np.sqrt(len(vals)) + 0.5),
                 histtype="stepfilled",
-                normed=True,
+                density=True,
                 **kwargs
             )
             plt.ylim(0, 1.1 * h[0].max())
@@ -676,7 +676,7 @@ class UncertainVariable(UncertainFunction):
                 vals,
                 bins=int(np.sqrt(len(vals)) + 0.5),
                 histtype="stepfilled",
-                normed=True,
+                density=True,
                 **kwargs
             )
             plt.ylim(0, 1.1 * h[0].max())
